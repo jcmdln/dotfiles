@@ -182,7 +182,7 @@
      (t (format "%8d" (buffer-size)))))
 
   (setq ibuffer-show-empty-filter-groups nil
-	ibuffer-saved-filter-groups
+        ibuffer-saved-filter-groups
         (quote (("default"
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
@@ -205,9 +205,9 @@
 
                  ("circe"
                   (or (mode . circe-mode)
-		      (mode . circe-channel-mode)
-		      (mode . circe-server-mode))))))
-	ibuffer-formats
+                      (mode . circe-channel-mode)
+                      (mode . circe-server-mode))))))
+        ibuffer-formats
         '((mark modified read-only " "
                 (name 35 35 :left :nil) " "
                 (size-h 9 -1 :right) " "
