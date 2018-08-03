@@ -174,29 +174,39 @@
          ("<C-iso-lefttab>" . previous-buffer))
 
   :config
-  (setq ibuffer-saved-filter-groups
-	(quote (("default"
-		 ("emacs" (or
-			   (name . "^\\*scratch\\*$")
-			   (name . "^\\*Messages\\*$")
-			   (mode . dired-mode)))
-		 ("eshell" (mode . eshell-mode))
-		 ("gnus" (or
-			  (mode . message-mode)
-			  (mode . bbdb-mode)
-			  (mode . mail-mode)
-			  (mode . gnus-group-mode)
-			  (mode . gnus-summary-mode)
-			  (mode . gnus-article-mode)
-			  (name . "^\\.bbdb$")
-			  (name . "^\\.newsrc-dribble")))
-		 ("circe" (mode . circe-mode))))))
+  (setq ibuffer-show-empty-filter-groups nil
+	ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("emacs"
+                  (or (name . "^\\*scratch\\*$")
+                      (name . "^\\*Messages\\*$")
+                      (name . "^\\*Flycheck\\*$")
+                      (name . "^\\*Flyspell\\*$")
+                      (mode . dired-mode)))
+
+                 ("eshell" (mode . eshell-mode))
+
+                 ("gnus"
+                  (or (mode . message-mode)
+                      (mode . bbdb-mode)
+                      (mode . mail-mode)
+                      (mode . gnus-group-mode)
+                      (mode . gnus-summary-mode)
+                      (mode . gnus-article-mode)
+                      (name . "^\\.bbdb$")
+                      (name . "^\\.newsrc-dribble")))
+
+                 ("circe"
+                  (or (mode . circe-mode)
+		      (mode . circe-channel-mode)
+		      (mode . circe-server-mode)))
+                 ))))
 
   (add-hook 'ibuffer-hook 'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
   (add-hook 'ibuffer-auto-mode-hook
-	    (lambda ()
-	      (ibuffer-switch-to-saved-filter-groups "default"))))
+            (lambda ()
+              (ibuffer-switch-to-saved-filter-groups "default"))))
 
 (use-package linum
   :demand t
@@ -345,7 +355,7 @@
           (concat "[" (user-login-name) "@" (system-name) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
-		      (if (= (user-uid) 0) "# " "$ ")))
+                      (if (= (user-uid) 0) "# " "$ ")))
         eshell-visual-commands '("alsamixer" "atop" "htop" "less" "mosh"
                                  "nano" "ssh" "tail" "top" "vi" "vim"
                                  "watch"))
