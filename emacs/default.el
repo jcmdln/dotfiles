@@ -187,8 +187,8 @@
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
-                      (name . "^\\*Flycheck\\*$")
-                      (name . "^\\*Flyspell\\*$")
+                      (name . "^\\*Flycheck")
+                      (name . "^\\*Flyspell")
                       (mode . dired-mode)))
 
                  ("eshell" (mode . eshell-mode))
