@@ -174,6 +174,13 @@
          ("<C-iso-lefttab>" . previous-buffer))
 
   :config
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
+
   (setq ibuffer-show-empty-filter-groups nil
 	ibuffer-saved-filter-groups
         (quote (("default"
@@ -199,8 +206,13 @@
                  ("circe"
                   (or (mode . circe-mode)
 		      (mode . circe-channel-mode)
-		      (mode . circe-server-mode)))
-                 ))))
+		      (mode . circe-server-mode))))))
+	ibuffer-formats
+        '((mark modified read-only " "
+                (name 35 35 :left :nil) " "
+                (size-h 9 -1 :right) " "
+                (mode 16 16 :left :elide) " "
+                filename-and-process)))
 
   (add-hook 'ibuffer-hook 'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
@@ -229,6 +241,7 @@
          ("C-c a"   . org-agenda)
          ("C-c C-c" . org-capture)
          ("C-c b"   . org-switchb))
+
   :config
   (add-hook 'org-mode-hook (lambda() (load-theme 'org-beautify))))
 
