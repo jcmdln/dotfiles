@@ -162,6 +162,7 @@
 (use-package ivy
   :bind (("C-c C-r" . ivy-resume)
          ("<f6>"    . ivy-resume))
+
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers      t
@@ -171,12 +172,31 @@
   :bind (("C-x C-b"         . ibuffer)
          ("<C-tab>"         . next-buffer)
          ("<C-iso-lefttab>" . previous-buffer))
+
   :config
-  (add-hook 'ibuffer-hook
-            (lambda()
-              (ibuffer-auto-mode)
-              (ibuffer-do-sort-by-alphabetic)
-              (ibuffer-do-sort-by-major-mode))))
+  (setq ibuffer-saved-filter-groups
+	(quote (("default"
+		 ("emacs" (or
+			   (name . "^\\*scratch\\*$")
+			   (name . "^\\*Messages\\*$")
+			   (mode . dired-mode)))
+		 ("eshell" (mode . eshell-mode))
+		 ("gnus" (or
+			  (mode . message-mode)
+			  (mode . bbdb-mode)
+			  (mode . mail-mode)
+			  (mode . gnus-group-mode)
+			  (mode . gnus-summary-mode)
+			  (mode . gnus-article-mode)
+			  (name . "^\\.bbdb$")
+			  (name . "^\\.newsrc-dribble")))
+		 ("circe" (mode . circe-mode))))))
+
+  (add-hook 'ibuffer-hook 'ibuffer-auto-mode)
+  (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
+  (add-hook 'ibuffer-auto-mode-hook
+	    (lambda ()
+	      (ibuffer-switch-to-saved-filter-groups "default"))))
 
 (use-package linum
   :demand t
@@ -184,6 +204,7 @@
   (add-hook 'lisp-mode-hook 'linum-mode)
   (add-hook 'prog-mode-hook 'linum-mode)
   (add-hook 'text-mode-hook 'linum-mode)
+
   (setq linum-delay t)
   (global-visual-line-mode t))
 
@@ -324,7 +345,7 @@
           (concat "[" (user-login-name) "@" (system-name) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
-                  (if (= (user-uid) 0) "# " "$ ")))
+		      (if (= (user-uid) 0) "# " "$ ")))
         eshell-visual-commands '("alsamixer" "atop" "htop" "less" "mosh"
                                  "nano" "ssh" "tail" "top" "vi" "vim"
                                  "watch"))
@@ -364,6 +385,11 @@
   :config
   (define-key eww-mode-map "f" 'eww-lnum-follow)
   (define-key eww-mode-map "F" 'eww-lnum-universal))
+
+(use-package gnus
+  :config
+  (if (file-exists-p  "~/.emacs.d/gnus.el")
+      (load-file      "~/.emacs.d/gnus.el")))
 
 (use-package nov
   :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
