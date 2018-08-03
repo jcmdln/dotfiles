@@ -189,9 +189,21 @@
                       (name . "^\\*Messages\\*$")
                       (name . "^\\*Flycheck")
                       (name . "^\\*Flyspell")
+                      (name . "^\\*Help\\*$")
                       (mode . dired-mode)))
 
+                 ("dev"
+                  (or (name . "^\\*Man ")
+                      (name . "^\\*rtags")))
+
                  ("eshell" (mode . eshell-mode))
+
+                 ("circe"
+                  (or (mode . circe-mode)
+                      (mode . circe-channel-mode)
+                      (mode . circe-server-mode)))
+
+                 ("elfeed" (name . "^\\*elfeed"))
 
                  ("gnus"
                   (or (mode . message-mode)
@@ -202,11 +214,8 @@
                       (mode . gnus-article-mode)
                       (name . "^\\.bbdb$")
                       (name . "^\\.newsrc-dribble")))
+                 )))
 
-                 ("circe"
-                  (or (mode . circe-mode)
-                      (mode . circe-channel-mode)
-                      (mode . circe-server-mode))))))
         ibuffer-formats
         '((mark modified read-only " "
                 (name 35 35 :left :nil) " "
