@@ -187,6 +187,7 @@
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
+                      (name . "^\\*Completions\\*$")
                       (name . "^\\*Flycheck")
                       (name . "^\\*Flyspell")
                       (name . "^\\*Help\\*$")
@@ -194,7 +195,9 @@
 
                  ("dev"
                   (or (name . "^\\*Man ")
-                      (name . "^\\*rtags")))
+                      (name . "^\\*WoMan")
+                      (name . "^magit")
+                      (name . "^\\*RTags\\*$")))
 
                  ("eshell" (mode . eshell-mode))
 
