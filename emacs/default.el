@@ -159,6 +159,8 @@
          ("C-x l"   . counsel-locate)
          ("M-x"     . counsel-M-x)))
 
+(use-package helpful)
+
 (use-package ivy
   :bind (("C-c C-r" . ivy-resume)
          ("<f6>"    . ivy-resume))
@@ -191,7 +193,13 @@
                       (name . "^\\*Flycheck")
                       (name . "^\\*Flyspell")
                       (name . "^\\*Help\\*$")
+                      (name . "^\\*Disabled Command\\*$")
                       (mode . dired-mode)))
+
+                 ("circe"
+                  (or (mode . circe-mode)
+                      (mode . circe-channel-mode)
+                      (mode . circe-server-mode)))
 
                  ("dev"
                   (or (name . "^\\*Man ")
@@ -199,14 +207,9 @@
                       (name . "^magit")
                       (name . "^\\*RTags\\*$")))
 
-                 ("eshell" (mode . eshell-mode))
-
-                 ("circe"
-                  (or (mode . circe-mode)
-                      (mode . circe-channel-mode)
-                      (mode . circe-server-mode)))
-
                  ("elfeed" (name . "^\\*elfeed"))
+                 ("eshell" (mode . eshell-mode))
+                 ("eww" (name . "^\\*eww\\*"))
 
                  ("gnus"
                   (or (mode . message-mode)
