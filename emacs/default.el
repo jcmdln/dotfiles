@@ -48,7 +48,8 @@
             (show-paren-mode   t)
             (fset 'yes-or-no-p 'y-or-n-p)))
 
-(setq custom-file                         "~/.emacs.d/custom.el"
+(setq browse-url-browser-function         'eww-browse-url
+      custom-file                         "~/.emacs.d/custom.el"
       require-final-newline               t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil
@@ -399,8 +400,7 @@
 
 (use-package eww
   :config
-  (setq browse-url-browser-function 'eww-browse-url
-        shr-blocked-images          "")
+  (setq shr-blocked-images "")
 
   (defun eww-toggle-images()
     "Toggle blocking images in eww."
