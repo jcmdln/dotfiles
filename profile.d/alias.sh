@@ -3,5 +3,5 @@
 alias df="df -h"
 alias ls="ls -hSF"
 alias mkdir="mkdir -p"
-alias mv="mv -vi"
-alias rm="rm -vi"
+alias mv="mv -i"
+alias rm="rm -i"
