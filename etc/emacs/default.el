@@ -145,6 +145,8 @@
 
 (use-package auto-dictionary)
 
+(use-package define-word)
+
 (use-package counsel
   :bind (("<f1> f"  . counsel-describe-function)
          ("<f1> l"  . counsel-find-library)
