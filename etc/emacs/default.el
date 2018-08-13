@@ -191,8 +191,6 @@
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
                       (name . "^\\*Completions\\*$")
-                      (name . "^\\*Flycheck")
-                      (name . "^\\*Flyspell")
                       (name . "^\\*Help\\*$")
                       (name . "^\\*Disabled Command\\*$")
                       (mode . dired-mode)))
@@ -202,15 +200,15 @@
                       (mode . circe-channel-mode)
                       (mode . circe-server-mode)))
 
-                 ("dev"
-                  (or (name . "^\\*Man ")
-                      (name . "^\\*WoMan")
-                      (name . "^magit")
-                      (name . "^\\*RTags\\*$")))
-
+                 ("clang"  (name . "^\\*clang-"))
+                 ("dev"    (name . "^\\*RTags\\*$"))
                  ("elfeed" (name . "^\\*elfeed"))
                  ("eshell" (mode . eshell-mode))
-                 ("eww" (name . "^\\*eww\\*"))
+                 ("eww"    (name . "^\\*eww\\*"))
+
+                 ("fly"
+                  (or (name . "^\\*Flycheck")
+                      (name . "^\\*Flyspell")))
 
                  ("gnus"
                   (or (mode . message-mode)
@@ -221,6 +219,14 @@
                       (mode . gnus-article-mode)
                       (name . "^\\.bbdb$")
                       (name . "^\\.newsrc-dribble")))
+
+                 ("magit"
+                  (or (name . "magit")
+                      (name . "COMMIT_EDITMSG")))
+
+                 ("man"
+                  (or (name . "^\\*Man ")
+                      (name . "^\\*WoMan")))
                  )))
 
         ibuffer-formats
