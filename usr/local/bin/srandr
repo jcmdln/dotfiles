@@ -1,25 +1,32 @@
 #!/usr/bin/env sh
 
+
 ## Example ~/.display.sh Configuration
 #
 # #!/usr/bin/env sh
+#
 # DisplayConfigs="LVDS1 VGA1"
+#
+# ## This is a primary monitor
 # LVDS1() {
 #     xrandr --output LVDS1 --auto
 # }
+#
+# ## Secondary monitor above the primary
 # VGA1() {
 #     xrandr --output VGA1 --auto --above LVDS1
 # }
 
+
 Displays=""
 
 while :; do
-    if [[ $DISPLAY ]]; then
-        CDisplays=$(xrandr | grep ' connected'   | awk '{print $1}')
-        DDisplays=$(xrandr | grep 'disconnected' | awk '{print $1}')
+    if [ -n "$DISPLAY" ]; then
+        Connected="$(xrandr | grep ' connected'   | awk '{print $1}')"
+        Disconnected="$(xrandr | grep 'disconnected' | awk '{print $1}')"
 
-        if [ "$Displays" != "$CDisplays" ]; then
-            for display in $CDisplays; do
+        if [ "$Displays" != "$Connected" ]; then
+            for display in $Connected; do
                 if [ -e "$HOME/.display.sh" ]; then
                     . "$HOME/.display.sh"
 
@@ -33,7 +40,7 @@ while :; do
                 fi
             done
 
-            for display in $DDisplays; do
+            for display in $Disconnected; do
                 xrandr --output "$display" --off
             done
 
