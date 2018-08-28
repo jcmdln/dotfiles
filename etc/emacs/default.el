@@ -48,8 +48,7 @@
             (show-paren-mode   t)
             (fset 'yes-or-no-p 'y-or-n-p)))
 
-(setq browse-url-browser-function         'eww-browse-url
-      custom-file                         "~/.emacs.d/custom.el"
+(setq custom-file                         "~/.emacs.d/custom.el"
       require-final-newline               t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil
@@ -392,7 +391,7 @@
           (concat "[" (user-login-name) "@" (system-name) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
-                      (if (= (user-uid) 0) "# " "$ ")))
+                  (if (= (user-uid) 0) "# " "$ ")))
         eshell-visual-commands '("alsamixer" "atop" "htop" "less" "mosh"
                                  "nano" "ssh" "tail" "top" "vi" "vim"
                                  "watch"))
@@ -407,6 +406,7 @@
     (eshell 'N)))
 
 (use-package eww
+  :init (setq browse-url-browser-function 'eww-browse-url)
   :config
   (setq shr-blocked-images "")
 
@@ -445,7 +445,7 @@
 (use-package ranger)
 
 (use-package scratch
-  :config
+  :init
   (defun scratch-new()
     "Open a new scratch buffer."
     (interactive)
