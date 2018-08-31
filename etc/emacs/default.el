@@ -1,27 +1,5 @@
 ;;; /etc/emacs/default.el
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Recommended configure options
-;;
-;; ./configure \
-;;     CFLAGS="-g3 -O3" \
-;;     --with-xml2 \
-;;     --with-mailutils \
-;;     --with-modules \
-;;     --with-xft \
-;;     --without-gif \
-;;     --without-imagemagick \
-;;     --without-jpeg \
-;;     --without-png \
-;;     --without-sound \
-;;     --without-tiff \
-;;     --without-x-toolkit \
-;;     --without-xpm
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;
 ;;; Startup
 ;;;
