@@ -500,15 +500,15 @@
 (use-package company-go
   :after (company))
 
-(use-package company-irony
-  :after (company irony)
-  :config
-  (add-to-list 'company-backends 'company-irony))
+;; (use-package company-irony
+;;   :after (company irony)
+;;   :config
+;;   (add-to-list 'company-backends 'company-irony))
 
-(use-package company-irony-c-headers
-  :after (company irony company-irony)
-  :config (add-to-list 'company-backends
-                       '(company-irony-c-headers company-irony)))
+;; (use-package company-irony-c-headers
+;;   :after (company irony company-irony)
+;;   :config (add-to-list 'company-backends
+;;                        '(company-irony-c-headers company-irony)))
 
 (use-package company-php :after (company php-mode))
 
