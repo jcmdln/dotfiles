@@ -440,7 +440,8 @@
 (use-package nov
   :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :demand t)
 
 (use-package ranger)
 
