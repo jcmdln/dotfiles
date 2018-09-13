@@ -440,7 +440,8 @@
 (use-package nov
   :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :demand t)
 
 (use-package ranger)
 
@@ -460,25 +461,13 @@
 ;; Delete trailing whitespace on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; Default indent
+(setq column-number-mode t
+      indent-tabs-mode   nil
+      show-paren-delay   0)
+
 ;; Comment or uncomment a region
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
-
-;; Allow C and C++ modes to read .h headers
-(add-hook 'c-mode-hook
-          (lambda()
-            (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))))
-(add-hook 'c++-mode-hook
-          (lambda()
-            (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))))
-
-;; Default indent
-(setq c-basic-offset     2
-      column-number-mode t
-      cperl-indent-level 2
-      indent-tabs-mode   nil
-      js-indent-level    2
-      tab-width          2
-      show-paren-delay   0)
 
 (use-package company
   :demand t
@@ -500,15 +489,15 @@
 (use-package company-go
   :after (company))
 
-;; (use-package company-irony
-;;   :after (company irony)
-;;   :config
-;;   (add-to-list 'company-backends 'company-irony))
+(use-package company-irony
+  :after (company irony)
+  :config
+  (add-to-list 'company-backends 'company-irony))
 
-;; (use-package company-irony-c-headers
-;;   :after (company irony company-irony)
-;;   :config (add-to-list 'company-backends
-;;                        '(company-irony-c-headers company-irony)))
+(use-package company-irony-c-headers
+  :after (company irony company-irony)
+  :config (add-to-list 'company-backends
+                       '(company-irony-c-headers company-irony)))
 
 (use-package company-php :after (company php-mode))
 
@@ -568,10 +557,12 @@
 (use-package realgud)
 
 (use-package rtags
-  :config
+  :init
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+
+  :config
   (setq rtags-autostart-diagnostics  t
         rtags-completions-enabled    t
         rtags-display-result-backend 'ivy)
@@ -583,6 +574,28 @@
 ;;;
 ;;; Languages
 ;;;
+
+(add-hook 'c-mode-hook
+          (lambda()
+            (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
+            (setq-local c-default-style  "linux")
+            (setq-local c-basic-offset   8)
+            (setq-local indent-tabs-mode t)
+            (setq-local tab-width        8)))
+
+(add-hook 'c++-mode-hook
+          (lambda()
+            (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+            (setq-local c-default-style  "ellemtel")
+            (setq-local c-basic-offset   4)
+            (setq-local indent-tabs-mode t)
+            (setq-local tab-width        2)))
+
+(add-hook 'lisp-mode
+          (lambda()
+            (setq-local c-basic-offset   2)
+            (setq-local indent-tabs-mode nil)
+            (setq-local tab-width        2)))
 
 (use-package ahk-mode)
 (use-package android-mode)
@@ -608,8 +621,8 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
             (lambda()
-              (setq tab-width        4
-                    indent-tabs-mode 1)
+              (setq-local tab-width        4)
+              (setq-local indent-tabs-mode t)
               (set (make-local-variable 'company-backends)
                    '(company-go))
               (company-mode t))))
