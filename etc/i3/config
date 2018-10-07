@@ -10,7 +10,7 @@ set $mod Mod4
 
 ## Applications
 bindsym $mod+d      exec --no-startup-id dmenu_run
-bindsym $mod+Return exec --no-startup-id st -f 'Monospace:10pt'
+bindsym $mod+Return exec --no-startup-id st -f 'Monospace:11pt'
 
 ## Display
 exec --no-startup-id "srandr"
@@ -22,7 +22,7 @@ exec --no-startup-id "srandr"
 exec --no-startup-id "xrdb /etc/Xresources"
 
 ## Font
-font pango:Noto Mono Regular 9.5
+font pango:Noto Mono Regular 10
 
 ## Taskbar
 bar {
