@@ -19,17 +19,29 @@ case $- in
         return
 esac
 
-# Gentoo has '/etc/profile.env' which needs to be read. Here we will
-# check if it exists and source it if found.
 
-[ -e /etc/profile.env ] &&
-    . /etc/profile.env
+# Define various exports that don't need a separate section.
+
+export LANG="en_US.UTF-8"
+export PAGER="less"
+export PROMPT_COMMAND="history -a"
+export TERM="xterm-256color"
 
 
-# Setting PS1 correctly depending on the current shell can be important
-# for users of non-standard shells. Here we will attempt to accommodate
-# other shells if currently in use, and default to standard shell
-# semantics.
+# Define the default editor. This will attempt to use Emacs, then Vim,
+# then default to vi depending on which was located first.
+
+if [ -x $(command -v emacs) ]; then
+    export EDITOR="emacs -nw"
+elif [ -x $(command -v vim) ]; then
+    export EDITOR="vim"
+else
+    export EDITOR="vi"
+fi
+
+
+# Set PS1 to '[user@hostname <current directory>]$' across multiple
+# shells.
 
 if [ -e "$BASH_VERSION" ]; then
     PS1="[\u@\h \W]\$ "
@@ -39,10 +51,12 @@ else
     PS1="[\u@\h \W]\$ "
 fi
 
+export PS1
 
-# This section defines all PATH and MANPATH locations and is mean to be a
-# somewhat exhaustive list for compatibility across various systems. It
-# may look quite upsetting but it works for our purposes.
+
+# Define PATH and MANPATH, somewhat exhaustively, to support most UNIX
+# systems. Non-generic additions to these variables should exist in
+# 'profile.d/example-os,sh'.
 
 PATH="/usr/local/sbin/:/usr/local/bin:/usr/sbin:/usr/bin:/opt/bin"
 PATH="$PATH:/usr/local/gein:/sbin:/bin:$HOME/.local/bin:$HOME/.bin:$HOME/bin"
@@ -50,45 +64,24 @@ PATH="$PATH:/usr/local/gein:/sbin:/bin:$HOME/.local/bin:$HOME/.bin:$HOME/bin"
 MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
 MANPATH="$MANPATH:$HOME/.local/man:$HOME/.local/share/man"
 
-
-# This section defines our exports, including the PATH, MANPATH and PS1
-# that we defined in previous sections.
-
-export EDITOR="emacs -nw"
-export LANG="en_US.UTF-8"
-export MANPATH
-export PAGER="less"
-export PATH
-export PROMPT_COMMAND="history -a"
-export PS1
-export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
-export TERM="xterm-256color"
+export PATH MANPATH
 
 
-# This section will find and source all files in '/etc/profile.d' that
-# end in '.sh'. This is a mechanism to allow the use of multiple files
-# that will comprise environment settings or other configurations.
+# Check for global, then local configuration files within 'profile.d' so
+# that user-specified configurations are preferred.
 
-for sh in /etc/profile.d/*.sh; do
-    [ -r "$sh" ] &&
-        . "$sh"
-done
+if [ -d "/etc/profile.d" ]; then
+    for sh in /etc/profile.d/*.sh; do
+	[ -r "$sh" ] && . "$sh"
+    done
 
-
-# A $USER may want to maintain local shell configuration files. The
-# following section attempts to source '$HOME/.profile' along with all
-# files within '$HOME/profile.d' that end in '.sh' similarly to the above
-# section.
+    unset sh
+fi
 
 if [ -d "$HOME"/.profile.d ]; then
     for sh in $HOME/.profile.d/*.sh; do
-        [ -r "$sh" ] &&
-            . "$sh"
+        [ -r "$sh" ] && . "$sh"
     done
+
+    unset sh
 fi
-
-
-# Keeping things clean in our shell environment is rather important. Here
-# we will unset any variables that are no longer needed.
-
-unset sh

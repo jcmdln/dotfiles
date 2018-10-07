@@ -206,5 +206,5 @@ bindsym Shift+Print --release exec --no-startup-id \
 # bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 ## Brightness (xbacklight)
-# bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
-# bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
