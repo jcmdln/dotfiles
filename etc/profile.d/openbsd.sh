@@ -8,5 +8,7 @@ if [ "$(uname)" == "OpenBSD" ]; then
     fi
 
     ## Set package sources URL
-    export PKG_PATH="https://mirror.leaseweb.net/pub/OpenBSD/$(uname -r)/packages/amd64"
+    PKG_PATH="https://mirror.leaseweb.net/pub/OpenBSD"
+    PKG_PATH="$PKG_PATH/$(uname -r)/packages/$(uname -m)"
+    export PKG_PATH
 fi
