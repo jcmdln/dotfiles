@@ -586,6 +586,21 @@ This section contains packages that are primarily used for development.
 If you aren't using Emacs for development, this sction will not be very
 useful for you.
 
+Before we continue to individual packages, first we'll change some
+default behaviors so that tabs aren't used, trailing whitespace is
+deleted, and on save all tabs are replaced with spaces.
+
+#+begin_src emacs-lisp
+(setq indent-tabs-mode nil)
+
+(add-hook 'before-save-hook
+          (lambda()
+            (delete-trailing-whitespace)
+
+            (if (not indent-tabs-mode)
+                (untabify (point-min) (point-max)))))
+#+end_src
+
 *** company
 #+begin_src emacs-lisp
 (use-package company
@@ -681,15 +696,6 @@ useful for you.
 
 *** languages
 #+begin_src emacs-lisp
-(setq indent-tabs-mode   nil)
-
-(add-hook 'before-save-hook
-          (lambda()
-            (delete-trailing-whitespace)
-
-            (if (not indent-tabs-mode)
-                (untabify (point-min) (point-max)))))
-
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
