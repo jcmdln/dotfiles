@@ -1,11 +1,13 @@
 # -*- mode: org -*-
-#+TITLE:     My GNU/Emacs configuration using org-mode and use-package
+#+TITLE:     My literate GNU/Emacs configuration
 #+STARTUP:   indent
 #+LANGUAGE:  en
 
 I've attempted to maintain an Emacs configuration using various methods,
 though this is an attempt to combine documentation with the actual
-configuration in the most literate way possible.
+configuration in the most literate way possible. While this is not
+exactly unique, this configuration is using org-mode and use-package to
+manage the settings.
 
 I do NOT recommend directly using this configuration, though it should
 serve as an adequate reference of various bits of functionality that
