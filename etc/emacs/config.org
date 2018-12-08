@@ -1,0 +1,906 @@
+# -*- mode: org -*-
+#+TITLE:     My GNU/Emacs configuration using org-mode and use-package
+#+STARTUP:   indent
+#+LANGUAGE:  en
+
+I've attempted to maintain an Emacs configuration using various methods,
+though this is an attempt to combine documentation with the actual
+configuration in the most literate way possible.
+
+I do NOT recommend directly using this configuration, though it should
+serve as an adequate reference of various bits of functionality that
+I've found or written over the years.
+
+
+* Encoding
+To avoid formatting or character issues, I first force Emacs to use 
+UTF-8 encoding whenever possible using the following:
+
+#+begin_src emacs-lisp
+(setq prefer-coding-system       'utf-8
+      set-default-coding-systems 'utf-8
+      set-language-environment   "UTF-8"
+      set-locale-environment     "en_US.UTF-8")
+
+
+I've found this to be sufficient that I've not had to think about this
+further, though I suspect there may be a cleaner solution.
+
+
+* Environment
+Next, we'll load any existing environment variables that are important
+to preserve and respect within Emacs:
+
+#+begin_src emacs-lisp
+(setenv "EDITOR"         "emacsclient")
+(setenv "GIT_EDITOR"     "emacsclient")
+(setenv "GOPATH"         (getenv "GOPATH"))
+(setenv "GOBIN"          (getenv "GOBIN"))
+(setenv "MANPATH"        (getenv "MANPATH"))
+(setenv "PATH"           (getenv "PATH"))
+(setenv "PROMPT_COMMAND" "")
+(setenv "SHELL"          (getenv "SHELL"))
+(setenv "TERM"           (getenv "TERM"))
+#+end_src
+
+An issue I've experienced is that when using Emacs in it's GUI form, if 
+you have recently adjusted any environment variables they will not be
+captured until you logout and log back in to update your session. I
+generally use Emacs in a terminal (preferring emacs-nox packages) so I
+cannot be bothered to resolve this. Perhaps in the future.
+
+
+* Appearance
+
+** Prevent toolbars from being loaded
+This should probably be in a site-start.el, though this inhibits the
+toolbars from loading. The earlier in the init cycle the better. While
+we're at it, we'll inhibit some other things.
+
+#+begin_src emacs-lisp
+(when (fboundp 'menu-bar-mode)   (menu-bar-mode   -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
+
+(setq initial-scratch-message     nil
+      inhibit-splash-screen       t
+      inhibit-startup-buffer-menu t
+      visible-bell nil)
+#+end_src
+
+** Set the theme
+I could have used a custom theme but I like tango-dark, and it's 
+built-in!
+
+#+begin_src emacs-lisp
+(load-theme 'tango-dark)
+
+(setq column-number-mode t)
+
+(show-paren-mode t)
+(setq show-paren-delay 0.0)
+#+end_src
+
+** Set the default font-face
+Without this set I've noticed some buffers won't use a fixed-width font
+when using the Emacs through it's GUI as emacs-nox will use the terminal
+default font. We'll simply tell Emacs that we want a fixed-width font.
+
+#+begin_src emacs-lisp
+(set-face-attribute :family "Monospace")
+#+end_src
+
+
+* Input
+I do make some minor changes to input methods, though I intend to remain
+as faithful to "the Emacs way" as I can.
+
+** Keyboard
+In terms of keyboard input, I only make slight adjustments though their
+usefullness is highly subjective.
+
+*** Scrolling
+I prefer scrolling to behave more like other editors, where the cursor
+reaches the final line before scrolling and the cursor scrolls one line
+at a time. This does cause emacs to use additional resources, though I
+prefer this behavior to the default.
+
+#+begin_src emacs-lisp
+(setq auto-window-vscroll             nil
+      scroll-conservatively           101
+      scroll-margin                   0
+      scroll-preserve-screen-position 1
+      scroll-step                     1
+      scroll-up-aggressively          0.0
+      scroll-down-aggressively        0.0)
+#+end_src
+
+*** Custom Keybinds
+From my time of using tmux+vim I had grown to prefer some custom 
+keybinds I made for handling splits or navigating through panes. Here
+I've attempted to recreated the subjective ease of navigation I prefer:
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "M--")
+                (lambda() (interactive)
+                  (split-window-vertically)
+                  (other-window 1 nil)
+                  (switch-to-next-buffer)))
+
+(global-set-key (kbd "M-=")
+                (lambda() (interactive)
+                  (split-window-horizontally)
+                  (other-window 1 nil)
+                  (switch-to-next-buffer)))
+
+(global-set-key (kbd "<M-down>")    'windmove-down)
+(global-set-key (kbd "<M-left>")    'windmove-left)
+(global-set-key (kbd "<M-right>")   'windmove-right)
+(global-set-key (kbd "<M-up>")      'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+#+end_src
+
+I also add one more configuration to quickly comment or uncomment a 
+region, which I use far more than I assumed I would.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
+#+end_src
+
+** Mouse
+In terms of the mouse, I really only adjust scrolling behavior and add
+xterm support:
+
+#+begin_src emacs-lisp
+(setq mouse-wheel-follow-mouse      't
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount     '(1 ((shift) . 1))
+      xterm-mouse-mode              t)
+
+(global-set-key (kbd "<mouse-4>") (lambda() (interactive) (scroll-down-line 3)))
+(global-set-key (kbd "<mouse-5>") (lambda() (interactive) (scroll-up-line 3)))
+#+end_src
+
+** Misc
+Here I have some other copy & paste settings that don't quite fit
+elsewhere.
+
+#+begin_src emacs-lisp
+(setq mouse-yank-at-point                 t
+      require-final-newline               t
+      save-interprogram-paste-before-kill t
+      select-enable-primary               nil)
+
+(setq custom-file "~/.emacs.d/custom.el")
+#+end_src
+
+
+* Package Management
+In this section, we will configure the package manager to be a bit, 
+well, more intelligent.
+
+First, let's require that it's loaded before we proceed:
+#+begin_src emacs-lisp
+(require 'package)
+#+end_src
+
+Now we'll define where packages should be installed to, then add the
+archives we want to download packages from. We then set the priority
+from highest to lowest based on our preference, though to clarify
+further if a package exists in multiple sources, it will prefer
+installing the package from the archive defined with the HIGHEST
+priority. We'll then initialize package before moving on.
+
+#+begin_src emacs-lisp
+(setq package-user-dir "~/.emacs.d/pkg/"
+      package-archives
+      '(("GNU ELPA"     . "http://elpa.gnu.org/packages/")
+        ("MELPA Stable" . "https://stable.melpa.org/packages/")
+        ("MELPA"        . "https://melpa.org/packages/"))
+      package-archive-priorities
+      '(("GNU ELPA"     . 1)
+        ("MELPA Stable" . 2)
+        ("MELPA"        . 0)))
+(package-initialize)
+#+end_src
+
+Now we'll check if use-package has been installed, refresh our package 
+contents (ie list of known installable packages) before installing 
+use-package if it was missing.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+#+end_src
+
+Here we'll require that use-package and bind-key are loaded AFTER they
+have been byte-compiled, which will be used for loading packages and
+their configurations later.
+
+#+begin_src emacs-lisp
+(eval-when-compile
+  (require 'use-package)
+  (require 'bind-key))
+#+end_src
+
+Before we move on, we'll make use-package have some ideal default 
+behaviors:
+- Packages are not loaded unless called by bind, hook, or demand
+- Packages are always installed if not present
+- Confirm packages exist before loading configurations
+
+#+begin_src emacs-lisp
+(setq use-package-always-defer      t
+      use-package-always-ensure     t
+      use-package-check-before-init t)
+#+end_src
+
+* Packages
+In this section we'll begin to define our packages and their 
+configurations, organized around their purpose into top-level sections.
+
+** Built-ins
+These are packages that Emacs currently ships with
+
+*** eshell
+The default configuration of eshell is, well, bad. The ordinary user who
+opens it once and considers it to be a bad tool is missing out of the 
+full potential eshell provides. I've spent a _lot_ of time making eshell
+behave and look like typical unix shells, so maybe try it for yourself.
+
+#+begin_src emacs-lisp
+(use-package eshell
+  :config
+  (setq eshell-cmpl-cycle-completions     nil
+        eshell-error-if-no-glob           t
+        eshell-hist-ignoredups            t
+        eshell-history-size               4096
+        eshell-prefer-lisp-functions      t
+        eshell-save-history-on-exit       t
+        eshell-scroll-to-bottom-on-input  nil
+        eshell-scroll-to-bottom-on-output nil
+        eshell-scroll-show-maximum-output nil
+        eshell-prompt-regexp              "^[^#$\n]*[#$] "
+        eshell-prompt-function
+        (lambda nil
+          (concat "[" (user-login-name) "@" (system-name) " "
+                  (if (string= (eshell/pwd) (getenv "HOME"))
+                      "~" (eshell/basename (eshell/pwd))) "]"
+                  (if (= (user-uid) 0) "# " "$ ")))
+        eshell-visual-commands '("alsamixer" "atop" "htop" "less" "mosh"
+                                 "nano" "ssh" "tail" "top" "vi" "vim"
+                                 "watch"))
+
+  (defun eshell/clear()
+    (interactive)
+    (recenter 0))
+
+  (defun eshell-new()
+    "Open a new instance of eshell."
+    (interactive)
+    (eshell 'N)))
+#+end_src
+
+*** eww
+#+begin_src emacs-lisp
+(use-package eww
+  :init (setq browse-url-browser-function 'eww-browse-url)
+  :config
+  (setq shr-blocked-images "")
+
+  (defun eww-toggle-images()
+    "Toggle blocking images in eww."
+    (interactive)
+    (if (bound-and-true-p shr-blocked-images)
+        (setq shr-blocked-images nil)
+      (setq shr-blocked-images ""))
+    (eww-reload))
+
+  (defun eww-new()
+    "Open a new instance of eww."
+    (interactive)
+    (let ((url (read-from-minibuffer "Enter URL or keywords: ")))
+      (switch-to-buffer (generate-new-buffer "*eww*"))
+      (eww-mode)
+      (eww url))))
+#+end_src
+
+*** eww-lnum
+#+begin_src emacs-lisp
+(use-package eww-lnum
+  :after (eww)
+  :config
+  (define-key eww-mode-map "f" 'eww-lnum-follow)
+  (define-key eww-mode-map "F" 'eww-lnum-universal))
+#+end_src
+
+*** gnus
+#+begin_src emacs-lisp
+(use-package gnus
+  :bind (("<M-down>" . windmove-down)
+	 ("<M-up>"   . windmove-up))
+
+  :init
+  (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
+
+  :config
+  (setq-default
+   gnus-sum-thread-tree-false-root        ""
+   gnus-sum-thread-tree-indent            "  "
+   gnus-sum-thread-tree-leaf-with-other   "├─> "
+   gnus-sum-thread-tree-root              ""
+   gnus-sum-thread-tree-single-leaf       "╰─> "
+   gnus-sum-thread-tree-vertical          "│ "
+
+   gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
+   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+   gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
+
+  (if (file-exists-p  "~/.emacs.d/usr/gnus.el")
+      (load-file      "~/.emacs.d/usr/gnus.el")))
+#+end_src
+
+*** ibuffer
+#+begin_src emacs-lisp
+(use-package ibuffer
+  :bind (("C-x C-b"         . ibuffer)
+         ("<C-tab>"         . next-buffer)
+         ("<C-iso-lefttab>" . previous-buffer))
+
+  :init
+  (add-hook 'ibuffer-hook      'ibuffer-auto-mode)
+  (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
+  (add-hook 'ibuffer-auto-mode-hook
+            (lambda ()
+              (ibuffer-switch-to-saved-filter-groups "default")))
+
+  :config
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
+
+  (setq ibuffer-show-empty-filter-groups nil
+        ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("emacs"
+                  (or (name . "^\\*scratch\\*$")
+                      (name . "^\\*Messages\\*$")
+                      (name . "^\\*Completions\\*$")
+                      (name . "^\\*Help\\*$")
+                      (name . "^\\*Disabled Command\\*$")
+                      (mode . dired-mode)))
+
+                 ("circe"
+                  (or (mode . circe-mode)
+                      (mode . circe-channel-mode)
+                      (mode . circe-server-mode)))
+
+                 ("clang"  (name . "^\\*clang-"))
+                 ("dev"    (name . "^\\*RTags\\*$"))
+                 ("elfeed" (name . "^\\*elfeed"))
+                 ("eshell" (mode . eshell-mode))
+                 ("eww"    (name . "^\\*eww\\*"))
+
+                 ("fly"
+                  (or (name . "^\\*Flycheck")
+                      (name . "^\\*Flyspell")))
+
+                 ("gnus"
+                  (or (mode . message-mode)
+                      (mode . bbdb-mode)
+                      (mode . mail-mode)
+                      (mode . gnus-group-mode)
+                      (mode . gnus-summary-mode)
+                      (mode . gnus-article-mode)
+                      (name . "^\\.bbdb$")
+                      (name . "^\\.newsrc-dribble")))
+
+                 ("magit"
+                  (or (name . "magit")
+                      (name . "COMMIT_EDITMSG")))
+
+                 ("man"
+                  (or (name . "^\\*Man ")
+                      (name . "^\\*WoMan"))))))
+
+        ibuffer-formats
+        '((mark modified read-only " "
+                (name 35 35 :left :nil) " "
+                (size-h 9 -1 :right) " "
+                (mode 16 16 :left :elide) " "
+                filename-and-process))))
+#+end_src
+
+*** linum
+#+begin_src emacs-lisp
+(use-package linum
+  :demand t
+  :config
+  (add-hook 'lisp-mode-hook 'linum-mode)
+  (add-hook 'prog-mode-hook 'linum-mode)
+  (add-hook 'text-mode-hook 'linum-mode)
+
+  (setq linum-delay t)
+  (global-visual-line-mode t))
+#+end_src
+
+
+*** scratch
+#+begin_src emacs-lisp
+(use-package scratch
+  :init
+  (defun scratch-new()
+    "Open a new scratch buffer."
+    (interactive)
+    (switch-to-buffer (generate-new-buffer "*scratch*"))
+    (lisp-mode)))
+#+end_src
+
+*** server
+#+begin_src emacs-lisp
+(use-package server
+  :bind ("C-x C-c" . server-stop)
+  :config (unless (server-running-p)(server-start))
+  (defun server-kill()
+    "Delete current Emacs server, then kill Emacs"
+    (interactive)
+    (if (y-or-n-p "Kill Emacs without saving? ")
+        (kill-emacs)))
+
+  (defun server-stop()
+    "Prompt to save buffers, then kill Emacs."
+    (interactive)
+    (if (y-or-n-p "Quit Emacs? ")
+        (save-buffers-kill-emacs)))
+
+  (defun server-update()
+    "Refresh package contents, then update all packages."
+    (interactive)
+    (package-initialize)
+    (unless package-archive-contents
+      (package-refresh-contents))
+    (package-utils-upgrade-all)))
+#+end_src
+
+
+** Essentials
+This section contains packages that integrate well with emacs while
+extending the default behaviors. These packages, much like the title
+implies, are essential for me.
+
+*** async
+#+begin_src emacs-lisp
+(use-package async
+  :config (async-bytecomp-package-mode '(all)))
+#+end_src
+
+*** auto-compile
+#+begin_src emacs-lisp
+(use-package auto-compile
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
+#+end_src
+
+*** counsel
+#+begin_src emacs-lisp
+(use-package counsel
+  :bind (("<f1> f"  . counsel-describe-function)
+         ("<f1> l"  . counsel-find-library)
+         ("<f1> v"  . counsel-describe-variable)
+         ("<f2> i"  . counsel-info-lookup-symbol)
+         ("<f2> u"  . counsel-unicode-char)
+         ("C-S-o"   . counsel-rhythmbox)
+         ("C-c g"   . counsel-git)
+         ("C-c j"   . counsel-git-grep)
+         ("C-c l"   . counsel-ag)
+         ("C-r"     . counsel-minibuffer-history)
+         ("C-x C-f" . counsel-find-file)
+         ("C-x l"   . counsel-locate)
+         ("M-x"     . counsel-M-x)))
+#+end_src
+
+*** flyspell
+#+begin_src emacs-lisp
+(use-package flyspell
+  :init
+  (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1))
+  (add-hook 'markdown-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook     'flyspell-prog-mode)
+  (add-hook 'text-mode-hook     'flyspell-mode))
+#+end_src
+
+*** ivy
+#+begin_src emacs-lisp
+(use-package ivy
+  :bind (("C-c C-r" . ivy-resume)
+         ("<f6>"    . ivy-resume))
+
+  :init
+  (ivy-mode 1)
+
+  :config
+  (setq ivy-use-virtual-buffers      t
+        enable-recursive-minibuffers t))
+#+end_src
+
+*** no-littering
+#+begin_src emacs-lisp
+(use-package no-littering
+  :demand t
+  :config
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+#+end_src
+
+*** package-utils
+#+begin_src emacs-lisp
+(use-package package-utils
+  :demand t)
+#+end_src
+
+*** smartparens
+#+begin_src emacs-lisp
+(use-package smartparens
+  :demand t
+  :config
+  (add-hook 'markdown-mode-hook 'smartparens-mode)
+  (add-hook 'prog-mode-hook     'smartparens-mode)
+  (add-hook 'text-mode-hook     'smartparens-mode)
+
+  (setq sp-highlight-pair-overlay     nil
+        sp-highlight-wrap-overlay     nil
+        sp-highlight-wrap-tag-overlay nil))
+#+end_src
+
+*** swiper
+#+begin_src emacs-lisp
+(use-package swiper
+  :demand t
+  :bind ("C-s" . swiper))
+#+end_src
+
+*** undo-tree
+#+begin_src emacs-lisp
+(use-package undo-tree
+  :demand t
+  :config (global-undo-tree-mode))
+#+end_src
+
+*** xclip
+#+begin_src emacs-lisp
+(use-package xclip
+  :config (xclip-mode 1))
+#+end_src
+
+
+** Development
+This section contains packages that are primarily used for development.
+If you aren't using Emacs for development, this sction will not be very
+useful for you.
+
+*** company
+#+begin_src emacs-lisp
+(use-package company
+  :init
+  (add-hook 'lisp-mode-hook 'company-mode)
+  (add-hook 'prog-mode-hook 'company-mode)
+  (add-hook 'text-mode-hook 'company-mode)
+
+  :config
+  (setq company-tooltip-limit  20
+        company-idle-delay     0.3
+        company-echo-delay     0
+        company-begin-commands '(self-insert-command)))
+
+(use-package company-ansible
+  :after (company ansible-vault))
+
+(use-package company-emoji
+  :after (company))
+
+(use-package company-go
+  :after (company))
+
+(use-package company-irony
+  :after (company irony)
+  :config
+  (add-to-list 'company-backends 'company-irony))
+
+(use-package company-irony-c-headers
+  :after (company irony company-irony)
+  :config
+  (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+
+(use-package company-php
+  :after (company php-mode))
+
+(use-package company-shell
+  :after (company))
+
+(use-package company-web
+  :after (company))
+#+end_src
+
+*** diff-hl
+#+begin_src emacs-lisp
+(use-package diff-hl
+  :init
+  (add-hook 'prog-mode-hook 'diff-hl-mode)
+  (add-hook 'text-mode-hook 'diff-hl-mode))
+#+end_src
+
+*** flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+  :demand t
+
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode))
+
+(use-package flycheck-clojure)
+#+end_src
+
+*** gist
+#+begin_src emacs-lisp
+(use-package gist)
+#+end_src
+
+*** highlight-indent-guides
+#+begin_src emacs-lisp
+(use-package highlight-indent-guides
+  :demand t
+
+  :init
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+  :config
+  (setq highlight-indent-guides-method 'character))
+#+end_src
+
+*** irony
+#+begin_src emacs-lisp
+(use-package irony
+  :init
+  (add-hook 'c++-mode-hook   'irony-mode)
+  (add-hook 'c-mode-hook     'irony-mode)
+  (add-hook 'objc-mode-hook  'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+  :config
+  (define-key irony-mode-map [remap completion-at-point] 'counsel-irony)
+  (define-key irony-mode-map [remap complete-symbol]     'counsel-irony))
+#+end_src
+
+*** languages
+#+begin_src emacs-lisp
+(setq indent-tabs-mode   nil)
+
+(add-hook 'before-save-hook
+          (lambda()
+            (delete-trailing-whitespace)
+
+            (if (not indent-tabs-mode)
+                (untabify (point-min) (point-max)))))
+
+(add-hook 'c-mode-hook
+          (lambda()
+            (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
+
+            (setq-local c-default-style  "linux")
+            (setq-local c-set-style      "linux")
+            (setq-local c-basic-offset   8)
+            (setq-local indent-tabs-mode t)
+            (setq-local tab-width        8)))
+
+(add-hook 'c++-mode-hook
+          (lambda()
+            (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+            (setq-local c-default-style  "ellemtel")
+            (setq-local c-set-style      "ellemtel")
+            (setq-local c-basic-offset   4)
+            (setq-local indent-tabs-mode t)
+            (setq-local tab-width        2)))
+
+(add-hook 'lisp-mode
+          (lambda()
+            (setq-local c-basic-offset 2)
+            (setq-local tab-width      2)))
+
+(use-package ahk-mode)
+(use-package android-mode)
+(use-package angular-mode)
+(use-package ansible-vault)
+(use-package apache-mode)
+
+(use-package clojure-mode
+  :config
+  (add-hook 'clojure-mode-hook 'flycheck-clojure))
+
+(use-package cmake-mode)
+(use-package coffee-mode)
+(use-package csharp-mode)
+(use-package cuda-mode)
+(use-package d-mode)
+(use-package dart-mode)
+(use-package docker-compose-mode)
+(use-package dockerfile-mode)
+(use-package dotenv-mode)
+(use-package es-mode)
+(use-package gitattributes-mode)
+(use-package gitconfig-mode)
+(use-package gitignore-mode)
+
+(use-package go-mode
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (add-hook 'go-mode-hook
+            (lambda()
+              (setq-local tab-width        4)
+              (setq-local indent-tabs-mode t)
+
+              (set (make-local-variable 'company-backends)
+                   '(company-go))
+              (company-mode t))))
+
+(use-package gradle-mode)
+(use-package json-mode)
+(use-package jsx-mode)
+(use-package less-css-mode)
+(use-package lua-mode)
+(use-package markdown-mode)
+(use-package markdown-preview-mode)
+(use-package meson-mode)
+(use-package nginx-mode)
+(use-package ninja-mode)
+(use-package npm-mode)
+(use-package php-mode)
+(use-package protobuf-mode)
+(use-package qml-mode)
+(use-package rjsx-mode)
+(use-package rust-mode)
+(use-package sass-mode)
+(use-package swift-mode)
+(use-package systemd)
+(use-package typescript-mode)
+(use-package vue-mode)
+(use-package yaml-mode)
+#+end_src
+
+*** magit
+#+begin_src emacs-lisp
+(use-package magit
+  :bind ("C-c C-c" . with-editor-finish)
+  :demand t)
+#+end_src
+
+*** rainbow-delimiters
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :demand t
+  :config
+  (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
+  (add-hook 'text-mode-hook     'rainbow-delimiters-mode))
+#+end_src
+
+*** realgud
+#+begin_src emacs-lisp
+(use-package realgud)
+#+end_src
+
+
+** Extras
+This section contains additional applications or packages that I 
+suspect others wouldn't use, though I use these rather heavily.
+
+*** circe
+#+begin_src emacs-lisp
+(use-package circe
+  :config
+  (defun my-circe-message-option-chanserv (nick user host command args)
+    (when (and (string= "ChanServ" nick)
+               (string-match "^\\[#.+?\\]" (cadr args)))
+      '((dont-display . t))))
+
+  (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
+  (add-hook 'circe-chat-mode-hook
+            (lambda() (lui-set-prompt
+                       (concat (propertize (concat (buffer-name) ":")
+                                           'face 'circe-prompt-face) " "))))
+  (add-hook 'lui-mode-hook
+            (lambda()
+              (setq fringes-outside-margins t
+                    left-margin-width       9
+                    word-wrap               t
+                    wrap-prefix             "")))
+
+  (setq circe-default-part-message ""
+        circe-default-quit-message ""
+        circe-format-server-topic  "*** Topic: {userhost}: {topic-diff}"
+        circe-reduce-lurker-spam   t
+        circe-use-cycle-completion t
+        lui-fill-type              nil
+        lui-flyspell-alist         '((".*" "american"))
+        lui-flyspell-p             t
+        lui-logging-directory      "~/.emacs.d/var/circe"
+        lui-time-stamp-format      "%H:%M:%S"
+        lui-time-stamp-position    'left-margin)
+
+  (load "lui-logging" nil t)
+  (enable-lui-logging-globally)
+  (require 'circe-chanop)
+  (enable-circe-color-nicks)
+  (setf (cdr (assoc 'continuation fringe-indicator-alist)) nil)
+
+  (if (file-exists-p "~/.emacs.d/usr/circe.el")
+      (load-file     "~/.emacs.d/usr/circe.el")))
+#+end_src
+
+*** define-word
+#+begin_src emacs-lisp
+(use-package define-word)
+#+end_src
+
+*** auto-dictionary
+#+begin_src emacs-lisp
+(use-package auto-dictionary)
+#+end_src
+
+*** elfeed
+#+begin_src emacs-lisp
+(use-package elfeed
+  :bind ("C-x w" . elfeed)
+
+  :config
+  (setq elfeed-search-filter "@1-week-ago +unread "
+        url-queue-timeout    30)
+
+  (if (file-exists-p  "~/.emacs.d/usr/elfeed.el")
+      (load-file      "~/.emacs.d/usr/elfeed.el")))
+#+end_src
+
+*** helpful
+#+begin_src emacs-lisp
+(use-package helpful)
+#+end_src
+
+*** nov
+#+begin_src emacs-lisp
+(use-package nov
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+#+end_src
+
+*** org-beautify-theme
+#+begin_src emacs-lisp
+(use-package org-beautify-theme
+  :bind (("C-c l"   . org-store-link)
+         ("C-c a"   . org-agenda)
+         ("C-c b"   . org-switchb))
+
+  :config
+  (add-hook 'org-mode-hook (lambda() (load-theme 'org-beautify))))
+#+end_src
+
+*** pdf-tools
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :demand t)
+#+end_src
+
+*** ranger
+#+begin_src emacs-lisp
+(use-package ranger
+  :init
+  (ranger-override-dired-mode t))
+#+end_src
+
