@@ -9,13 +9,13 @@ configuration in the most literate way possible. While this is not
 exactly unique, this configuration is using org-mode and use-package to
 manage the settings.
 
-I do NOT recommend directly using this configuration, though it should
+I do _NOT_ recommend directly using this configuration, though it should
 serve as an adequate reference of various bits of functionality that
 I've found or written over the years.
 
 
 * Encoding
-To avoid formatting or character issues, I first force Emacs to use 
+To avoid formatting or character issues, I first force Emacs to use
 UTF-8 encoding whenever possible using the following:
 
 #+begin_src emacs-lisp
@@ -23,7 +23,7 @@ UTF-8 encoding whenever possible using the following:
       set-default-coding-systems 'utf-8
       set-language-environment   "UTF-8"
       set-locale-environment     "en_US.UTF-8")
-
+#+end_src
 
 I've found this to be sufficient that I've not had to think about this
 further, though I suspect there may be a cleaner solution.
@@ -45,7 +45,7 @@ to preserve and respect within Emacs:
 (setenv "TERM"           (getenv "TERM"))
 #+end_src
 
-An issue I've experienced is that when using Emacs in it's GUI form, if 
+An issue I've experienced is that when using Emacs in it's GUI form, if
 you have recently adjusted any environment variables they will not be
 captured until you logout and log back in to update your session. I
 generally use Emacs in a terminal (preferring emacs-nox packages) so I
@@ -71,7 +71,7 @@ we're at it, we'll inhibit some other things.
 #+end_src
 
 ** Set the theme
-I could have used a custom theme but I like tango-dark, and it's 
+I could have used a custom theme but I like tango-dark, and it's
 built-in!
 
 #+begin_src emacs-lisp
@@ -118,7 +118,7 @@ prefer this behavior to the default.
 #+end_src
 
 *** Custom Keybinds
-From my time of using tmux+vim I had grown to prefer some custom 
+From my time of using tmux+vim I had grown to prefer some custom
 keybinds I made for handling splits or navigating through panes. Here
 I've attempted to recreated the subjective ease of navigation I prefer:
 
@@ -145,7 +145,7 @@ I've attempted to recreated the subjective ease of navigation I prefer:
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 #+end_src
 
-I also add one more configuration to quickly comment or uncomment a 
+I also add one more configuration to quickly comment or uncomment a
 region, which I use far more than I assumed I would.
 
 #+begin_src emacs-lisp
@@ -181,7 +181,7 @@ elsewhere.
 
 
 * Package Management
-In this section, we will configure the package manager to be a bit, 
+In this section, we will configure the package manager to be a bit,
 well, more intelligent.
 
 First, let's require that it's loaded before we proceed:
@@ -209,8 +209,8 @@ priority. We'll then initialize package before moving on.
 (package-initialize)
 #+end_src
 
-Now we'll check if use-package has been installed, refresh our package 
-contents (ie list of known installable packages) before installing 
+Now we'll check if use-package has been installed, refresh our package
+contents (ie list of known installable packages) before installing
 use-package if it was missing.
 
 #+begin_src emacs-lisp
@@ -229,7 +229,7 @@ their configurations later.
   (require 'bind-key))
 #+end_src
 
-Before we move on, we'll make use-package have some ideal default 
+Before we move on, we'll make use-package have some ideal default
 behaviors:
 - Packages are not loaded unless called by bind, hook, or demand
 - Packages are always installed if not present
@@ -242,7 +242,7 @@ behaviors:
 #+end_src
 
 * Packages
-In this section we'll begin to define our packages and their 
+In this section we'll begin to define our packages and their
 configurations, organized around their purpose into top-level sections.
 
 ** Built-ins
@@ -250,7 +250,7 @@ These are packages that Emacs currently ships with
 
 *** eshell
 The default configuration of eshell is, well, bad. The ordinary user who
-opens it once and considers it to be a bad tool is missing out of the 
+opens it once and considers it to be a bad tool is missing out of the
 full potential eshell provides. I've spent a _lot_ of time making eshell
 behave and look like typical unix shells, so maybe try it for yourself.
 
@@ -324,7 +324,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package gnus
   :bind (("<M-down>" . windmove-down)
-	 ("<M-up>"   . windmove-up))
+         ("<M-up>"   . windmove-up))
 
   :init
   (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
@@ -807,7 +807,7 @@ deleted, and on save all tabs are replaced with spaces.
 
 
 ** Extras
-This section contains additional applications or packages that I 
+This section contains additional applications or packages that I
 suspect others wouldn't use, though I use these rather heavily.
 
 *** circe
@@ -911,4 +911,3 @@ suspect others wouldn't use, though I use these rather heavily.
   :init
   (ranger-override-dired-mode t))
 #+end_src
-

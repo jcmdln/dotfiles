@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 packages_base="bind-utils connman dnf-utils git htop linux-firmware mlocate mosh pciutils pipewire tmux traceroute unzip usbutils vim whois"
-packages_desktop="arandr brightnessctl dmenu gnome-terminal i3 i3lock i3status mpv scrot xinit xrandr xset"
+packages_desktop="arandr brightnessctl dmenu gnome-terminal i3 i3lock i3status mpv pulseaudio-utils pavucontrol scrot xinit xrandr xset"
 packages_fonts="google-noto-emoji-fonts google-noto-mono-fonts google-noto-sans-fonts google-noto-serif-fonts"
 packages_extras="brave-browser chromium chromium-libs-media-freeworld emacs-nox google-noto-cjk-fonts steam wireguard"
 
