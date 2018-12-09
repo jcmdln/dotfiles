@@ -10,4 +10,8 @@ if [ -v "$(command -v shopt)" ]; then
     shopt -s histappend
 fi
 
+if [ -f ~/.profile ]; then
+    . ~/.profile
+fi
+
 unset sh
