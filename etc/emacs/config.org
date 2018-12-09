@@ -255,7 +255,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package eshell
   :config
-  (setq eshell-banner-message             nil
+  (setq eshell-banner-message             ""
         eshell-cmpl-cycle-completions     nil
         eshell-error-if-no-glob           t
         eshell-hist-ignoredups            t
