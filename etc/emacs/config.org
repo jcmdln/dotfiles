@@ -67,7 +67,7 @@ we're at it, we'll inhibit some other things.
 (setq initial-scratch-message     nil
       inhibit-splash-screen       t
       inhibit-startup-buffer-menu t
-      visible-bell nil)
+      visible-bell                nil)
 #+end_src
 
 ** Set the theme
@@ -77,10 +77,9 @@ built-in!
 #+begin_src emacs-lisp
 (load-theme 'tango-dark)
 
-(setq column-number-mode t)
-
 (show-paren-mode t)
-(setq show-paren-delay 0.0)
+(setq column-number-mode t
+      show-paren-delay   0.0)
 #+end_src
 
 ** Set the default font-face
@@ -171,12 +170,11 @@ Here I have some other copy & paste settings that don't quite fit
 elsewhere.
 
 #+begin_src emacs-lisp
-(setq mouse-yank-at-point                 t
+(setq custom-file                         "~/.emacs.d/custom.el"
+      mouse-yank-at-point                 t
       require-final-newline               t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil)
-
-(setq custom-file "~/.emacs.d/custom.el")
 #+end_src
 
 
@@ -424,11 +422,12 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package linum
   :demand t
-  :config
+  :init
   (add-hook 'lisp-mode-hook 'linum-mode)
   (add-hook 'prog-mode-hook 'linum-mode)
   (add-hook 'text-mode-hook 'linum-mode)
 
+  :config
   (setq linum-delay t)
   (global-visual-line-mode t))
 #+end_src
@@ -552,11 +551,12 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package smartparens
   :demand t
-  :config
+  :init
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook     'smartparens-mode)
   (add-hook 'text-mode-hook     'smartparens-mode)
 
+  :config
   (setq sp-highlight-pair-overlay     nil
         sp-highlight-wrap-overlay     nil
         sp-highlight-wrap-tag-overlay nil))
@@ -730,7 +730,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package apache-mode)
 
 (use-package clojure-mode
-  :config
+  :init
   (add-hook 'clojure-mode-hook 'flycheck-clojure))
 
 (use-package cmake-mode)
@@ -748,7 +748,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package gitignore-mode)
 
 (use-package go-mode
-  :config
+  :init
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
             (lambda()
@@ -794,7 +794,7 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :demand t
-  :config
+  :init
   (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
   (add-hook 'text-mode-hook     'rainbow-delimiters-mode))
@@ -813,12 +813,7 @@ suspect others wouldn't use, though I use these rather heavily.
 *** circe
 #+begin_src emacs-lisp
 (use-package circe
-  :config
-  (defun my-circe-message-option-chanserv (nick user host command args)
-    (when (and (string= "ChanServ" nick)
-               (string-match "^\\[#.+?\\]" (cadr args)))
-      '((dont-display . t))))
-
+  :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
             (lambda() (lui-set-prompt
@@ -830,6 +825,12 @@ suspect others wouldn't use, though I use these rather heavily.
                     left-margin-width       9
                     word-wrap               t
                     wrap-prefix             "")))
+
+  :config
+  (defun my-circe-message-option-chanserv (nick user host command args)
+    (when (and (string= "ChanServ" nick)
+               (string-match "^\\[#.+?\\]" (cadr args)))
+      '((dont-display . t))))
 
   (setq circe-default-part-message ""
         circe-default-quit-message ""
@@ -895,7 +896,7 @@ suspect others wouldn't use, though I use these rather heavily.
          ("C-c a"   . org-agenda)
          ("C-c b"   . org-switchb))
 
-  :config
+  :init
   (add-hook 'org-mode-hook (lambda() (load-theme 'org-beautify))))
 #+end_src
 
