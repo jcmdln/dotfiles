@@ -810,6 +810,11 @@ deleted, and on save all tabs are replaced with spaces.
 This section contains additional applications or packages that I
 suspect others wouldn't use, though I use these rather heavily.
 
+*** auto-dictionary
+#+begin_src emacs-lisp
+(use-package auto-dictionary)
+#+end_src
+
 *** circe
 #+begin_src emacs-lisp
 (use-package circe
@@ -857,11 +862,6 @@ suspect others wouldn't use, though I use these rather heavily.
 *** define-word
 #+begin_src emacs-lisp
 (use-package define-word)
-#+end_src
-
-*** auto-dictionary
-#+begin_src emacs-lisp
-(use-package auto-dictionary)
 #+end_src
 
 *** elfeed
