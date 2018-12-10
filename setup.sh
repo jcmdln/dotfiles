@@ -31,6 +31,3 @@ ln -sf $(pwd)/etc/xinitrc                         ~/.xinitrc
 ln -sf $(pwd)/usr/local/bin/srandr                ~/.local/bin/srandr
 ln -sf $(pwd)/usr/share/themes/gtk-2.0/gtkrc-2.0  ~/.gtkrc-2.0
 ln -sf $(pwd)/usr/share/themes/gtk-3.0            ~/.config/gtk-3.0
-
-#sudo echo "GRUB_THEME=\"/boot/grub2/themes/breeze/theme.txt\"" >> /etc/default/grub
-#sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg

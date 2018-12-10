@@ -24,3 +24,6 @@ sudo dnf install -y \
 sudo systemctl enable --now \
      connman \
     || exit
+
+sudo echo "GRUB_THEME=/boot/grub2/themes/breeze/theme.txt" >> /etc/default/grub
+sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
