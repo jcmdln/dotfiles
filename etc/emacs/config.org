@@ -890,17 +890,6 @@ suspect others wouldn't use, though I use these rather heavily.
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 #+end_src
 
-*** org-beautify-theme
-#+begin_src emacs-lisp
-(use-package org-beautify-theme
-  :bind (("C-c l"   . org-store-link)
-         ("C-c a"   . org-agenda)
-         ("C-c b"   . org-switchb))
-
-  :init
-  (add-hook 'org-mode-hook (lambda() (load-theme 'org-beautify))))
-#+end_src
-
 *** pdf-tools
 #+begin_src emacs-lisp
 (use-package pdf-tools
