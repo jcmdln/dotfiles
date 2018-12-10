@@ -14,6 +14,7 @@ etc/emacs/var
 etc/emacs/config.el
 
 ## Files
+*.elc
 etc/emacs/custom.el
 etc/emacs/config.el
 
@@ -25,5 +26,3 @@ etc/emacs/config.el
 ## Directories
 etc/vim/autoload
 etc/vim/plugged
-
-
