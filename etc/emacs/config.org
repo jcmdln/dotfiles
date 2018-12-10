@@ -314,9 +314,11 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package eww-lnum
   :after (eww)
-  :config
-  (define-key eww-mode-map "f" 'eww-lnum-follow)
-  (define-key eww-mode-map "F" 'eww-lnum-universal))
+  :init
+  (add-hook 'eww-mode-hook
+            (lambda()
+              (define-key eww-mode-map "f" 'eww-lnum-follow)
+              (define-key eww-mode-map "F" 'eww-lnum-universal))))
 #+end_src
 
 *** gnus
