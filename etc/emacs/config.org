@@ -731,6 +731,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package angular-mode)
 (use-package ansible-vault)
 (use-package apache-mode)
+(use-package caddyfile-mode)
 
 (use-package clojure-mode
   :init
