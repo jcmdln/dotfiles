@@ -18,7 +18,7 @@ sudo dnf install -y \
     || exit
 
 sudo dnf install -y \
-     arandr bind-utils brave-browser breeze-cursor-theme breeze-gtk breeze-icon-theme brightnessctl casync chromium chromium-libs-media-freeworld connman dmenu dnf-utils docker emacs-nox git gnome-terminal gnome-terminal-nautilus google-noto-cjk-fonts google-noto-emoji-fonts google-noto-mono-fonts google-noto-sans-fonts google-noto-serif-fonts grub2-breeze-theme htop i3 i3lock i3status linux-firmware lxappearance mlocate mosh mpv nautilus pavucontrol pciutils pipewire plasma-breeze pulseaudio-utils scrot steam tmux traceroute tree unzip usbutils vim whois wireguard xinit xrandr xset \
+     arandr bind-utils brave-browser breeze-cursor-theme breeze-gtk breeze-icon-theme brightnessctl casync chromium chromium-libs-media-freeworld connman dmenu dnf-utils docker emacs-nox git gnome-terminal gnome-terminal-nautilus google-noto-cjk-fonts google-noto-emoji-fonts google-noto-mono-fonts google-noto-sans-fonts google-noto-serif-fonts grub2-breeze-theme htop i3 i3lock i3status linux-firmware lxappearance mlocate mosh mpv nautilus pavucontrol pciutils pipewire plasma-breeze pulseaudio-utils scrot steam tmux traceroute tree unzip usbutils vim whois wireguard xinit xrandr xset youtube-dl \
     || exit
 
 sudo systemctl enable --now \
