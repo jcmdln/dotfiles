@@ -1,28 +1,16 @@
 *~
+*.elc
 
-#
-## Emacs
-#
-
-## Directories
 etc/emacs/auto-save-list
+etc/emacs/config.el
+etc/emacs/config.el
+etc/emacs/custom.el
 etc/emacs/elpa
 etc/emacs/eshell
 etc/emacs/pkg
 etc/emacs/usr
 etc/emacs/var
-etc/emacs/config.el
-
-## Files
-*.elc
-etc/emacs/custom.el
-etc/emacs/config.el
-
-
-#
-## Vim
-#
-
-## Directories
 etc/vim/autoload
 etc/vim/plugged
+usr/share/themes/gtk-3.0/servers
+usr/share/themes/gtk-3.0/bookmarks
