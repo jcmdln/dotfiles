@@ -24,14 +24,13 @@
       use-package-always-ensure     t
       use-package-check-before-init t)
 
+(if (file-exists-p
+     (expand-file-name "config.elc" user-emacs-directory))
+    (load
+     (expand-file-name "config.elc" user-emacs-directory))
+  (require 'org)
+  (org-babel-load-file
+   (expand-file-name "config.org" user-emacs-directory))
+  (byte-compile-file
+   (expand-file-name "config.el" user-emacs-directory)))
 
-(require 'org)
-(org-babel-load-file
- (expand-file-name
-  "config.org" user-emacs-directory))
-
-(if (file-exists-p (expand-file-name
-		    "config.elc" user-emacs-directory))
-    ()
-  (byte-compile-file (expand-file-name
-		    "config.el" user-emacs-directory)))

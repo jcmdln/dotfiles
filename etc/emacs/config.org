@@ -658,7 +658,8 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local c-set-style      "ellemtel")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
-            (setq-local tab-width        2)))
+            (setq-local tab-width        2)
+))
 
 (add-hook 'lisp-mode
           (lambda()
@@ -671,6 +672,11 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package ansible-vault)
 (use-package apache-mode)
 (use-package caddyfile-mode)
+
+(use-package clang-format
+  :init
+  (add-hook 'c++-mode-hook    'clang-format)
+  (add-hook 'before-save-hook 'clang-format-buffer))
 
 (use-package clojure-mode
   :init

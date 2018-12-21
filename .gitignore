@@ -1,6 +1,7 @@
 *~
 *.elc
 
+etc/emacs/.markdown-preview.html
 etc/emacs/auto-save-list
 etc/emacs/config.el
 etc/emacs/config.el
