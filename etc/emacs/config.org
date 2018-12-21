@@ -64,7 +64,7 @@ we're at it, we'll inhibit some other things.
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
 
-(setq initial-scratch-message     nil
+(setq initial-scratch-message     ""
       inhibit-splash-screen       t
       inhibit-startup-buffer-menu t
       visible-bell                nil)
@@ -161,8 +161,10 @@ xterm support:
       mouse-wheel-scroll-amount     '(1 ((shift) . 1))
       xterm-mouse-mode              t)
 
-(global-set-key (kbd "<mouse-4>") (lambda() (interactive) (scroll-down-line 3)))
-(global-set-key (kbd "<mouse-5>") (lambda() (interactive) (scroll-up-line 3)))
+(global-set-key (kbd "<mouse-4>")
+                (lambda() (interactive) (scroll-down-line 3)))
+(global-set-key (kbd "<mouse-5>")
+                (lambda() (interactive) (scroll-up-line 3)))
 #+end_src
 
 ** Misc
@@ -175,6 +177,79 @@ elsewhere.
       require-final-newline               t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil)
+#+end_src
+
+
+* Package Management
+In this section, we will configure the package manager to be a bit,
+well, more intelligent.
+
+First, let's require that it's loaded before we proceed:
+#+begin_src emacs-lisp
+(require 'package)
+#+end_src
+
+Now we'll define where packages should be installed to, then add the
+archives we want to download packages from. We then set the priority
+from highest to lowest based on our preference, though to clarify
+further if a package exists in multiple sources, it will prefer
+installing the package from the archive defined with the HIGHEST
+priority. We'll then initialize package before moving on.
+
+#+begin_src emacs-lisp
+(setq package-user-dir "~/.emacs.d/pkg/"
+      package-archives
+      '(("GNU ELPA"     . "http://elpa.gnu.org/packages/")
+        ("MELPA Stable" . "https://stable.melpa.org/packages/")
+        ("MELPA"        . "https://melpa.org/packages/"))
+      package-archive-priorities
+      '(("GNU ELPA"     . 1)
+        ("MELPA Stable" . 2)
+        ("MELPA"        . 0)))
+(package-initialize)
+#+end_src
+
+Now we'll check if use-package has been installed, refresh our package
+contents (ie list of known installable packages) before installing
+use-package if it was missing.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+#+end_src
+
+Here we'll require that use-package and bind-key are loaded AFTER they
+have been byte-compiled, which will be used for loading packages and
+their configurations later.
+
+#+begin_src emacs-lisp
+(eval-when-compile
+  (require 'use-package)
+  (require 'bind-key))
+#+end_src
+
+Before we move on, we'll make use-package have some ideal default
+behaviors:
+- Packages are not loaded unless called by bind, hook, or demand
+- Packages are always installed if not present
+- Confirm packages exist before loading configurations
+
+#+begin_src emacs-lisp
+(setq use-package-always-defer      t
+      use-package-always-ensure     t
+      use-package-check-before-init t)
+#+end_src
+
+Next we'll ensure that we have a clean folder hierarchy for our
+configuration by using no-littering:
+
+#+begin_src emacs-lisp
+(use-package no-littering
+  :demand t
+  :config
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 
 
@@ -390,7 +465,9 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package server
   :bind ("C-x C-c" . server-stop)
-  :config (unless (server-running-p)(server-start))
+  :config
+  (unless (server-running-p)(server-start))
+
   (defun server-kill()
     "Delete current Emacs server, then kill Emacs"
     (interactive)
@@ -454,7 +531,6 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package flyspell
   :init
-  (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1))
   (add-hook 'markdown-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook     'flyspell-prog-mode)
   (add-hook 'text-mode-hook     'flyspell-mode))
@@ -472,15 +548,6 @@ implies, are essential for me.
   :config
   (setq ivy-use-virtual-buffers      t
         enable-recursive-minibuffers t))
-#+end_src
-
-*** no-littering
-#+begin_src emacs-lisp
-(use-package no-littering
-  :demand t
-  :config
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 
 *** package-utils
@@ -658,8 +725,7 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local c-set-style      "ellemtel")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
-            (setq-local tab-width        2)
-))
+            (setq-local tab-width        2)))
 
 (add-hook 'lisp-mode
           (lambda()
@@ -672,11 +738,6 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package ansible-vault)
 (use-package apache-mode)
 (use-package caddyfile-mode)
-
-(use-package clang-format
-  :init
-  (add-hook 'c++-mode-hook    'clang-format)
-  (add-hook 'before-save-hook 'clang-format-buffer))
 
 (use-package clojure-mode
   :init
@@ -761,7 +822,9 @@ suspect others wouldn't use, though I use these rather heavily.
 
 *** auto-dictionary
 #+begin_src emacs-lisp
-(use-package auto-dictionary)
+(use-package auto-dictionary
+  :config
+  (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
 #+end_src
 
 *** circe
