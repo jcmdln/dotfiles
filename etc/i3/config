@@ -22,7 +22,7 @@ exec --no-startup-id "srandr"
 exec --no-startup-id "xrdb /etc/Xresources"
 
 ## Font
-font pango:Noto Mono Regular 10
+font pango:Monospace 10
 
 ## Taskbar
 bar {

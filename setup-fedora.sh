@@ -7,6 +7,14 @@
 #
 ##
 
+## Switch to Fedora Rawhide
+# sudo dnf install -y \
+#      fedora-release-rawhide dnf-utils \
+#      https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-rawhide.noarch.rpm
+# sudo dnf config-manager --set-disabled fedora updates updates-testing
+# sudo dnf config-managed --set-enabled rawhide
+# sudo dnf update dnf
+# sudo dnf -y --releasever=rawhide --setopt=deltarpm=false distro-sync --nogpgcheck
 
 sudo dnf upgrade -y \
     || exit
@@ -14,7 +22,6 @@ sudo dnf upgrade -y \
 sudo dnf install -y \
      https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
      https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
-     https://github.com/brave/brave-browser/releases/download/v0.57.18/brave-browser-0.57.18-1.x86_64.rpm \
     || exit
 
 sudo dnf install -y \
