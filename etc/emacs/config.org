@@ -14,9 +14,12 @@ serve as an adequate reference of various bits of functionality that
 I've found or written over the years.
 
 
-* Encoding
-To avoid formatting or character issues, I first force Emacs to use
-UTF-8 encoding whenever possible using the following:
+* Startup
+This section comprises the things we will want to occur as soon as
+possible, preferably before or during init.
+
+** Encoding
+Here we'll attempt to enforce using utf-8 encoding.
 
 #+begin_src emacs-lisp
 (setq prefer-coding-system       'utf-8
@@ -25,19 +28,13 @@ UTF-8 encoding whenever possible using the following:
       set-locale-environment     "en_US.UTF-8")
 #+end_src
 
-I've found this to be sufficient that I've not had to think about this
-further, though I suspect there may be a cleaner solution.
-
-
-* Environment
-Next, we'll load any existing environment variables that are important
-to preserve and respect within Emacs:
+** Environment
+Ensure that our Emacs environment matches our current environment. We
+will modify it slightly, so that Emacs is our default editor.
 
 #+begin_src emacs-lisp
 (setenv "EDITOR"         "emacsclient")
 (setenv "GIT_EDITOR"     "emacsclient")
-(setenv "GOPATH"         (getenv "GOPATH"))
-(setenv "GOBIN"          (getenv "GOBIN"))
 (setenv "MANPATH"        (getenv "MANPATH"))
 (setenv "PATH"           (getenv "PATH"))
 (setenv "PROMPT_COMMAND" "")
@@ -45,50 +42,77 @@ to preserve and respect within Emacs:
 (setenv "TERM"           (getenv "TERM"))
 #+end_src
 
-An issue I've experienced is that when using Emacs in it's GUI form, if
-you have recently adjusted any environment variables they will not be
-captured until you logout and log back in to update your session. I
-generally use Emacs in a terminal (preferring emacs-nox packages) so I
-cannot be bothered to resolve this. Perhaps in the future.
+** Adjust garbage collector percentage and threshold
+First, we'll increase the gc-cons-threshold, which is the number of
+bytes of storage that must be allocated for Lisp objects after one
+garbage collection in order to trigger another garbage collection. On
+ 32-bit systems, this is 400kb and on 64-bit systems this is 800kb.
+Specifying a larger value will mean that garbage collection will
+occur less often.
+
+We'll set this value to 2mb globally, which will more than halve the
+total number of GC pauses we experience while not drastically
+increasing the amount of time needed for GC to complete.
+
+#+begin_src emacs-lisp
+(setq gc-cons-threshold  (* 2 1024 1024))
+#+end_src
+
+For the purposes of initialization, we will also increase
+gc-cons-percentage which means that until reaching 60% of the current
+heap size, GC will not occur. After init completes we will set this to
+15%, though the default is 10%.
+
+#+begin_src emacs-lisp
+(setq gc-cons-percentage 0.60)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-percentage 0.15)))
+#+end_src
 
 
-* Appearance
+** Appearance
+I make some minor changes to the appearance of emacs
 
-** Prevent toolbars from being loaded
-This should probably be in a site-start.el, though this inhibits the
-toolbars from loading. The earlier in the init cycle the better. While
-we're at it, we'll inhibit some other things.
+*** Inhibit tool bars
+Prevent tool bars from ever being initialized.
 
 #+begin_src emacs-lisp
 (when (fboundp 'menu-bar-mode)   (menu-bar-mode   -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
-
-(setq initial-scratch-message     ""
-      inhibit-splash-screen       t
-      inhibit-startup-buffer-menu t
-      visible-bell                nil)
 #+end_src
 
-** Set the theme
-I could have used a custom theme but I like tango-dark, and it's
-built-in!
+*** Theme
+Load the built-in tango-dark theme and use the default Monospace system
+font.
 
 #+begin_src emacs-lisp
 (load-theme 'tango-dark)
-
-(show-paren-mode t)
-(setq column-number-mode t
-      show-paren-delay   0.0)
+(set-face-attribute :family "Monospace")
 #+end_src
 
-** Set the default font-face
-Without this set I've noticed some buffers won't use a fixed-width font
-when using the Emacs through it's GUI as emacs-nox will use the terminal
-default font. We'll simply tell Emacs that we want a fixed-width font.
+*** Extras
+Some additional appearance or behavioral tweaks.
 
 #+begin_src emacs-lisp
-(set-face-attribute :family "Monospace")
+(setq custom-file                         "~/.emacs.d/custom.el"
+
+      initial-scratch-message             ""
+      inhibit-splash-screen               t
+      inhibit-startup-buffer-menu         t
+
+      column-number-mode                  t
+      require-final-newline               t
+      show-paren-delay                    0.0
+      visible-bell                        nil
+
+      mouse-yank-at-point                 t
+      save-interprogram-paste-before-kill t
+      select-enable-primary               nil)
+
+(show-paren-mode                          t)
 #+end_src
 
 
@@ -117,19 +141,21 @@ prefer this behavior to the default.
 #+end_src
 
 *** Custom Keybinds
-From my time of using tmux+vim I had grown to prefer some custom
+From my time of using tmux + vim I had grown to prefer some custom
 keybinds I made for handling splits or navigating through panes. Here
 I've attempted to recreated the subjective ease of navigation I prefer:
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "M--")
-                (lambda() (interactive)
+                (lambda()
+                  (interactive)
                   (split-window-vertically)
                   (other-window 1 nil)
                   (switch-to-next-buffer)))
 
 (global-set-key (kbd "M-=")
-                (lambda() (interactive)
+                (lambda()
+                  (interactive)
                   (split-window-horizontally)
                   (other-window 1 nil)
                   (switch-to-next-buffer)))
@@ -142,13 +168,8 @@ I've attempted to recreated the subjective ease of navigation I prefer:
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c <up>")    'windmove-up)
-#+end_src
 
-I also add one more configuration to quickly comment or uncomment a
-region, which I use far more than I assumed I would.
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c c")       'comment-or-uncomment-region)
 #+end_src
 
 ** Mouse
@@ -165,18 +186,6 @@ xterm support:
                 (lambda() (interactive) (scroll-down-line 3)))
 (global-set-key (kbd "<mouse-5>")
                 (lambda() (interactive) (scroll-up-line 3)))
-#+end_src
-
-** Misc
-Here I have some other copy & paste settings that don't quite fit
-elsewhere.
-
-#+begin_src emacs-lisp
-(setq custom-file                         "~/.emacs.d/custom.el"
-      mouse-yank-at-point                 t
-      require-final-newline               t
-      save-interprogram-paste-before-kill t
-      select-enable-primary               nil)
 #+end_src
 
 
