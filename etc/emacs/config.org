@@ -680,6 +680,10 @@ deleted, and on save all tabs are replaced with spaces.
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
+(use-package flycheck-inline
+  :init
+  (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
+
 (use-package flycheck-clojure)
 #+end_src
 
@@ -883,6 +887,13 @@ suspect others wouldn't use, though I use these rather heavily.
 *** define-word
 #+begin_src emacs-lisp
 (use-package define-word)
+#+end_src
+
+*** dimmer
+#+begin_src emacs-lisp
+(use-package dimmer
+  :init
+  (add-hook 'after-init-hook 'dimmer-mode))
 #+end_src
 
 *** elfeed
