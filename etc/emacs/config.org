@@ -681,6 +681,8 @@ deleted, and on save all tabs are replaced with spaces.
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flycheck-inline
+  :demand t
+
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 
