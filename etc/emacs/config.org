@@ -798,6 +798,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package php-mode)
 (use-package protobuf-mode)
 (use-package qml-mode)
+(use-package racket-mode)
 (use-package rjsx-mode)
 (use-package rust-mode)
 (use-package sass-mode)
