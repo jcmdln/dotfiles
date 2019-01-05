@@ -709,13 +709,16 @@ deleted, and on save all tabs are replaced with spaces.
 *** irony
 #+begin_src emacs-lisp
 (use-package irony
-  :init
-  (add-hook 'c++-mode-hook   'irony-mode)
-  (add-hook 'c-mode-hook     'irony-mode)
-  (add-hook 'objc-mode-hook  'irony-mode)
+  :config
+  (defun my-irony-mode ()
+    (when (member major-mode irony-supported-major-modes)
+      (irony-mode 1)))
+
+  (add-hook 'c++-mode-hook   'my-irony-mode)
+  (add-hook 'c-mode-hook     'my-irony-mode)
+  (add-hook 'objc-mode-hook  'my-irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-  :config
   (define-key irony-mode-map [remap completion-at-point] 'counsel-irony)
   (define-key irony-mode-map [remap complete-symbol]     'counsel-irony))
 #+end_src
