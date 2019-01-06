@@ -257,8 +257,8 @@ configuration by using no-littering:
 (use-package no-littering
   :demand t
   :config
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+  (setq-local auto-save-file-name-transforms
+              `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 
 
@@ -278,26 +278,26 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+begin_src emacs-lisp
 (use-package eshell
   :config
-  (setq eshell-banner-message             ""
-        eshell-cmpl-cycle-completions     nil
-        eshell-error-if-no-glob           t
-        eshell-hist-ignoredups            t
-        eshell-history-size               4096
-        eshell-prefer-lisp-functions      t
-        eshell-save-history-on-exit       t
-        eshell-scroll-to-bottom-on-input  nil
-        eshell-scroll-to-bottom-on-output nil
-        eshell-scroll-show-maximum-output nil
-        eshell-prompt-regexp              "^[^#$\n]*[#$] "
-        eshell-prompt-function
+  (setq eshell-banner-message             "")
+  (setq eshell-cmpl-cycle-completions     nil)
+  (setq eshell-error-if-no-glob           t)
+  (setq eshell-hist-ignoredups            t)
+  (setq eshell-history-size               4096)
+  (setq eshell-prefer-lisp-functions      t)
+  (setq eshell-save-history-on-exit       t)
+  (setq eshell-scroll-to-bottom-on-input  nil)
+  (setq eshell-scroll-to-bottom-on-output nil)
+  (setq eshell-scroll-show-maximum-output nil)
+  (setq eshell-prompt-regexp              "^[^#$\n]*[#$] ")
+  (setq eshell-prompt-function
         (lambda nil
           (concat "[" (user-login-name) "@" (system-name) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
-                  (if (= (user-uid) 0) "# " "$ ")))
-        eshell-visual-commands '("alsamixer" "atop" "htop" "less" "mosh"
-                                 "nano" "ssh" "tail" "top" "vi" "vim"
-                                 "watch"))
+                  (if (= (user-uid) 0) "# " "$ "))))
+  (setq eshell-visual-commands
+        '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh"
+          "tail" "top" "vi" "vim" "watch"))
 
   (defun eshell/clear()
     (interactive)
@@ -312,7 +312,8 @@ behave and look like typical unix shells, so maybe try it for yourself.
 *** eww
 #+begin_src emacs-lisp
 (use-package eww
-  :init (setq browse-url-browser-function 'eww-browse-url)
+  :init
+  (setq browse-url-browser-function 'eww-browse-url)
   :config
   (setq shr-blocked-images "")
 
@@ -320,8 +321,8 @@ behave and look like typical unix shells, so maybe try it for yourself.
     "Toggle blocking images in eww."
     (interactive)
     (if (bound-and-true-p shr-blocked-images)
-        (setq shr-blocked-images nil)
-      (setq shr-blocked-images ""))
+        (setq-local shr-blocked-images nil)
+      (setq-local shr-blocked-images ""))
     (eww-reload))
 
   (defun eww-new()
@@ -349,22 +350,20 @@ behave and look like typical unix shells, so maybe try it for yourself.
 (use-package gnus
   :bind (("<M-down>" . windmove-down)
          ("<M-up>"   . windmove-up))
-
   :init
   (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
 
   :config
-  (setq-default
-   gnus-sum-thread-tree-false-root        ""
-   gnus-sum-thread-tree-indent            "  "
-   gnus-sum-thread-tree-leaf-with-other   "├─> "
-   gnus-sum-thread-tree-root              ""
-   gnus-sum-thread-tree-single-leaf       "╰─> "
-   gnus-sum-thread-tree-vertical          "│ "
+  (setq-default gnus-sum-thread-tree-false-root        "")
+  (setq-default gnus-sum-thread-tree-indent            "  ")
+  (setq-default gnus-sum-thread-tree-leaf-with-other   "├─> ")
+  (setq-default gnus-sum-thread-tree-root              "")
+  (setq-default gnus-sum-thread-tree-single-leaf       "╰─> ")
+  (setq-default gnus-sum-thread-tree-vertical          "│ ")
 
-   gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
-   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-   gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
+  (setq-default gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n")
+  (setq-default gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
+  (setq-default gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
 
   (if (file-exists-p  "~/.emacs.d/usr/gnus.el")
       (load-file      "~/.emacs.d/usr/gnus.el")))
@@ -392,8 +391,8 @@ behave and look like typical unix shells, so maybe try it for yourself.
      ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
      (t (format "%8d" (buffer-size)))))
 
-  (setq ibuffer-show-empty-filter-groups nil
-        ibuffer-saved-filter-groups
+  (setq ibuffer-show-empty-filter-groups nil)
+  (setq ibuffer-saved-filter-groups
         (quote (("default"
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
@@ -434,9 +433,9 @@ behave and look like typical unix shells, so maybe try it for yourself.
 
                  ("man"
                   (or (name . "^\\*Man ")
-                      (name . "^\\*WoMan"))))))
+                      (name . "^\\*WoMan")))))))
 
-        ibuffer-formats
+  (setq ibuffer-formats
         '((mark modified read-only " "
                 (name 35 35 :left :nil) " "
                 (size-h 9 -1 :right) " "
@@ -534,6 +533,22 @@ implies, are essential for me.
          ("C-x C-f" . counsel-find-file)
          ("C-x l"   . counsel-locate)
          ("M-x"     . counsel-M-x)))
+
+(use-package counsel-etags
+  :init
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook
+                        'counsel-etags-virtual-update-tags 'append 'local)))
+
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook
+                        'counsel-etags-virtual-update-tags 'append 'local)))
+
+  :config
+  (setq-local large-file-warning-threshold nil)
+  (setq-local tags-revert-without-query    t))
 #+end_src
 
 *** flyspell
@@ -555,8 +570,8 @@ implies, are essential for me.
   (ivy-mode 1)
 
   :config
-  (setq ivy-use-virtual-buffers      t
-        enable-recursive-minibuffers t))
+  (setq ivy-use-virtual-buffers      t)
+  (setq enable-recursive-minibuffers t))
 #+end_src
 
 *** package-utils
@@ -575,9 +590,9 @@ implies, are essential for me.
   (add-hook 'text-mode-hook     'smartparens-mode)
 
   :config
-  (setq sp-highlight-pair-overlay     nil
-        sp-highlight-wrap-overlay     nil
-        sp-highlight-wrap-tag-overlay nil))
+  (setq sp-highlight-pair-overlay     nil)
+  (setq sp-highlight-wrap-overlay     nil)
+  (setq sp-highlight-wrap-tag-overlay nil))
 #+end_src
 
 *** swiper
@@ -616,7 +631,6 @@ deleted, and on save all tabs are replaced with spaces.
 (add-hook 'before-save-hook
           (lambda()
             (delete-trailing-whitespace)
-
             (if (not indent-tabs-mode)
                 (untabify (point-min) (point-max)))))
 #+end_src
@@ -630,10 +644,10 @@ deleted, and on save all tabs are replaced with spaces.
   (add-hook 'text-mode-hook 'company-mode)
 
   :config
-  (setq company-tooltip-limit  20
-        company-idle-delay     0.3
-        company-echo-delay     0
-        company-begin-commands '(self-insert-command)))
+  (setq company-tooltip-limit  20)
+  (setq company-idle-delay     0.3)
+  (setq company-echo-delay     0)
+  (setq company-begin-commands '(self-insert-command)))
 
 (use-package company-ansible
   :after (company ansible-vault))
@@ -676,13 +690,11 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package flycheck
   :demand t
-
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flycheck-inline
   :demand t
-
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 
@@ -698,10 +710,8 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package highlight-indent-guides
   :demand t
-
   :init
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-
   :config
   (setq highlight-indent-guides-method 'character))
 #+end_src
@@ -709,16 +719,17 @@ deleted, and on save all tabs are replaced with spaces.
 *** irony
 #+begin_src emacs-lisp
 (use-package irony
-  :config
+  :init
   (defun my-irony-mode ()
-    (when (member major-mode irony-supported-major-modes)
+    (when (memq major-mode '(c-mode c++-mode objc-mode))
       (irony-mode 1)))
 
-  (add-hook 'c++-mode-hook   'my-irony-mode)
-  (add-hook 'c-mode-hook     'my-irony-mode)
-  (add-hook 'objc-mode-hook  'my-irony-mode)
+  (add-hook 'c-mode-hook   'my-irony-mode)
+  (add-hook 'c++-mode-hook 'my-irony-mode)
+  (add-hook 'objc-mode     'my-irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
+  :config
   (define-key irony-mode-map [remap completion-at-point] 'counsel-irony)
   (define-key irony-mode-map [remap complete-symbol]     'counsel-irony))
 #+end_src
@@ -728,7 +739,6 @@ deleted, and on save all tabs are replaced with spaces.
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
-
             (setq-local c-default-style  "linux")
             (setq-local c-set-style      "linux")
             (setq-local c-basic-offset   8)
@@ -738,7 +748,6 @@ deleted, and on save all tabs are replaced with spaces.
 (add-hook 'c++-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
             (setq-local c-default-style  "ellemtel")
             (setq-local c-set-style      "ellemtel")
             (setq-local c-basic-offset   4)
@@ -782,7 +791,6 @@ deleted, and on save all tabs are replaced with spaces.
             (lambda()
               (setq-local tab-width        4)
               (setq-local indent-tabs-mode t)
-
               (set (make-local-variable 'company-backends)
                    '(company-go))
               (company-mode t))))
@@ -852,15 +860,16 @@ suspect others wouldn't use, though I use these rather heavily.
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
-            (lambda() (lui-set-prompt
-                       (concat (propertize (concat (buffer-name) ":")
-                                           'face 'circe-prompt-face) " "))))
+            (lambda()
+              (lui-set-prompt
+               (concat (propertize (concat (buffer-name) ":")
+                                   'face 'circe-prompt-face) " "))))
   (add-hook 'lui-mode-hook
             (lambda()
-              (setq fringes-outside-margins t
-                    left-margin-width       9
-                    word-wrap               t
-                    wrap-prefix             "")))
+              (setq-local fringes-outside-margins t)
+              (setq-local left-margin-width       9)
+              (setq-local word-wrap               t)
+              (setq-local wrap-prefix             "")))
 
   :config
   (defun my-circe-message-option-chanserv (nick user host command args)
@@ -868,17 +877,17 @@ suspect others wouldn't use, though I use these rather heavily.
                (string-match "^\\[#.+?\\]" (cadr args)))
       '((dont-display . t))))
 
-  (setq circe-default-part-message ""
-        circe-default-quit-message ""
-        circe-format-server-topic  "*** Topic: {userhost}: {topic-diff}"
-        circe-reduce-lurker-spam   t
-        circe-use-cycle-completion t
-        lui-fill-type              nil
-        lui-flyspell-alist         '((".*" "american"))
-        lui-flyspell-p             t
-        lui-logging-directory      "~/.emacs.d/var/circe"
-        lui-time-stamp-format      "%H:%M:%S"
-        lui-time-stamp-position    'left-margin)
+  (setq-local circe-default-part-message "")
+  (setq-local circe-default-quit-message "")
+  (setq-local circe-format-server-topic  "*** Topic: {userhost}: {topic-diff}")
+  (setq-local circe-reduce-lurker-spam   t)
+  (setq-local circe-use-cycle-completion t)
+  (setq-local lui-fill-type              nil)
+  (setq-local lui-flyspell-alist         '((".*" "american")))
+  (setq-local lui-flyspell-p             t)
+  (setq-local lui-logging-directory      "~/.emacs.d/var/circe")
+  (setq-local lui-time-stamp-format      "%H:%M:%S")
+  (setq-local lui-time-stamp-position    'left-margin)
 
   (load "lui-logging" nil t)
   (enable-lui-logging-globally)
@@ -908,8 +917,8 @@ suspect others wouldn't use, though I use these rather heavily.
   :bind ("C-x w" . elfeed)
 
   :config
-  (setq elfeed-search-filter "@1-week-ago +unread "
-        url-queue-timeout    30)
+  (setq-local elfeed-search-filter "@1-week-ago +unread ")
+  (setq-local url-queue-timeout    30)
 
   (if (file-exists-p  "~/.emacs.d/usr/elfeed.el")
       (load-file      "~/.emacs.d/usr/elfeed.el")))
