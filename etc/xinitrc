@@ -1,5 +1,7 @@
 # /etc/xinitrc
 
+# Ensure that desktop settings are loaded post-login
 export DESKTOP_SESSION=gnome
 
+# Launch i3 with dbus
 dbus-launch --exit-with-session i3

@@ -64,12 +64,12 @@ let g:tmuxline_powerline_separators = 0
 
 if has('gui_running')
     colorscheme slate
-    set guifont=Noto\ Mono\ Regular\ 10
+    set guifont=Monospace\ 10
     set background=dark
-    set guioptions-=m  "remove menu bar
-    set guioptions-=T  "remove toolbar
-    set guioptions-=r  "remove right-hand scroll bar
-    set guioptions-=L  "remove left-hand scroll bar
+    set guioptions-=m                  "remove menu bar
+    set guioptions-=T                  "remove toolbar
+    set guioptions-=r                  "remove right-hand scroll bar
+    set guioptions-=L                  "remove left-hand scroll bar
 endif
 
 

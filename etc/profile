@@ -43,9 +43,7 @@ fi
 # Set PS1 to '[user@hostname <current directory>]$' across multiple
 # shells.
 
-if [ -e "$BASH_VERSION" ]; then
-    PS1="[\u@\h \W]\$ "
-elif [ -e "$ZSH_VERSION" ]; then
+if [ -e "$ZSH_VERSION" ]; then
     PS1="[%n@%M %d]$ "
 else
     PS1="[\u@\h \W]\$ "
@@ -56,10 +54,11 @@ export PS1
 
 # Define PATH and MANPATH, somewhat exhaustively, to support most UNIX
 # systems. Non-generic additions to these variables should exist in
-# 'profile.d/example-os,sh'.
+# their own respective 'profile.d/*.sh' file.
 
-PATH="/usr/local/sbin/:/usr/local/bin:/usr/sbin:/usr/bin:/opt/bin"
-PATH="$PATH:/usr/local/gein:/sbin:/bin:$HOME/.local/bin:$HOME/.bin:$HOME/bin"
+PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
+PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
+PATH="$PATH:$HOME/.local/bin"
 
 MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
 MANPATH="$MANPATH:$HOME/.local/man:$HOME/.local/share/man"
@@ -79,7 +78,7 @@ if [ -d "/etc/profile.d" ]; then
 fi
 
 if [ -d "$HOME"/.profile.d ]; then
-    for sh in $HOME/.profile.d/*.sh; do
+    for sh in "$HOME"/.profile.d/*.sh; do
         [ -r "$sh" ] && . "$sh"
     done
 

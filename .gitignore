@@ -1,6 +1,8 @@
+*#
 *~
-*.elc
 
+# Emacs
+*.elc
 etc/emacs/.markdown-preview.html
 etc/emacs/auto-save-list
 etc/emacs/config.el
@@ -11,7 +13,11 @@ etc/emacs/eshell
 etc/emacs/pkg
 etc/emacs/usr
 etc/emacs/var
+
+# Vim
 etc/vim/autoload
 etc/vim/plugged
+
+# GTK 3
 usr/share/themes/gtk-3.0/servers
 usr/share/themes/gtk-3.0/bookmarks
