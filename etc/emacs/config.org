@@ -443,21 +443,6 @@ behave and look like typical unix shells, so maybe try it for yourself.
                 filename-and-process))))
 #+end_src
 
-*** linum
-#+begin_src emacs-lisp
-(use-package linum
-  :demand t
-  :init
-  (add-hook 'lisp-mode-hook 'linum-mode)
-  (add-hook 'prog-mode-hook 'linum-mode)
-  (add-hook 'text-mode-hook 'linum-mode)
-
-  :config
-  (setq linum-delay t)
-  (global-visual-line-mode t))
-#+end_src
-
-
 *** scratch
 #+begin_src emacs-lisp
 (use-package scratch
@@ -736,6 +721,11 @@ deleted, and on save all tabs are replaced with spaces.
 
 *** languages
 #+begin_src emacs-lisp
+(add-hook 'lisp-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
+(global-visual-line-mode t)
+
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
@@ -813,7 +803,11 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package rjsx-mode
   :init
   (add-to-list 'auto-mode-alist
-               '("components\\/.*\\.js\\'" . rjsx-mode)))
+               '("components\\/.*\\.js\\'" . rjsx-mode))
+  (add-hook 'rjsx-mode
+            (lambda()
+              (setq-local indent-tabs-mode nil)
+              (setq-local tab-width        2))))
 
 (use-package rust-mode)
 (use-package sass-mode)
