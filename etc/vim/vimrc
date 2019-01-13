@@ -3,8 +3,8 @@
 """ Vim-Plug ====================================
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync
 endif
 
 call plug#begin('~/.vim/plugged')      " Minimalist Vim Plugin Manager
@@ -16,18 +16,28 @@ Plug 'tpope/vim-sensible'              " Sensible Defaults
 
 set t_BE=                              " Disable bracketed paste
 set nocompatible                       " be iMproved, required
-set nobackup                           "
-set noswapfile                         "
+set nobackup                           " .
+set noswapfile                         " .
 set termencoding=utf-8                 " UTF8 as default encoding
 set encoding=utf-8                     " ...
-set scrolloff=100
+set scrolloff=1000                     " .
+
+if has('gui_running')
+	colorscheme slate                  " .
+	set guifont=Monospace\ 10          " .
+	set background=dark                " .
+	set guioptions-=m                  " Remove menu bar
+	set guioptions-=T                  " Remove toolbar
+	set guioptions-=r                  " Remove right-hand scroll bar
+	set guioptions-=L                  " Remove left-hand scroll bar
+endif
 
 
 """ Input =======================================
 
-"set mouse=a                           " Enable mouse support
+set mouse=a                            " Enable mouse support
 set clipboard=unnamedplus              " Share X11 clipboard
-let mapleader = ','
+let mapleader = ','                    " .
 
 " Change windows with C-w hjkl
 nnoremap <C-h> <C-w>h
@@ -55,22 +65,12 @@ set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
 """ Display =====================================
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'         " .
+Plug 'vim-airline/vim-airline-themes'  " .
 let g:airline#extensions#tabline#enabled = 1
 
-Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/tmuxline.vim'            " .
 let g:tmuxline_powerline_separators = 0
-
-if has('gui_running')
-    colorscheme slate
-    set guifont=Monospace\ 10
-    set background=dark
-    set guioptions-=m                  "remove menu bar
-    set guioptions-=T                  "remove toolbar
-    set guioptions-=r                  "remove right-hand scroll bar
-    set guioptions-=L                  "remove left-hand scroll bar
-endif
 
 
 """ Utilities ===================================
@@ -83,28 +83,28 @@ Plug 'benmills/vimux'                  " tmux Integration
 
 Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
 if executable('ag')
-    let g:ackprg = 'ag --vimgrep --smart-case'
-    cnoreabbrev ag Ack
-    cnoreabbrev aG Ack
-    cnoreabbrev Ag Ack
-    cnoreabbrev AG Ack
+	let g:ackprg = 'ag --vimgrep --smart-case'
+	cnoreabbrev ag Ack
+	cnoreabbrev aG Ack
+	cnoreabbrev Ag Ack
+	cnoreabbrev AG Ack
 endif
 
 Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\v\.(exe|so|dll)$',
-            \ 'link': 'some_bad_symbolic_links',
-            \ }
+			\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+			\ 'file': '\v\.(exe|so|dll)$',
+			\ 'link': 'some_bad_symbolic_links',
+			\ }
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 Plug 'universal-ctags/ctags'           " ctags implementation
 Plug 'majutsushi/tagbar'               " Displays tags in a window
 nmap <F8> :TagbarToggle<CR>
 
-Plug 'francoiscabrol/ranger.vim'
+Plug 'francoiscabrol/ranger.vim'       " .
 
 
 """ Languages ===================================
@@ -124,7 +124,7 @@ let g:syntastic_style_error_symbol="E>"
 let g:syntastic_warning_symbol="W>"
 let g:syntastic_style_warning_symbol="W>"
 
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go'                    " Go support
 let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
 let g:go_auto_type_info = 1
 let g:go_fmt_command = "gofmt"
@@ -135,15 +135,11 @@ let g:go_highlight_interfaces = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
-
-" Auto creates tags for Go source files.
 au BufWritePost *.go silent! !ctags -R &
 
-" JSX Config
-Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx'                     " JSX support
 
-" ALE
-Plug 'w0rp/ale'
+Plug 'w0rp/ale'                        " .
 let g:ale_linters = {'go': ['gometalinter', 'gofmt', 'govet']}
 let g:ale_fixers = {'javascript': ['eslint']}
 let g:ale_lint_on_enter = 1
