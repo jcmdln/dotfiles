@@ -797,7 +797,6 @@ deleted, and on save all tabs are replaced with spaces.
 
 (use-package gradle-mode)
 (use-package json-mode)
-(use-package jsx-mode)
 (use-package less-css-mode)
 (use-package lua-mode)
 (use-package markdown-mode)
@@ -810,7 +809,12 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package protobuf-mode)
 (use-package qml-mode)
 (use-package racket-mode)
-(use-package rjsx-mode)
+
+(use-package rjsx-mode
+  :init
+  (add-to-list 'auto-mode-alist
+               '("components\\/.*\\.js\\'" . rjsx-mode)))
+
 (use-package rust-mode)
 (use-package sass-mode)
 (use-package swift-mode)
