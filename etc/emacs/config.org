@@ -775,6 +775,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package gitignore-mode)
 
 (use-package go-mode
+  ;; go get -u -v https://github.com/stamblerre/gocode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
