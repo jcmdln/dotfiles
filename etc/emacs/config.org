@@ -3,15 +3,31 @@
 #+STARTUP:   indent
 #+LANGUAGE:  en
 
-I've attempted to maintain an Emacs configuration using various methods,
-though this is an attempt to combine documentation with the actual
-configuration in the most literate way possible. While this is not
-exactly unique, this configuration is using org-mode and use-package to
-manage the settings.
+After years of maintaining my GNU/Emacs configuration using various
+methods, I wanted something that was easier to share with others. The
+better method, in my opinion, is to use an org-mode configuration which
+is what is defined in this document. Rather than using abrupt comments
+to keep the total number of lines low, fully explaining what settings I
+use has proved to be much more helpful when assisting others.
 
-I do _NOT_ recommend directly using this configuration, though it should
-serve as an adequate reference of various bits of functionality that
-I've found or written over the years.
+I do _NOT_ recommend directly using this configuration unless you are
+especially lazy. I suggest that you review this configuration and add
+what functionality you desire to your own so that you do not experience
+unexpected behavior.
+
+
+* About
+This configuration works by using init.el to load config.org if it has
+not already been converted to a config.el file, and byte-compiling to
+create config.elc which will be implicitly loaded on startup. Should
+config.org be updated and the file be newer than config.el the
+configuration will be regenerated and byte-compiled on startup.
+
+While I see this as a bit convoluted, it allows me to have a literate
+configuration without requiring that I load org-mode on every init. I
+know that many suggest starting emacs as a daemon as a way of
+mitigating long startup times, I prefer that this is kept to a minimum
+by default.
 
 
 * Startup
@@ -19,7 +35,9 @@ This section comprises the things we will want to occur as soon as
 possible, preferably before or during init.
 
 ** Encoding
-Here we'll attempt to enforce using utf-8 encoding.
+Here we will attempt to enforce using utf-8 encoding by default. While
+this may not be very important for general usage, I much prefer this
+behavior.
 
 #+begin_src emacs-lisp
 (setq prefer-coding-system       'utf-8
@@ -29,8 +47,10 @@ Here we'll attempt to enforce using utf-8 encoding.
 #+end_src
 
 ** Environment
-Ensure that our Emacs environment matches our current environment. We
-will modify it slightly, so that Emacs is our default editor.
+Emacs already inherits much of what is currently in the system's
+environment, though here we'll ensure that this is occurring. We will
+modify our environment slightly so that the current Emacs session is
+our default editor, which is mainly useful for git/magit.
 
 #+begin_src emacs-lisp
 (setenv "EDITOR"         "emacsclient")
@@ -42,22 +62,17 @@ will modify it slightly, so that Emacs is our default editor.
 (setenv "TERM"           (getenv "TERM"))
 #+end_src
 
-** Adjust garbage collector percentage and threshold
-First, we'll increase the gc-cons-threshold, which is the number of
-bytes of storage that must be allocated for Lisp objects after one
-garbage collection in order to trigger another garbage collection. On
- 32-bit systems, this is 400kb and on 64-bit systems this is 800kb.
-Specifying a larger value will mean that garbage collection will
-occur less often.
+** Garbage Collection
+Emacs has some considerations for older and more memory restricted
+systems in terms of how the garbage collector is configured. I've seen
+some suggest not making adjustments to the garbage collector, though
+since I only use Emacs on modern systems with a lot of available memory
+I don't mind if Emacs is slightly more wasteful.
 
-We'll set this value to 2mb globally, which will more than halve the
-total number of GC pauses we experience while not drastically
-increasing the amount of time needed for GC to complete.
+I am fully aware that this is me simply "chasing the dragon" of init
+time, though there are some other implications that will be explained.
 
-#+begin_src emacs-lisp
-(setq gc-cons-threshold  (* 2 1024 1024))
-#+end_src
-
+*** gc-cons-percentage
 For the purposes of initialization, we will also increase
 gc-cons-percentage which means that until reaching 60% of the current
 heap size, GC will not occur. After init completes we will set this to
@@ -71,12 +86,38 @@ heap size, GC will not occur. After init completes we will set this to
             (setq gc-cons-percentage 0.15)))
 #+end_src
 
+*** gc-cons-threshold
+Increasing the gc-cons-threshold, which is the number of bytes of
+storage that must be allocated for Lisp objects after one garbage
+collection in order to trigger another garbage collection. On 32-bit
+systems, this is 400kb and on 64-bit systems this is 800kb. Specifying
+a larger value will mean that garbage collection will occur less often.
+
+We'll set this value to 2mb globally, which will more than halve the
+total number of GC pauses we experience while not drastically
+increasing the amount of time needed for GC to complete.
+
+#+begin_src emacs-lisp
+(setq gc-cons-threshold  (* 2 1024 1024))
+#+end_src
+
+** Custom Configuration
+This is probably not in the appropriate section though all custom
+configuration should be in it's own file rather than being dumped into
+init.el messily.
+
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+#+end_src
 
 ** Appearance
-I make some minor changes to the appearance of emacs
+In terms of appearance, I prefer to have as little wasted space and
+visual clutter while using built-in themes.
 
-*** Inhibit tool bars
-Prevent tool bars from ever being initialized.
+*** Toolbars
+Prevent tool bars from ever being initialized. We do this by defining
+toolbars as "disabled" so that when they are called after init, they are
+never loaded.
 
 #+begin_src emacs-lisp
 (when (fboundp 'menu-bar-mode)   (menu-bar-mode   -1))
@@ -85,34 +126,40 @@ Prevent tool bars from ever being initialized.
 #+end_src
 
 *** Theme
-Load the built-in tango-dark theme and use the default Monospace system
-font.
+I don't care for using third-party themes, and think that tango-dark is
+more than adequate. We will load the built-in tango-dark theme and use
+the default Monospace system font. I used to adjust the font size and
+line spacing but the same behavior may be achieved by adjusting your
+system defaults.
 
 #+begin_src emacs-lisp
 (load-theme 'tango-dark)
 (set-face-attribute :family "Monospace")
 #+end_src
 
-*** Extras
-Some additional appearance or behavioral tweaks.
+Next we'll adjust some settings to improve editing files.
 
 #+begin_src emacs-lisp
-(setq custom-file                         "~/.emacs.d/custom.el"
-
-      initial-scratch-message             ""
-      inhibit-splash-screen               t
-      inhibit-startup-buffer-menu         t
-
-      column-number-mode                  t
+(setq column-number-mode                  t
       require-final-newline               t
       show-paren-delay                    0.0
-      visible-bell                        nil
+      visible-bell                        nil)
+
+(show-paren-mode                          t)
+#+end_src
+
+*** Extras
+This part is a bit unorganized though reduces clutter by inhibiting
+buffers and adjusting how Emacs' clipboard works.
+
+#+begin_src emacs-lisp
+(setq initial-scratch-message             ""
+      inhibit-splash-screen               t
+      inhibit-startup-buffer-menu         t
 
       mouse-yank-at-point                 t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil)
-
-(show-paren-mode                          t)
 #+end_src
 
 
@@ -122,7 +169,7 @@ as faithful to "the Emacs way" as I can.
 
 ** Keyboard
 In terms of keyboard input, I only make slight adjustments though their
-usefullness is highly subjective.
+usefulness is highly subjective.
 
 *** Scrolling
 I prefer scrolling to behave more like other editors, where the cursor
@@ -194,6 +241,7 @@ In this section, we will configure the package manager to be a bit,
 well, more intelligent.
 
 First, let's require that it's loaded before we proceed:
+
 #+begin_src emacs-lisp
 (require 'package)
 #+end_src
@@ -263,11 +311,11 @@ configuration by using no-littering:
 
 
 * Packages
-In this section we'll begin to define our packages and their
+In this section we will define our packages and their respective
 configurations, organized around their purpose into top-level sections.
 
 ** Built-ins
-These are packages that Emacs currently ships with
+These are packages that Emacs currently ships with.
 
 *** eshell
 The default configuration of eshell is, well, bad. The ordinary user who
@@ -310,6 +358,12 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** eww
+I like eww, but it was missing a few things for me to use it as my
+primary browser for non-interactive sites. Here we will ensure that eww
+is our primary browser when visiting links, and that images are blocked
+by default. Should you have multiple eww buffers open and want to
+toggle displaying images in a specific buffer, you may now do so.
+
 #+begin_src emacs-lisp
 (use-package eww
   :init
@@ -335,6 +389,9 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** eww-lnum
+This package allows pressing "f" or "F" to follow links using their
+numerical reference, much like other text-based browsers.
+
 #+begin_src emacs-lisp
 (use-package eww-lnum
   :after (eww)
@@ -346,6 +403,10 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** gnus
+I've bounced between using "real" email clients and gnus quite a few
+times, though here we will attempt to make gnus behave like other
+clients.
+
 #+begin_src emacs-lisp
 (use-package gnus
   :bind (("<M-down>" . windmove-down)
@@ -370,6 +431,10 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** ibuffer
+I'm not a fan of the default ibuffer behavior, if the total size of this
+section does not make that clear. Here we will sort buffers, show human
+readable sizes, and define a ton of filter groups.
+
 #+begin_src emacs-lisp
 (use-package ibuffer
   :bind (("C-x C-b"         . ibuffer)
@@ -444,6 +509,9 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** scratch
+I like opening multiple scratch buffers, so I added a function to allow
+me to make a new numbered scratch buffer.
+
 #+begin_src emacs-lisp
 (use-package scratch
   :init
@@ -455,11 +523,16 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+end_src
 
 *** server
+I feel that Emacs is missing some extensions for server-based functions
+and added a warning when attempting to close Emacs. Also, if you want to
+update your packages or kill Emacs without saving in a quicker fashion
+you may appreciate the additional functions.
+
 #+begin_src emacs-lisp
 (use-package server
   :bind ("C-x C-c" . server-stop)
   :config
-  (unless (server-running-p)(server-start))
+  (unless (server-running-p) (server-start))
 
   (defun server-kill()
     "Delete current Emacs server, then kill Emacs"
@@ -481,7 +554,6 @@ behave and look like typical unix shells, so maybe try it for yourself.
       (package-refresh-contents))
     (package-utils-upgrade-all)))
 #+end_src
-
 
 ** Essentials
 This section contains packages that integrate well with emacs while
@@ -600,10 +672,9 @@ implies, are essential for me.
   :config (xclip-mode 1))
 #+end_src
 
-
 ** Development
 This section contains packages that are primarily used for development.
-If you aren't using Emacs for development, this sction will not be very
+If you aren't using Emacs for development, this section will not be very
 useful for you.
 
 Before we continue to individual packages, first we'll change some
@@ -840,7 +911,6 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package realgud)
 #+end_src
-
 
 ** Extras
 This section contains additional applications or packages that I
