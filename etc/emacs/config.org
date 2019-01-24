@@ -1002,6 +1002,12 @@ suspect others wouldn't use, though I use these rather heavily.
 #+end_src
 
 *** pdf-tools
+This package allows viewing PDF's within Emacs, though in order to use
+this package you must install the required dependencies and compile the
+package as outlined in the following url:
+
+https://github.com/politza/pdf-tools#installation
+
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :demand t)
