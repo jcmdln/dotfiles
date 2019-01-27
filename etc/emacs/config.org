@@ -665,7 +665,7 @@ implies, are essential for me.
 *** xclip
 #+begin_src emacs-lisp
 (use-package xclip
-  :config (xclip-mode 1))
+  :init (xclip-mode 1))
 #+end_src
 
 ** Development
