@@ -1,7 +1,7 @@
-# -*- mode: org -*-
-#+TITLE:     My literate GNU/Emacs configuration
-#+STARTUP:   indent
-#+LANGUAGE:  en
+# -*- mode : org -*-
+#+TITLE: My literate GNU / Emacs configuration
+#+STARTUP: indent
+#+LANGUAGE: en
 
 After years of maintaining my GNU/Emacs configuration using various
 methods, I wanted something that was easier to share with others. The
@@ -140,12 +140,12 @@ system defaults.
 Next we'll adjust some settings to improve editing files.
 
 #+begin_src emacs-lisp
-(setq column-number-mode                  t
-      require-final-newline               t
-      show-paren-delay                    0.0
-      visible-bell                        nil)
+(setq column-number-mode    t
+      require-final-newline t
+      show-paren-delay      0.0
+      visible-bell          nil)
 
-(show-paren-mode                          t)
+(show-paren-mode t)
 #+end_src
 
 *** Extras
@@ -207,12 +207,12 @@ I've attempted to recreated the subjective ease of navigation I prefer:
                   (other-window 1 nil)
                   (switch-to-next-buffer)))
 
-(global-set-key (kbd "<M-down>")    'windmove-down)
-(global-set-key (kbd "<M-left>")    'windmove-left)
-(global-set-key (kbd "<M-right>")   'windmove-right)
-(global-set-key (kbd "<M-up>")      'windmove-up)
+(global-set-key (kbd "<M-down>")  'windmove-down)
+(global-set-key (kbd "<M-left>")  'windmove-left)
+(global-set-key (kbd "<M-right>") 'windmove-right)
+(global-set-key (kbd "<M-up>")    'windmove-up)
 
-(global-set-key (kbd "C-c c")       'comment-or-uncomment-region)
+(global-set-key (kbd "C-c c")     'comment-or-uncomment-region)
 #+end_src
 
 ** Mouse
@@ -459,6 +459,8 @@ readable sizes, and define a ton of filter groups.
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
                       (name . "^\\*Completions\\*$")
+                      (name . "^\\*Compile-Log\\*")
+                      (name . "^\\*Customize\\*")
                       (name . "^\\*Help\\*$")
                       (name . "^\\*Disabled Command\\*$")
                       (mode . dired-mode)))
@@ -618,10 +620,8 @@ implies, are essential for me.
 (use-package ivy
   :bind (("C-c C-r" . ivy-resume)
          ("<f6>"    . ivy-resume))
-
   :init
   (ivy-mode 1)
-
   :config
   (setq ivy-use-virtual-buffers      t)
   (setq enable-recursive-minibuffers t))
@@ -641,7 +641,6 @@ implies, are essential for me.
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook     'smartparens-mode)
   (add-hook 'text-mode-hook     'smartparens-mode)
-
   :config
   (setq sp-highlight-pair-overlay     nil)
   (setq sp-highlight-wrap-overlay     nil)
@@ -687,6 +686,11 @@ deleted, and on save all tabs are replaced with spaces.
                 (untabify (point-min) (point-max)))))
 #+end_src
 
+*** clang-format
+#+begin_src emacs-lisp
+(use-package clang-format)
+#+end_src
+
 *** company
 #+begin_src emacs-lisp
 (use-package company
@@ -707,9 +711,6 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package company-emoji
   :after (company))
 
-(use-package company-go
-  :after (company))
-
 (use-package company-irony
   :after (company irony)
   :config
@@ -719,9 +720,6 @@ deleted, and on save all tabs are replaced with spaces.
   :after (company irony company-irony)
   :config
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-
-(use-package company-php
-  :after (company php-mode))
 
 (use-package company-shell
   :after (company))
@@ -749,8 +747,6 @@ deleted, and on save all tabs are replaced with spaces.
   :demand t
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
-
-(use-package flycheck-clojure)
 #+end_src
 
 *** gist
@@ -796,11 +792,11 @@ deleted, and on save all tabs are replaced with spaces.
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
-            (setq-local c-default-style  "linux")
+            (setq-local c-default-style  "cc-mode")
             (setq-local c-set-style      "linux")
-            (setq-local c-basic-offset   8)
+            (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
-            (setq-local tab-width        8)))
+            (setq-local tab-width        4)))
 
 (add-hook 'c++-mode-hook
           (lambda()
@@ -809,7 +805,7 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local c-set-style      "ellemtel")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
-            (setq-local tab-width        2)))
+            (setq-local tab-width        4)))
 
 (add-hook 'lisp-mode
           (lambda()
@@ -826,6 +822,7 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package clojure-mode
   :init
   (add-hook 'clojure-mode-hook 'flycheck-clojure))
+(use-package flycheck-clojure)
 
 (use-package cmake-mode)
 (use-package coffee-mode)
@@ -852,6 +849,8 @@ deleted, and on save all tabs are replaced with spaces.
               (set (make-local-variable 'company-backends)
                    '(company-go))
               (company-mode t))))
+(use-package company-go
+  :after (company))
 
 (use-package gradle-mode)
 (use-package json-mode)
@@ -863,7 +862,11 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package nginx-mode)
 (use-package ninja-mode)
 (use-package npm-mode)
+
 (use-package php-mode)
+(use-package company-php
+  :after (company php-mode))
+
 (use-package protobuf-mode)
 (use-package qml-mode)
 (use-package racket-mode)
@@ -907,6 +910,34 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package realgud)
 #+end_src
+
+*** rtags
+#+begin_src emacs-lisp
+(use-package rtags
+  :config
+  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+  (setq rtags-autostart-diagnostics  t
+        rtags-completions-enabled    t
+        rtags-display-result-backend 'ivy)
+  (setq-local flycheck-highlighting-mode nil)
+  (setq-local flycheck-check-syntax-automatically nil)
+  (rtags-diagnostics))
+
+(use-package ivy-rtags
+  :config
+  (setq rtags-display-result-backend 'ivy))
+
+(use-package company-rtags
+  :after (company)
+  :config (push 'company-rtags company-backends))
+
+(use-package flycheck-rtags
+  :after (rtags flycheck)
+  :config (add-hook 'prog-mode-hook 'flycheck-mode))
+#+end_src
+
 
 ** Extras
 This section contains additional applications or packages that I
