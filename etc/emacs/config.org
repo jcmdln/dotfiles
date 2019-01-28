@@ -819,6 +819,11 @@ deleted, and on save all tabs are replaced with spaces.
 
 (add-hook 'org-mode-hook
           (lambda()
+            (add-hook 'org-metaup-hook    'windmove-up)
+            (add-hook 'org-metaleft-hook  'windmove-left)
+            (add-hook 'org-metadown-hook  'windmove-down)
+            (add-hook 'org-metaright-hook 'windmove-right)
+
             (setq-local org-support-shift-select 'always)))
 
 (use-package ahk-mode)
