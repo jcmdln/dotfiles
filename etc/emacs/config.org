@@ -807,10 +807,19 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
 
-(add-hook 'lisp-mode
+(add-hook 'js-mode-hook
+          (lambda()
+            (setq-local js-indent-level 2)
+            (setq-local tab-width       2)))
+
+(add-hook 'lisp-mode-hook
           (lambda()
             (setq-local c-basic-offset 2)
             (setq-local tab-width      2)))
+
+(add-hook 'org-mode-hook
+          (lambda()
+            (setq-local org-support-shift-select 'always)))
 
 (use-package ahk-mode)
 (use-package android-mode)
@@ -877,8 +886,8 @@ deleted, and on save all tabs are replaced with spaces.
                '("components\\/.*\\.js\\'" . rjsx-mode))
   (add-hook 'rjsx-mode
             (lambda()
-              (setq-local indent-tabs-mode nil)
-              (setq-local tab-width        2))))
+              (setq-local js-indent-level 2)
+              (setq-local tab-width       2))))
 
 (use-package rust-mode)
 (use-package sass-mode)
