@@ -583,7 +583,7 @@ implies, are essential for me.
          ("C-S-o"   . counsel-rhythmbox)
          ("C-c g"   . counsel-git)
          ("C-c j"   . counsel-git-grep)
-         ("C-c l"   . counsel-ag)
+         ("C-c l"   . counsel-grep-function)
          ("C-r"     . counsel-minibuffer-history)
          ("C-x C-f" . counsel-find-file)
          ("C-x l"   . counsel-locate)
