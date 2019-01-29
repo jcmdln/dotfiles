@@ -26,7 +26,7 @@ dirs_create="
 "
 for dir in $dirs_create; do
     [ ! -d $dir ] && rm -rf $dir
-    [ ! -e $dir ] && mkdir $dir
+    [ ! -e $dir ] && mkdir -p $dir
 done
 
 
