@@ -591,10 +591,11 @@ implies, are essential for me.
    ("<f1> v"  . counsel-describe-variable)
    ("<f2> i"  . counsel-info-lookup-symbol)
    ("<f2> u"  . counsel-unicode-char)
+   ("C-s"     . counsel-grep-or-swiper)
    ("C-S-o"   . counsel-rhythmbox)
    ("C-c g"   . counsel-git)
    ("C-c j"   . counsel-git-grep)
-   ("C-c l"   . counsel-grep-function)
+   ("C-c l"   . counsel-ag)
    ("C-r"     . counsel-minibuffer-history)
    ("C-x C-f" . counsel-find-file)
    ("C-x l"   . counsel-locate)
@@ -615,6 +616,9 @@ implies, are essential for me.
   :config
   (setq-local large-file-warning-threshold nil)
   (setq-local tags-revert-without-query    t))
+
+(use-package swiper
+  :demand t)
 #+end_src
 
 *** flyspell
@@ -661,15 +665,6 @@ implies, are essential for me.
   (setq sp-highlight-pair-overlay     nil)
   (setq sp-highlight-wrap-overlay     nil)
   (setq sp-highlight-wrap-tag-overlay nil))
-#+end_src
-
-*** swiper
-#+begin_src emacs-lisp
-(use-package swiper
-  :demand t
-
-  :bind
-  ("C-s" . swiper))
 #+end_src
 
 *** undo-tree
@@ -1002,10 +997,10 @@ better.
   (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
 
   :config
-  (setq-local rtags-autostart-diagnostics  t
-              rtags-completions-enabled    t
-              rtags-display-result-backend 'ivy)
-  (setq-local flycheck-highlighting-mode nil)
+  (setq-local rtags-autostart-diagnostics         t)
+  (setq-local rtags-completions-enabled           t)
+  (setq-local rtags-display-result-backend        'ivy)
+  (setq-local flycheck-highlighting-mode          nil)
   (setq-local flycheck-check-syntax-automatically nil)
   (rtags-diagnostics))
 
