@@ -338,7 +338,8 @@ behave and look like typical unix shells, so maybe try it for yourself.
 
   (setq eshell-prompt-function
         (lambda nil
-          (concat "[" (user-login-name) "@" (system-name) " "
+          (concat "[" (user-login-name) "@"
+                  (substring (car (split-string system-name "\\."))) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
                   (if (= (user-uid) 0) "# " "$ "))))
