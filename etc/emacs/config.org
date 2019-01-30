@@ -79,11 +79,11 @@ heap size, GC will not occur. After init completes we will set this to
 15%, though the default is 10%.
 
 #+begin_src emacs-lisp
-(setq gc-cons-percentage 0.60)
+(setq gc-cons-percentage 0.80)
 
 (add-hook 'after-init-hook
           (lambda ()
-            (setq gc-cons-percentage 0.15)))
+            (setq gc-cons-percentage 0.10)))
 #+end_src
 
 *** gc-cons-threshold
@@ -259,6 +259,7 @@ priority. We'll then initialize package before moving on.
       '(("GNU ELPA"     . 1)
         ("MELPA Stable" . 2)
         ("MELPA"        . 0)))
+
 (package-initialize)
 #+end_src
 
@@ -300,6 +301,7 @@ configuration by using no-littering:
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
+
   :config
   (setq-local auto-save-file-name-transforms
               `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
@@ -333,12 +335,14 @@ behave and look like typical unix shells, so maybe try it for yourself.
   (setq eshell-scroll-to-bottom-on-output nil)
   (setq eshell-scroll-show-maximum-output nil)
   (setq eshell-prompt-regexp              "^[^#$\n]*[#$] ")
+
   (setq eshell-prompt-function
         (lambda nil
           (concat "[" (user-login-name) "@" (system-name) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
                   (if (= (user-uid) 0) "# " "$ "))))
+
   (setq eshell-visual-commands
         '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh"
           "tail" "top" "vi" "vim" "watch"))
@@ -364,6 +368,7 @@ toggle displaying images in a specific buffer, you may now do so.
 (use-package eww
   :init
   (setq browse-url-browser-function 'eww-browse-url)
+
   :config
   (setq shr-blocked-images "")
 
@@ -382,15 +387,10 @@ toggle displaying images in a specific buffer, you may now do so.
       (switch-to-buffer (generate-new-buffer "*eww*"))
       (eww-mode)
       (eww url))))
-#+end_src
 
-*** eww-lnum
-This package allows pressing "f" or "F" to follow links using their
-numerical reference, much like other text-based browsers.
-
-#+begin_src emacs-lisp
 (use-package eww-lnum
   :after (eww)
+
   :init
   (add-hook 'eww-mode-hook
             (lambda()
@@ -405,25 +405,27 @@ clients.
 
 #+begin_src emacs-lisp
 (use-package gnus
-  :bind (("<M-down>" . windmove-down)
-         ("<M-up>"   . windmove-up))
+  :bind
+  (("<M-down>" . windmove-down)
+   ("<M-up>"   . windmove-up))
+
   :init
   (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
 
   :config
-  (setq-default gnus-sum-thread-tree-false-root        "")
-  (setq-default gnus-sum-thread-tree-indent            "  ")
-  (setq-default gnus-sum-thread-tree-leaf-with-other   "├─> ")
-  (setq-default gnus-sum-thread-tree-root              "")
-  (setq-default gnus-sum-thread-tree-single-leaf       "╰─> ")
-  (setq-default gnus-sum-thread-tree-vertical          "│ ")
+  (setq gnus-sum-thread-tree-false-root        "")
+  (setq gnus-sum-thread-tree-indent            "  ")
+  (setq gnus-sum-thread-tree-leaf-with-other   "├─> ")
+  (setq gnus-sum-thread-tree-root              "")
+  (setq gnus-sum-thread-tree-single-leaf       "╰─> ")
+  (setq gnus-sum-thread-tree-vertical          "│ ")
 
-  (setq-default gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n")
-  (setq-default gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
-  (setq-default gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
+  (setq gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n")
+  (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
+  (setq gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
 
-  (if (file-exists-p  "~/.emacs.d/usr/gnus.el")
-      (load-file      "~/.emacs.d/usr/gnus.el")))
+  (if (file-exists-p "~/.emacs.d/usr/gnus.el")
+      (load-file     "~/.emacs.d/usr/gnus.el")))
 #+end_src
 
 *** ibuffer
@@ -433,9 +435,10 @@ readable sizes, and define a ton of filter groups.
 
 #+begin_src emacs-lisp
 (use-package ibuffer
-  :bind (("C-x C-b"         . ibuffer)
-         ("<C-tab>"         . next-buffer)
-         ("<C-iso-lefttab>" . previous-buffer))
+  :bind
+  (("C-x C-b"         . ibuffer)
+   ("<C-tab>"         . next-buffer)
+   ("<C-iso-lefttab>" . previous-buffer))
 
   :init
   (add-hook 'ibuffer-hook      'ibuffer-auto-mode)
@@ -453,6 +456,7 @@ readable sizes, and define a ton of filter groups.
      (t (format "%8d" (buffer-size)))))
 
   (setq ibuffer-show-empty-filter-groups nil)
+
   (setq ibuffer-saved-filter-groups
         (quote (("default"
                  ("emacs"
@@ -528,10 +532,15 @@ you may appreciate the additional functions.
 
 #+begin_src emacs-lisp
 (use-package server
-  :bind ("C-x C-c" . server-stop)
-  :config
-  (unless (server-running-p) (server-start))
+  :bind
+  ("C-x C-c" . server-stop)
 
+  :init
+  (unless (and (fboundp 'server-running-p)
+               (server-running-p))
+    (server-start))
+
+  :config
   (defun server-kill()
     "Delete current Emacs server, then kill Emacs"
     (interactive)
@@ -561,7 +570,8 @@ implies, are essential for me.
 *** async
 #+begin_src emacs-lisp
 (use-package async
-  :config (async-bytecomp-package-mode '(all)))
+  :config
+  (async-bytecomp-package-mode '(all)))
 #+end_src
 
 *** auto-compile
@@ -575,19 +585,20 @@ implies, are essential for me.
 *** counsel
 #+begin_src emacs-lisp
 (use-package counsel
-  :bind (("<f1> f"  . counsel-describe-function)
-         ("<f1> l"  . counsel-find-library)
-         ("<f1> v"  . counsel-describe-variable)
-         ("<f2> i"  . counsel-info-lookup-symbol)
-         ("<f2> u"  . counsel-unicode-char)
-         ("C-S-o"   . counsel-rhythmbox)
-         ("C-c g"   . counsel-git)
-         ("C-c j"   . counsel-git-grep)
-         ("C-c l"   . counsel-grep-function)
-         ("C-r"     . counsel-minibuffer-history)
-         ("C-x C-f" . counsel-find-file)
-         ("C-x l"   . counsel-locate)
-         ("M-x"     . counsel-M-x)))
+  :bind
+  (("<f1> f"  . counsel-describe-function)
+   ("<f1> l"  . counsel-find-library)
+   ("<f1> v"  . counsel-describe-variable)
+   ("<f2> i"  . counsel-info-lookup-symbol)
+   ("<f2> u"  . counsel-unicode-char)
+   ("C-S-o"   . counsel-rhythmbox)
+   ("C-c g"   . counsel-git)
+   ("C-c j"   . counsel-git-grep)
+   ("C-c l"   . counsel-grep-function)
+   ("C-r"     . counsel-minibuffer-history)
+   ("C-x C-f" . counsel-find-file)
+   ("C-x l"   . counsel-locate)
+   ("M-x"     . counsel-M-x)))
 
 (use-package counsel-etags
   :init
@@ -618,10 +629,13 @@ implies, are essential for me.
 *** ivy
 #+begin_src emacs-lisp
 (use-package ivy
-  :bind (("C-c C-r" . ivy-resume)
-         ("<f6>"    . ivy-resume))
+  :bind
+  (("C-c C-r" . ivy-resume)
+   ("<f6>"    . ivy-resume))
+
   :init
   (ivy-mode 1)
+
   :config
   (setq ivy-use-virtual-buffers      t)
   (setq enable-recursive-minibuffers t))
@@ -637,10 +651,12 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package smartparens
   :demand t
+
   :init
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook     'smartparens-mode)
   (add-hook 'text-mode-hook     'smartparens-mode)
+
   :config
   (setq sp-highlight-pair-overlay     nil)
   (setq sp-highlight-wrap-overlay     nil)
@@ -651,20 +667,25 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package swiper
   :demand t
-  :bind ("C-s" . swiper))
+
+  :bind
+  ("C-s" . swiper))
 #+end_src
 
 *** undo-tree
 #+begin_src emacs-lisp
 (use-package undo-tree
   :demand t
-  :config (global-undo-tree-mode))
+
+  :config
+  (global-undo-tree-mode))
 #+end_src
 
 *** xclip
 #+begin_src emacs-lisp
 (use-package xclip
-  :init (xclip-mode 1))
+  :init
+  (xclip-mode 1))
 #+end_src
 
 ** Development
@@ -713,11 +734,13 @@ deleted, and on save all tabs are replaced with spaces.
 
 (use-package company-irony
   :after (company irony)
+
   :config
   (add-to-list 'company-backends 'company-irony))
 
 (use-package company-irony-c-headers
   :after (company irony company-irony)
+
   :config
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
 
@@ -740,11 +763,13 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package flycheck
   :demand t
+
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flycheck-inline
   :demand t
+
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 #+end_src
@@ -758,13 +783,18 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package highlight-indent-guides
   :demand t
+
   :init
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
   :config
   (setq highlight-indent-guides-method 'character))
 #+end_src
 
 *** irony
+At some point I'll explain what I've done here, because it was rather
+annoying to get right.
+
 #+begin_src emacs-lisp
 (use-package irony
   :init
@@ -772,9 +802,9 @@ deleted, and on save all tabs are replaced with spaces.
     (when (memq major-mode '(c-mode c++-mode objc-mode))
       (irony-mode 1)))
 
-  (add-hook 'c-mode-hook   'my-irony-mode)
-  (add-hook 'c++-mode-hook 'my-irony-mode)
-  (add-hook 'objc-mode     'my-irony-mode)
+  (add-hook 'c-mode-hook     'my-irony-mode)
+  (add-hook 'c++-mode-hook   'my-irony-mode)
+  (add-hook 'objc-mode       'my-irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
   :config
@@ -783,12 +813,17 @@ deleted, and on save all tabs are replaced with spaces.
 #+end_src
 
 *** languages
+This section is gross, and due for a rewrite to explain things a bit
+better.
+
 #+begin_src emacs-lisp
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'text-mode-hook 'display-line-numbers-mode)
 (global-visual-line-mode t)
+#+end_src
 
+#+begin_src emacs-lisp
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
@@ -797,7 +832,9 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
+#+end_src
 
+#+begin_src emacs-lisp
 (add-hook 'c++-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -806,17 +843,23 @@ deleted, and on save all tabs are replaced with spaces.
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
+#+end_src
 
+#+begin_src emacs-lisp
 (add-hook 'js-mode-hook
           (lambda()
             (setq-local js-indent-level 2)
             (setq-local tab-width       2)))
+#+end_src
 
+#+begin_src emacs-lisp
 (add-hook 'lisp-mode-hook
           (lambda()
             (setq-local c-basic-offset 2)
             (setq-local tab-width      2)))
+#+end_src
 
+#+begin_src emacs-lisp
 (add-hook 'org-mode-hook
           (lambda()
             (add-hook 'org-metaup-hook    'windmove-up)
@@ -825,19 +868,26 @@ deleted, and on save all tabs are replaced with spaces.
             (add-hook 'org-metaright-hook 'windmove-right)
 
             (setq-local org-support-shift-select 'always)))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package ahk-mode)
 (use-package android-mode)
 (use-package angular-mode)
 (use-package ansible-vault)
 (use-package apache-mode)
 (use-package caddyfile-mode)
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package clojure-mode
   :init
   (add-hook 'clojure-mode-hook 'flycheck-clojure))
-(use-package flycheck-clojure)
 
+(use-package flycheck-clojure)
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package cmake-mode)
 (use-package coffee-mode)
 (use-package csharp-mode)
@@ -851,9 +901,11 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
+#+end_src
 
+#+begin_src emacs-lisp
+;; go get -u -v https://github.com/stamblerre/gocode
 (use-package go-mode
-  ;; go get -u -v https://github.com/stamblerre/gocode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
@@ -863,9 +915,12 @@ deleted, and on save all tabs are replaced with spaces.
               (set (make-local-variable 'company-backends)
                    '(company-go))
               (company-mode t))))
+
 (use-package company-go
   :after (company))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package gradle-mode)
 (use-package json-mode)
 (use-package less-css-mode)
@@ -876,24 +931,34 @@ deleted, and on save all tabs are replaced with spaces.
 (use-package nginx-mode)
 (use-package ninja-mode)
 (use-package npm-mode)
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package php-mode)
+
 (use-package company-php
   :after (company php-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package protobuf-mode)
 (use-package qml-mode)
 (use-package racket-mode)
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package rjsx-mode
   :init
   (add-to-list 'auto-mode-alist
                '("components\\/.*\\.js\\'" . rjsx-mode))
+
   (add-hook 'rjsx-mode
             (lambda()
               (setq-local js-indent-level 2)
               (setq-local tab-width       2))))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package rust-mode)
 (use-package sass-mode)
 (use-package swift-mode)
@@ -906,14 +971,17 @@ deleted, and on save all tabs are replaced with spaces.
 *** magit
 #+begin_src emacs-lisp
 (use-package magit
-  :bind ("C-c C-c" . with-editor-finish)
-  :demand t)
+  :demand t
+
+  :bind
+  ("C-c C-c" . with-editor-finish))
 #+end_src
 
 *** rainbow-delimiters
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :demand t
+
   :init
   (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
@@ -928,13 +996,15 @@ deleted, and on save all tabs are replaced with spaces.
 *** rtags
 #+begin_src emacs-lisp
 (use-package rtags
-  :config
+  :init
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
-  (setq rtags-autostart-diagnostics  t
-        rtags-completions-enabled    t
-        rtags-display-result-backend 'ivy)
+
+  :config
+  (setq-local rtags-autostart-diagnostics  t
+              rtags-completions-enabled    t
+              rtags-display-result-backend 'ivy)
   (setq-local flycheck-highlighting-mode nil)
   (setq-local flycheck-check-syntax-automatically nil)
   (rtags-diagnostics))
@@ -945,11 +1015,15 @@ deleted, and on save all tabs are replaced with spaces.
 
 (use-package company-rtags
   :after (company)
-  :config (push 'company-rtags company-backends))
+
+  :config
+  (push 'company-rtags company-backends))
 
 (use-package flycheck-rtags
   :after (rtags flycheck)
-  :config (add-hook 'prog-mode-hook 'flycheck-mode))
+
+  :config
+  (add-hook 'prog-mode-hook 'flycheck-mode))
 #+end_src
 
 
@@ -1024,14 +1098,15 @@ suspect others wouldn't use, though I use these rather heavily.
 *** elfeed
 #+begin_src emacs-lisp
 (use-package elfeed
-  :bind ("C-x w" . elfeed)
+  :bind
+  ("C-x w" . elfeed)
 
   :config
   (setq-local elfeed-search-filter "@1-week-ago +unread ")
   (setq-local url-queue-timeout    30)
 
-  (if (file-exists-p  "~/.emacs.d/usr/elfeed.el")
-      (load-file      "~/.emacs.d/usr/elfeed.el")))
+  (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
+      (load-file     "~/.emacs.d/usr/elfeed.el")))
 #+end_src
 
 *** helpful

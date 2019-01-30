@@ -12,6 +12,6 @@
 ;; and compile the configuration.
 
 (if (file-newer-than-file-p "~/.emacs.d/config.org"
-			    "~/.emacs.d/config.el")
+                            "~/.emacs.d/config.el")
     (my-org-config)
   (load "~/.emacs.d/config.el"))
