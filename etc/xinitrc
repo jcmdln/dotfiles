@@ -1,5 +1,7 @@
 # /etc/xinitrc
 
+export ENV="$HOME/.profile"
+
 # Ensure that desktop settings are loaded post-login
 export DESKTOP_SESSION=gnome
 

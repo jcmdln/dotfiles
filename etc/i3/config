@@ -22,7 +22,7 @@ exec --no-startup-id "srandr"
 exec --no-startup-id "xrdb /etc/Xresources"
 
 ## Font
-font pango:Monospace 10
+font pango:Noto Sans Regular 10
 
 ## Taskbar
 bar {
@@ -173,12 +173,11 @@ mode "resize" {
 
 #### Multimedia ##################################
 
-## Audio (Alsa)
+## Audio
 # bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5+
 # bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5-
 # bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
 
-## Audio (PulseAudio)
 bindsym XF86AudioRaiseVolume exec --no-startup-id \
   pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id \
@@ -190,13 +189,14 @@ bindsym XF86AudioPause exec --no-startup-id pactl pause
 bindsym XF86AudioNext  exec --no-startup-id pactl next
 bindsym XF86AudioPrev  exec --no-startup-id pactl previous
 
-## Brightness (brightnessctl)
-bindsym XF86MonBrightnessUp   exec --no-startup-id brightnessctl set 5%+
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
-## Brightness (xbacklight)
+## Backlight
+# bindsym XF86MonBrightnessUp   exec --no-startup-id brightnessctl set 5%+
+# bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+
 # bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
 # bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+
 
 ## Screenshot (scrot)
 bindsym Print exec --no-startup-id \
