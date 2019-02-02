@@ -894,6 +894,7 @@ better.
 (use-package dockerfile-mode)
 (use-package dotenv-mode)
 (use-package es-mode)
+(use-package gdscript-mode)
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
