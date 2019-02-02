@@ -18,6 +18,7 @@ done
 
 dirs_create="
     /home/$USER/.config
+    /home/$USER/.config/gtk-3.0
     /home/$USER/.local/bin
     /home/$USER/.local/etc
     /home/$USER/.local/lib
