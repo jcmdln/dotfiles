@@ -914,7 +914,9 @@ better.
               (company-mode t))))
 
 (use-package go-eldoc
-  :after (go-mode))
+  :after (go-mode)
+  :init
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package golint
   :after (go-mode))
