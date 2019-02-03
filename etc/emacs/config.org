@@ -901,8 +901,7 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-;; go get -u github.com/go-delve/delve github.com/stamblerre/gocode github.com/rogpeppe/godef github.com/jstemmer/gotags
-(use-package golint)
+;; go get -u github.com/go-delve/delve github.com/stamblerre/gocode github.com/rogpeppe/godef github.com/jstemmer/gotags golang.org/x/lint/golint
 (use-package go-mode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -914,8 +913,14 @@ better.
                    '(company-go))
               (company-mode t))))
 
+(use-package go-eldoc
+  :after (go-mode))
+
+(use-package golint
+  :after (go-mode))
+
 (use-package company-go
-  :after (company))
+  :after (company go-mode))
 #+end_src
 
 #+begin_src emacs-lisp
