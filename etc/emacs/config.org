@@ -901,7 +901,7 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-;; go get -u github.com/go-delve/delve github.com/stamblerre/gocode github.com/rogpeppe/godef github.com/jstemmer/gotags golang.org/x/lint/golint
+;; go get -u github.com/go-delve/delve/cmd/dlv github.com/stamblerre/gocode github.com/rogpeppe/godef github.com/jstemmer/gotags golang.org/x/lint/golint
 (use-package go-mode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
