@@ -32,18 +32,25 @@ small details.
 ./configure \
     CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
+    --enable-acl \
+    --with-dbus \
+    --with-file-notification \
     --with-gif \
     --with-gnutls \
     --with-gpm \
     --with-imagemagick \
     --with-jpeg \
     --with-json \
+    --with-lcms2 \
     --with-libotf \
+    --with-libsystemd \
+    --with-m17n-flt \
     --with-mailutils \
     --with-modules \
     --with-png \
     --with-rsvg \
     --with-sound \
+    --with-selinux \
     --with-threads \
     --with-tiff \
     --with-xft \
