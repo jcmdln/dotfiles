@@ -134,7 +134,7 @@ system defaults.
 
 #+begin_src emacs-lisp
 (load-theme 'tango-dark)
-(set-face-attribute :family "Monospace")
+(set-face-attribute :family "Noto Mono")
 #+end_src
 
 Next we'll adjust some settings to improve editing files.
