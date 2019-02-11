@@ -13,11 +13,12 @@ small details.
 ### emacs-nox
 ```
 ./configure \
-    CFLAGS="-g3 -O3 -pipe" \
+    CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
     --without-x \
     --with-gnutls \
-    --with-jansson \
+    --with-gpm \
+    --with-json \
     --with-mailutils \
     --with-modules \
     --with-threads \
@@ -29,10 +30,11 @@ small details.
 ### emacs
 ```
 ./configure \
-    CFLAGS="-g3 -O3 -pipe" \
+    CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
     --with-gif \
     --with-gnutls \
+    --with-gpm \
     --with-imagemagick \
     --with-jpeg \
     --with-json \
