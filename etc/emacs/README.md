@@ -16,11 +16,12 @@ small details.
     CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
     --without-x \
+    --with-file-notification \
     --with-gnutls \
-    --with-gpm \
     --with-json \
     --with-mailutils \
     --with-modules \
+    --with-selinux \
     --with-threads \
     --with-xml2 \
     --with-zlib
