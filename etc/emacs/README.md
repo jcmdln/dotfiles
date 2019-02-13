@@ -15,10 +15,13 @@ small details.
 ./configure \
     CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
-    --without-x \
+    --enable-acl \
+    --with-dbus \
     --with-file-notification \
     --with-gnutls \
     --with-json \
+    --with-libsystemd \
+    --with-m17n-flt \
     --with-mailutils \
     --with-modules \
     --with-selinux \
