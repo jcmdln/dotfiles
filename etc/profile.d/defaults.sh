@@ -1,13 +1,8 @@
 # /etc/profile.d/defaults.sh
+#
+# Define various exports that don't need a separate section or file.
 
-## User Directories
-if [ "$(whoami)" != 'root' ]; then
-    Folders="Documents Downloads Music Pictures Projects Videos"
-
-    for Folder in $Folders; do
-	[ -d "$HOME"/"$Folder" ] ||
-	    mkdir "$HOME"/"$Folder"
-    done
-
-    unset Folders
-fi
+export LANG="en_US.UTF-8"
+export PAGER="less"
+export PROMPT_COMMAND="history -a"
+export TERM="xterm-256color"

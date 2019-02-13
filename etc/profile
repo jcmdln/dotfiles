@@ -20,38 +20,6 @@ case $- in
 esac
 
 
-# Define various exports that don't need a separate section.
-
-export LANG="en_US.UTF-8"
-export PAGER="less"
-export PROMPT_COMMAND="history -a"
-export TERM="xterm-256color"
-
-
-# Define the default editor. This will attempt to use Emacs, then Vim,
-# then default to vi depending on which was located first.
-
-if [ -x $(command -v emacs) ]; then
-    export EDITOR="emacs -nw"
-elif [ -x $(command -v vim) ]; then
-    export EDITOR="vim"
-else
-    export EDITOR="vi"
-fi
-
-
-# Set PS1 to '[user@hostname <current directory>]$' across multiple
-# shells.
-
-if [ -e "$ZSH_VERSION" ]; then
-    PS1="[%n@%M %d]$ "
-else
-    PS1="[\u@\h \W]\$ "
-fi
-
-export PS1
-
-
 # Define PATH and MANPATH, somewhat exhaustively, to support most UNIX
 # systems. Non-generic additions to these variables should exist in
 # their own respective 'profile.d/*.sh' file.
@@ -71,7 +39,7 @@ export PATH MANPATH
 
 if [ -d "/etc/profile.d" ]; then
     for sh in /etc/profile.d/*.sh; do
-	[ -r "$sh" ] && . "$sh"
+        [ -r "$sh" ] && . "$sh"
     done
 
     unset sh
