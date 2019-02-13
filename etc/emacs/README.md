@@ -38,7 +38,6 @@ small details.
     --with-file-notification \
     --with-gif \
     --with-gnutls \
-    --with-gpm \
     --with-imagemagick \
     --with-jpeg \
     --with-json \
@@ -50,8 +49,8 @@ small details.
     --with-modules \
     --with-png \
     --with-rsvg \
-    --with-sound \
     --with-selinux \
+    --with-sound \
     --with-threads \
     --with-tiff \
     --with-xft \
