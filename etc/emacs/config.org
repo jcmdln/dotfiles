@@ -107,6 +107,12 @@ configuration should be in it's own file rather than being dumped into
 init.el messily.
 
 #+begin_src emacs-lisp
+(add-to-list 'display-buffer-alist
+             '("*Help*" display-buffer-same-window))
+
+(add-to-list 'display-buffer-alist
+             '("*Man*" display-buffer-same-window))
+
 (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
 
@@ -460,6 +466,8 @@ readable sizes, and define a ton of filter groups.
 
   (setq ibuffer-saved-filter-groups
         (quote (("default"
+                 ("EXWM" (mode . exwm-mode))
+
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
@@ -470,20 +478,28 @@ readable sizes, and define a ton of filter groups.
                       (name . "^\\*Disabled Command\\*$")
                       (mode . dired-mode)))
 
+                 ("man"
+                  (or (name . "^\\*Man ")
+                      (name . "^\\*WoMan")))
+
+                 ("dev"
+                  (or (name . "^\\*clang-")
+                      (name . "^\\*RTags\\*$")
+                      (name . "magit")
+                      (name . "COMMIT_EDITMSG")))
+
+                 ("fly"
+                  (or (name . "^\\*Flycheck")
+                      (name . "^\\*Flyspell")))
+
                  ("circe"
                   (or (mode . circe-mode)
                       (mode . circe-channel-mode)
                       (mode . circe-server-mode)))
 
-                 ("clang"  (name . "^\\*clang-"))
-                 ("dev"    (name . "^\\*RTags\\*$"))
                  ("elfeed" (name . "^\\*elfeed"))
                  ("eshell" (mode . eshell-mode))
                  ("eww"    (name . "^\\*eww\\*"))
-
-                 ("fly"
-                  (or (name . "^\\*Flycheck")
-                      (name . "^\\*Flyspell")))
 
                  ("gnus"
                   (or (mode . message-mode)
@@ -493,15 +509,7 @@ readable sizes, and define a ton of filter groups.
                       (mode . gnus-summary-mode)
                       (mode . gnus-article-mode)
                       (name . "^\\.bbdb$")
-                      (name . "^\\.newsrc-dribble")))
-
-                 ("magit"
-                  (or (name . "magit")
-                      (name . "COMMIT_EDITMSG")))
-
-                 ("man"
-                  (or (name . "^\\*Man ")
-                      (name . "^\\*WoMan")))))))
+                      (name . "^\\.newsrc-dribble")))))))
 
   (setq ibuffer-formats
         '((mark modified read-only " "
@@ -1116,6 +1124,20 @@ suspect others wouldn't use, though I use these rather heavily.
 
   (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
       (load-file     "~/.emacs.d/usr/elfeed.el")))
+#+end_src
+
+*** exwm
+#+begin_src emacs-lisp
+;;(use-package exwm
+;;  :init
+;;  (require 'exwm-config)
+;;  (exwm-config-default)
+
+;;  :config
+;;  (global-set-key (kbd "C-c <down>")  'windmove-down)
+;;  (global-set-key (kbd "C-c <left>")  'windmove-left)
+;;  (global-set-key (kbd "C-c <right>") 'windmove-right)
+;;  (global-set-key (kbd "C-c <up>")    'windmove-up))
 #+end_src
 
 *** helpful
