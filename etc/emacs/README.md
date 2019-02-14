@@ -3,16 +3,40 @@ Please see
 [config.org](https://github.com/jcmdln/config/blob/master/etc/emacs/config.org)
 for documentation about my configuration.
 
+
 ## Compiling
-I prefer compiling emacs without GUI support using the master branch for
-early access to features. I suspect this would not be very different to
-`emacs-nox` packages already available on most OS's, aside from some
-small details.
+I prefer using the master branch of the official Emacs git repository,
+and track it for updates. Below are two variants I commonly use
+depending on the target platform.
 
+I'm not going to list all the dependencies for each platform.
 
-### emacs-nox
+### Linux
+
+Fully bloated Emacs, with _almost_ everything enabled.
 ```
+git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
+cd emacs && \
+./autogen.sh && \
 ./configure \
+    CC="clang" \
+    CFLAGS="-march=native -pipe -O2 -g3" \
+    --with-all \
+	--with-cairo \
+    --with-mailutils \
+    --with-modules \
+	--with-xwidgets && \
+make -j$(grep -c ^processor /proc/cpuinfo) && \
+sudo make install
+```
+
+Minimal Emacs without graphical support or other such posh features.
+```
+git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
+cd emacs && \
+./autogen.sh && \
+./configure \
+    CC="clang" \
     CFLAGS="-march=native -pipe -O2 -g3" \
     --without-all \
     --enable-acl \
@@ -27,37 +51,7 @@ small details.
     --with-selinux \
     --with-threads \
     --with-xml2 \
-    --with-zlib
-```
-
-
-### emacs
-```
-./configure \
-    CFLAGS="-march=native -pipe -O2 -g3" \
-    --without-all \
-    --enable-acl \
-    --with-dbus \
-    --with-file-notification \
-    --with-gif \
-    --with-gnutls \
-    --with-imagemagick \
-    --with-jpeg \
-    --with-json \
-    --with-lcms2 \
-    --with-libotf \
-    --with-libsystemd \
-    --with-m17n-flt \
-    --with-mailutils \
-    --with-modules \
-    --with-png \
-    --with-rsvg \
-    --with-selinux \
-    --with-sound \
-    --with-threads \
-    --with-tiff \
-    --with-xft \
-    --with-xml2 \
-    --with-xpm \
-    --with-zlib
+    --with-zlib && \
+make -j$(grep -c ^processor /proc/cpuinfo) && \
+sudo make install
 ```
