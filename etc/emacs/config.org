@@ -901,15 +901,10 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-;;go get -u -v \
-;;   github.com/go-delve/delve/cmd/dlv \
-;;   github.com/jstemmer/gotags \
-;;   github.com/mdempsky/gocode \
-;;   github.com/rogpeppe/godef \
-;;   golang.org/x/lint/golint \
-;;   golang.org/x/tools/cmd/goimports \
-;;   golang.org/x/tools/cmd/gorename \
-;;   golang.org/x/tools/cmd/guru
+(defun go-mode-install()
+  "Install go-mode dependencies and log to *Messages*."
+  (interactive)
+  (eshell-command "go get -u -v github.com/go-delve/delve/cmd/dlv github.com/jstemmer/gotags github.com/mdempsky/gocode github.com/rogpeppe/godef golang.org/x/lint/golint golang.org/x/tools/cmd/goimports golang.org/x/tools/cmd/gorename golang.org/x/tools/cmd/guru"))
 
 (use-package go-mode
   :init
