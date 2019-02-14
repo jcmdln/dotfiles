@@ -19,7 +19,6 @@ Fully bloated Emacs, with _almost_ everything enabled:
 		CC="clang" \
 		CFLAGS="-march=native -pipe -O2 -g3" \
 		--with-all \
-		--with-cairo \
 		--with-mailutils \
 		--with-modules \
 		--with-xwidgets && \
