@@ -9,49 +9,45 @@ I prefer using the master branch of the official Emacs git repository,
 and track it for updates. Below are two variants I commonly use
 depending on the target platform.
 
-I'm not going to list all the dependencies for each platform.
 
-### Linux
+Fully bloated Emacs, with _almost_ everything enabled:
 
-Fully bloated Emacs, with _almost_ everything enabled.
-```
-git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
-cd emacs && \
-./autogen.sh && \
-./configure \
-    CC="clang" \
-    CFLAGS="-march=native -pipe -O2 -g3" \
-    --with-all \
-	--with-cairo \
-    --with-mailutils \
-    --with-modules \
-	--with-xwidgets && \
-make -j$(grep -c ^processor /proc/cpuinfo) && \
-sudo make install
-```
+	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
+	cd emacs && \
+	./autogen.sh && \
+	./configure \
+		CC="clang" \
+		CFLAGS="-march=native -pipe -O2 -g3" \
+		--with-all \
+		--with-cairo \
+		--with-mailutils \
+		--with-modules \
+		--with-xwidgets && \
+	make -j$(grep -c ^processor /proc/cpuinfo) && \
+	sudo make install
 
-Minimal Emacs without graphical support or other such posh features.
-```
-git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
-cd emacs && \
-./autogen.sh && \
-./configure \
-    CC="clang" \
-    CFLAGS="-march=native -pipe -O2 -g3" \
-    --without-all \
-    --enable-acl \
-    --with-dbus \
-    --with-file-notification \
-    --with-gnutls \
-    --with-json \
-    --with-libsystemd \
-    --with-m17n-flt \
-    --with-mailutils \
-    --with-modules \
-    --with-selinux \
-    --with-threads \
-    --with-xml2 \
-    --with-zlib && \
-make -j$(grep -c ^processor /proc/cpuinfo) && \
-sudo make install
-```
+
+Minimal Emacs without graphical support or other such posh features:
+
+	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
+	cd emacs && \
+	./autogen.sh && \
+	./configure \
+		CC="clang" \
+		CFLAGS="-march=native -pipe -O2 -g3" \
+		--without-all \
+		--enable-acl \
+		--with-dbus \
+		--with-file-notification \
+		--with-gnutls \
+		--with-json \
+		--with-libsystemd \
+		--with-m17n-flt \
+		--with-mailutils \
+		--with-modules \
+		--with-selinux \
+		--with-threads \
+		--with-xml2 \
+		--with-zlib && \
+	make -j$(grep -c ^processor /proc/cpuinfo) && \
+	sudo make install
