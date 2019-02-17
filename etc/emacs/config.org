@@ -912,7 +912,7 @@ better.
 (defun go-mode-install()
   "Install go-mode dependencies and log to *Messages*."
   (interactive)
-  (eshell-command "go get -u -v github.com/go-delve/delve/cmd/dlv github.com/jstemmer/gotags github.com/mdempsky/gocode github.com/rogpeppe/godef golang.org/x/lint/golint golang.org/x/tools/cmd/goimports golang.org/x/tools/cmd/gorename golang.org/x/tools/cmd/guru"))
+  (eshell-command "go get -u -v github.com/go-delve/delve/cmd/dlv github.com/jstemmer/gotags github.com/stamblerre/gocode github.com/rogpeppe/godef golang.org/x/lint/golint golang.org/x/tools/cmd/goimports golang.org/x/tools/cmd/gorename golang.org/x/tools/cmd/guru"))
 
 (use-package go-mode
   :init
@@ -925,10 +925,11 @@ better.
                    '(company-go))
               (company-mode t))))
 
-(use-package go-eldoc
-  :after (go-mode)
-  :init
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
+;;(use-package go-eldoc
+;;  :after (go-mode)
+;;  :init
+;;  (add-hook 'go-mode-hook 'go-eldoc-setup)
+;;  (go-eldoc))
 
 (use-package golint
   :after (go-mode))
