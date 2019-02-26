@@ -228,8 +228,11 @@ xterm support:
 #+begin_src emacs-lisp
 (setq mouse-wheel-follow-mouse      't
       mouse-wheel-progressive-speed nil
-      mouse-wheel-scroll-amount     '(1 ((shift) . 1))
-      xterm-mouse-mode              t)
+      mouse-wheel-scroll-amount     '(1 ((shift) . 1)))
+
+(add-hook 'after-init-hook
+          (lambda()
+            (xterm-mouse-mode 1)))
 
 (global-set-key (kbd "<mouse-4>")
                 (lambda() (interactive) (scroll-down-line 3)))
