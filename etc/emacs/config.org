@@ -928,8 +928,7 @@ better.
 ;;(use-package go-eldoc
 ;;  :after (go-mode)
 ;;  :init
-;;  (add-hook 'go-mode-hook 'go-eldoc-setup)
-;;  (go-eldoc))
+;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package golint
   :after (go-mode))
