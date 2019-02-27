@@ -831,7 +831,7 @@ better.
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
-            (setq-local c-default-style  "cc-mode")
+            (setq-local c-default-style  "linux")
             (setq-local c-set-style      "linux")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
@@ -928,8 +928,7 @@ better.
 ;;(use-package go-eldoc
 ;;  :after (go-mode)
 ;;  :init
-;;  (add-hook 'go-mode-hook 'go-eldoc-setup)
-;;  (go-eldoc))
+;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package golint
   :after (go-mode))
