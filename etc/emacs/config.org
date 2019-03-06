@@ -485,14 +485,15 @@ readable sizes, and define a ton of filter groups.
                   (or (name . "^\\*Man ")
                       (name . "^\\*WoMan")))
 
+                 ("pdf"
+                  (or (mode . pdf-view-mode)))
+
                  ("dev"
                   (or (name . "^\\*clang-")
-                      (name . "^\\*RTags\\*$")
+                      (name . "^\\*RTags")
                       (name . "magit")
-                      (name . "COMMIT_EDITMSG")))
-
-                 ("fly"
-                  (or (name . "^\\*Flycheck")
+                      (name . "COMMIT_EDITMSG")
+                      (name . "^\\*Flycheck")
                       (name . "^\\*Flyspell")))
 
                  ("circe"
@@ -502,7 +503,7 @@ readable sizes, and define a ton of filter groups.
 
                  ("elfeed" (name . "^\\*elfeed"))
                  ("eshell" (mode . eshell-mode))
-                 ("eww"    (name . "^\\*eww\\*"))
+                 ("eww"    (name . "^\\*eww"))
 
                  ("gnus"
                   (or (mode . message-mode)
@@ -1164,7 +1165,9 @@ https://github.com/politza/pdf-tools#installation
 
 #+begin_src emacs-lisp
 (use-package pdf-tools
-  :demand t)
+  :demand t
+  :config
+  (pdf-loader-install))
 #+end_src
 
 *** ranger
