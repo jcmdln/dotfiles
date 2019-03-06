@@ -964,7 +964,6 @@ better.
 #+begin_src emacs-lisp
 (use-package protobuf-mode)
 (use-package qml-mode)
-(use-package racket-mode)
 #+end_src
 
 #+begin_src emacs-lisp
