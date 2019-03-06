@@ -474,38 +474,29 @@ readable sizes, and define a ton of filter groups.
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
                       (name . "^\\*Messages\\*$")
+                      (name . "^\\*Help\\*$")
                       (name . "^\\*Completions\\*$")
                       (name . "^\\*Compile-Log\\*")
                       (name . "^\\*Customize\\*")
-                      (name . "^\\*Help\\*$")
-                      (name . "^\\*Disabled Command\\*$")
-                      (mode . dired-mode)))
+                      (name . "^\\*Disabled Command\\*$")))
 
-                 ("man"
+                 ("apps"
+                  (or (mode . dired-mode)
+                      (mode . eshell-mode)))
+
+                 ("docs"
                   (or (name . "^\\*Man ")
-                      (name . "^\\*WoMan")))
+                      (name . "^\\*WoMan")
+                      (mode . pdf-view-mode)))
 
-                 ("pdf"
-                  (or (mode . pdf-view-mode)))
-
-                 ("dev"
-                  (or (name . "^\\*clang-")
-                      (name . "^\\*RTags")
-                      (name . "magit")
-                      (name . "COMMIT_EDITMSG")
-                      (name . "^\\*Flycheck")
-                      (name . "^\\*Flyspell")))
-
-                 ("circe"
-                  (or (mode . circe-mode)
+                 ("net"
+                  (or (mode . eww-mode)
+                      (name . "^\\*elfeed")
+                            (mode . circe-mode)
                       (mode . circe-channel-mode)
                       (mode . circe-server-mode)))
 
-                 ("elfeed" (name . "^\\*elfeed"))
-                 ("eshell" (mode . eshell-mode))
-                 ("eww"    (name . "^\\*eww"))
-
-                 ("gnus"
+                 ("mail"
                   (or (mode . message-mode)
                       (mode . bbdb-mode)
                       (mode . mail-mode)
@@ -513,7 +504,17 @@ readable sizes, and define a ton of filter groups.
                       (mode . gnus-summary-mode)
                       (mode . gnus-article-mode)
                       (name . "^\\.bbdb$")
-                      (name . "^\\.newsrc-dribble")))))))
+                      (name . "^\\.newsrc-dribble")))
+
+                 ("dev"
+                  (or (name . "^\\*clang")
+                      (name . "^\\*gcc")
+                      (name . "^\\*RTags")
+                      (name . "^\\*rmd\\*")
+                      (name . "magit")
+                      (name . "COMMIT_EDITMSG")
+                      (name . "^\\*Flycheck")
+                      (name . "^\\*Flyspell")))))))
 
   (setq ibuffer-formats
         '((mark modified read-only " "
