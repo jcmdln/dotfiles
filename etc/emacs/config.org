@@ -510,7 +510,7 @@ readable sizes, and define a ton of filter groups.
                   (or (name . "^\\*clang")
                       (name . "^\\*gcc")
                       (name . "^\\*RTags")
-                      (name . "^\\*rmd\\*")
+                      (name . "^\\*rdm\\*")
                       (name . "magit")
                       (name . "COMMIT_EDITMSG")
                       (name . "^\\*Flycheck")
