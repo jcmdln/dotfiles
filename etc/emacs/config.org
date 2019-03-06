@@ -870,10 +870,10 @@ better.
 #+begin_src emacs-lisp
 (add-hook 'org-mode-hook
           (lambda()
-            (add-hook 'org-metaup-hook    'windmove-up)
-            (add-hook 'org-metaleft-hook  'windmove-left)
-            (add-hook 'org-metadown-hook  'windmove-down)
-            (add-hook 'org-metaright-hook 'windmove-right)
+            (add-hook 'org-metaup-hook    'windmove-up    'local)
+            (add-hook 'org-metaleft-hook  'windmove-left  'local)
+            (add-hook 'org-metadown-hook  'windmove-down  'local)
+            (add-hook 'org-metaright-hook 'windmove-right 'local)
 
             (setq-local org-support-shift-select 'always)))
 #+end_src
@@ -890,7 +890,7 @@ better.
 #+begin_src emacs-lisp
 (use-package clojure-mode
   :init
-  (add-hook 'clojure-mode-hook 'flycheck-clojure))
+  (add-hook 'clojure-mode-hook 'flycheck-clojure 'local))
 
 (use-package flycheck-clojure)
 #+end_src
@@ -920,9 +920,9 @@ better.
 
 (use-package go-mode
   :init
-  (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
             (lambda()
+              (add-hook 'before-save-hook 'gofmt-before-save 'local)
               (setq-local tab-width        4)
               (setq-local indent-tabs-mode t)
               (set (make-local-variable 'company-backends)
