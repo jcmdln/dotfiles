@@ -310,7 +310,6 @@ configuration by using no-littering:
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
-
   :config
   (setq-local auto-save-file-name-transforms
               `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
@@ -376,6 +375,7 @@ toggle displaying images in a specific buffer, you may now do so.
 
 #+begin_src emacs-lisp
 (use-package eww
+  :disabled
   :init
   (setq browse-url-browser-function 'eww-browse-url)
 
@@ -399,8 +399,8 @@ toggle displaying images in a specific buffer, you may now do so.
       (eww url))))
 
 (use-package eww-lnum
+  :disabled
   :after (eww)
-
   :init
   (add-hook 'eww-mode-hook
             (lambda()
@@ -415,6 +415,7 @@ clients.
 
 #+begin_src emacs-lisp
 (use-package gnus
+  :disabled
   :bind
   (("<M-down>" . windmove-down)
    ("<M-up>"   . windmove-up))
@@ -546,9 +547,7 @@ you may appreciate the additional functions.
 
 #+begin_src emacs-lisp
 (use-package server
-  :bind
-  ("C-x C-c" . server-stop)
-
+  :bind ("C-x C-c" . server-stop)
   :init
   (unless (and (fboundp 'server-running-p)
                (server-running-p))
@@ -621,7 +620,6 @@ implies, are essential for me.
             (lambda ()
               (add-hook 'after-save-hook
                         'counsel-etags-virtual-update-tags 'append 'local)))
-
   (add-hook 'c++-mode-hook
             (lambda ()
               (add-hook 'after-save-hook
@@ -669,7 +667,6 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package smartparens
   :demand t
-
   :init
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook     'smartparens-mode)
@@ -685,7 +682,6 @@ implies, are essential for me.
 #+begin_src emacs-lisp
 (use-package undo-tree
   :demand t
-
   :config
   (global-undo-tree-mode))
 #+end_src
@@ -736,9 +732,11 @@ deleted, and on save all tabs are replaced with spaces.
   (setq company-begin-commands '(self-insert-command)))
 
 (use-package company-ansible
+  :disabled
   :after (company ansible-vault))
 
 (use-package company-emoji
+  :disabled
   :after (company))
 
 (use-package company-irony
@@ -757,6 +755,7 @@ deleted, and on save all tabs are replaced with spaces.
   :after (company))
 
 (use-package company-web
+  :disabled
   :after (company))
 #+end_src
 
@@ -772,13 +771,11 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package flycheck
   :demand t
-
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flycheck-inline
   :demand t
-
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 #+end_src
@@ -792,8 +789,7 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package highlight-indent-guides
   :demand t
-
-  :init
+  :init 
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
   :config
@@ -875,39 +871,52 @@ better.
             (add-hook 'org-metaleft-hook  'windmove-left  'local)
             (add-hook 'org-metadown-hook  'windmove-down  'local)
             (add-hook 'org-metaright-hook 'windmove-right 'local)
-
             (setq-local org-support-shift-select 'always)))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package ahk-mode)
-(use-package android-mode)
-(use-package angular-mode)
-(use-package ansible-vault)
-(use-package apache-mode)
+(use-package ahk-mode
+  :disabled)
+(use-package android-mode
+  :disabled)
+(use-package angular-mode
+  :disabled)
+(use-package ansible-vault
+  :disabled)
+(use-package apache-mode
+  :disabled)
 (use-package caddyfile-mode)
 #+end_src
 
 #+begin_src emacs-lisp
 (use-package clojure-mode
+  :disabled
   :init
   (add-hook 'clojure-mode-hook 'flycheck-clojure 'local))
 
-(use-package flycheck-clojure)
+(use-package flycheck-clojure
+  :disabled)
 #+end_src
 
 #+begin_src emacs-lisp
 (use-package cmake-mode)
-(use-package coffee-mode)
-(use-package csharp-mode)
-(use-package cuda-mode)
-(use-package d-mode)
-(use-package dart-mode)
+(use-package coffee-mode
+  :disabled)
+(use-package csharp-mode
+  :disabled)
+(use-package cuda-mode
+  :disabled)
+(use-package d-mode
+  :disabled)
+(use-package dart-mode
+  :disabled)
 (use-package docker-compose-mode)
 (use-package dockerfile-mode)
 (use-package dotenv-mode)
-(use-package es-mode)
-(use-package gdscript-mode)
+(use-package es-mode
+  :disabled)
+(use-package gdscript-mode
+  :disabled)
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
@@ -930,10 +939,11 @@ better.
                    '(company-go))
               (company-mode t))))
 
-;;(use-package go-eldoc
-;;  :after (go-mode)
-;;  :init
-;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
+(use-package go-eldoc
+  :disabled
+  :after (go-mode)
+  :init
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package golint
   :after (go-mode))
@@ -943,10 +953,13 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package gradle-mode)
+(use-package gradle-mode
+  :disabled)
 (use-package json-mode)
-(use-package less-css-mode)
-(use-package lua-mode)
+(use-package less-css-mode
+  :disabled)
+(use-package lua-mode
+  :disabled)
 (use-package markdown-mode)
 (use-package markdown-preview-mode)
 (use-package meson-mode)
@@ -956,19 +969,24 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package php-mode)
+(use-package php-mode
+  :disabled)
 
 (use-package company-php
+  :disabled
   :after (company php-mode))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package protobuf-mode)
-(use-package qml-mode)
+(use-package protobuf-mode
+  :disabled)
+(use-package qml-mode
+  :disabled)
 #+end_src
 
 #+begin_src emacs-lisp
 (use-package rjsx-mode
+  :disabled
   :init
   (add-to-list 'auto-mode-alist
                '("components\\/.*\\.js\\'" . rjsx-mode))
@@ -980,12 +998,18 @@ better.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package rust-mode)
-(use-package sass-mode)
-(use-package swift-mode)
-(use-package systemd)
-(use-package typescript-mode)
-(use-package vue-mode)
+(use-package rust-mode
+  :disabled)
+(use-package sass-mode
+  :disabled)
+(use-package swift-mode
+  :disabled)
+(use-package systemd
+  :disabled)
+(use-package typescript-mode
+  :disabled)
+(use-package vue-mode
+  :disabled)
 (use-package yaml-mode)
 #+end_src
 
@@ -993,7 +1017,6 @@ better.
 #+begin_src emacs-lisp
 (use-package magit
   :demand t
-
   :bind
   ("C-c C-c" . with-editor-finish))
 #+end_src
@@ -1002,7 +1025,6 @@ better.
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :demand t
-
   :init
   (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
@@ -1011,7 +1033,8 @@ better.
 
 *** realgud
 #+begin_src emacs-lisp
-(use-package realgud)
+(use-package realgud
+  :disabled)
 #+end_src
 
 *** rtags
@@ -1036,13 +1059,11 @@ better.
 
 (use-package company-rtags
   :after (company)
-
   :config
   (push 'company-rtags company-backends))
 
 (use-package flycheck-rtags
   :after (rtags flycheck)
-
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode))
 #+end_src
@@ -1062,6 +1083,7 @@ suspect others wouldn't use, though I use these rather heavily.
 *** circe
 #+begin_src emacs-lisp
 (use-package circe
+  :disabled
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
@@ -1119,29 +1141,28 @@ suspect others wouldn't use, though I use these rather heavily.
 *** elfeed
 #+begin_src emacs-lisp
 (use-package elfeed
-  :bind
-  ("C-x w" . elfeed)
-
+  :disabled
+  :bind ("C-x w" . elfeed)
   :config
   (setq-local elfeed-search-filter "@1-week-ago +unread ")
   (setq-local url-queue-timeout    30)
-
   (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
       (load-file     "~/.emacs.d/usr/elfeed.el")))
 #+end_src
 
 *** exwm
 #+begin_src emacs-lisp
-;;(use-package exwm
-;;  :init
-;;  (require 'exwm-config)
-;;  (exwm-config-default)
+(use-package exwm
+  :disabled
+  :init
+  (require 'exwm-config)
+  (exwm-config-default)
 
-;;  :config
-;;  (global-set-key (kbd "C-c <down>")  'windmove-down)
-;;  (global-set-key (kbd "C-c <left>")  'windmove-left)
-;;  (global-set-key (kbd "C-c <right>") 'windmove-right)
-;;  (global-set-key (kbd "C-c <up>")    'windmove-up))
+  :config
+  (global-set-key (kbd "C-c <down>")  'windmove-down)
+  (global-set-key (kbd "C-c <left>")  'windmove-left)
+  (global-set-key (kbd "C-c <right>") 'windmove-right)
+  (global-set-key (kbd "C-c <up>")    'windmove-up))
 #+end_src
 
 *** helpful
@@ -1152,6 +1173,7 @@ suspect others wouldn't use, though I use these rather heavily.
 *** nov
 #+begin_src emacs-lisp
 (use-package nov
+  :disabled
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 #+end_src
@@ -1164,10 +1186,10 @@ package as outlined in the following url:
 https://github.com/politza/pdf-tools#installation
 
 #+begin_src emacs-lisp
-;;(use-package pdf-tools
-;;  :demand t
-;;  :config
-;;  (pdf-loader-install))
+(use-package pdf-tools
+  :disabled
+  :config
+  (pdf-loader-install))
 #+end_src
 
 *** ranger
