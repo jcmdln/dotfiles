@@ -1164,10 +1164,10 @@ package as outlined in the following url:
 https://github.com/politza/pdf-tools#installation
 
 #+begin_src emacs-lisp
-(use-package pdf-tools
-  :demand t
-  :config
-  (pdf-loader-install))
+;;(use-package pdf-tools
+;;  :demand t
+;;  :config
+;;  (pdf-loader-install))
 #+end_src
 
 *** ranger
