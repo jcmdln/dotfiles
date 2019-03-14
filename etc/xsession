@@ -1,0 +1,4 @@
+# /etc/xinitrc
+
+export ENV="$HOME/.profile"
+i3
