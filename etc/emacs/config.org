@@ -98,7 +98,7 @@ total number of GC pauses we experience while not drastically
 increasing the amount of time needed for GC to complete.
 
 #+begin_src emacs-lisp
-(setq gc-cons-threshold  (* 2 1024 1024))
+(setq gc-cons-threshold (* 2 1024 1024))
 #+end_src
 
 ** Custom Configuration
@@ -636,6 +636,7 @@ implies, are essential for me.
 *** flyspell
 #+begin_src emacs-lisp
 (use-package flyspell
+  :disabled
   :init
   (add-hook 'markdown-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook     'flyspell-prog-mode)
@@ -689,6 +690,7 @@ implies, are essential for me.
 *** xclip
 #+begin_src emacs-lisp
 (use-package xclip
+  :disabled
   :init
   (xclip-mode 1))
 #+end_src
@@ -714,7 +716,8 @@ deleted, and on save all tabs are replaced with spaces.
 
 *** clang-format
 #+begin_src emacs-lisp
-(use-package clang-format)
+(use-package clang-format
+  :disabled)
 #+end_src
 
 *** company
@@ -752,6 +755,7 @@ deleted, and on save all tabs are replaced with spaces.
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
 
 (use-package company-shell
+  :disabled
   :after (company))
 
 (use-package company-web
@@ -885,7 +889,8 @@ better.
   :disabled)
 (use-package apache-mode
   :disabled)
-(use-package caddyfile-mode)
+(use-package caddyfile-mode
+  :disabled)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -961,11 +966,14 @@ better.
 (use-package lua-mode
   :disabled)
 (use-package markdown-mode)
-(use-package markdown-preview-mode)
+(use-package markdown-preview-mode
+  :disabled)
 (use-package meson-mode)
 (use-package nginx-mode)
-(use-package ninja-mode)
-(use-package npm-mode)
+(use-package ninja-mode
+  :disabled)
+(use-package npm-mode
+  :disabled)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1076,6 +1084,7 @@ suspect others wouldn't use, though I use these rather heavily.
 *** auto-dictionary
 #+begin_src emacs-lisp
 (use-package auto-dictionary
+  :disabled
   :config
   (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
 #+end_src
@@ -1128,12 +1137,14 @@ suspect others wouldn't use, though I use these rather heavily.
 
 *** define-word
 #+begin_src emacs-lisp
-(use-package define-word)
+(use-package define-word
+  :disabled)
 #+end_src
 
 *** dimmer
 #+begin_src emacs-lisp
 (use-package dimmer
+  :disabled
   :init
   (add-hook 'after-init-hook 'dimmer-mode))
 #+end_src
