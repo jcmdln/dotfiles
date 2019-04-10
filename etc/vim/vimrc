@@ -76,10 +76,7 @@ let g:tmuxline_powerline_separators = 0
 """ Utilities ===================================
 
 Plug 'spolu/dwm.vim'                   " Tiled Window Management
-Plug 'Shougo/vimfiler.vim'             " Powerful file explorer
 Plug 'tpope/vim-eunuch'                " Helpers for UNIX
-Plug 'tpope/vim-dispatch'              " Async Build/Test
-Plug 'benmills/vimux'                  " tmux Integration
 
 Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
 if executable('ag')
@@ -186,9 +183,5 @@ Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
 Plug 'airblade/vim-gitgutter'          " Show git diff in the gutter
 nmap <Leader>ha <Plug>GitGutterStageHunk
 nmap <Leader>hr <Plug>GitGutterUndoHunk
-
-Plug 'tpope/vim-fugitive'              " Git wrapper
-Plug 'tpope/vim-git'                   " Git integration
-Plug 'mattn/gist-vim'                  " Gist upload (GitHub)
 
 call plug#end()
