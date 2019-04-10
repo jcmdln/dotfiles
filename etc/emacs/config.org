@@ -789,7 +789,7 @@ deleted, and on save all tabs are replaced with spaces.
 #+begin_src emacs-lisp
 (use-package highlight-indent-guides
   :demand t
-  :init 
+  :init
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
   :config
