@@ -25,7 +25,7 @@ printf "done\n"
 
 printf "setup: Installing base packages"
 sudo dnf install -y \
-     bpftrace chromium{,-libs-media-freeworld} cloc connman dmenu dnf-utils docker emacs git gnome-terminal golang htop i3{,lock,status} linux-firmware mlocate nodejs pavucontrol pciutils pipewire plasma-breeze pulseaudio{,-utils} pypy3{,-{devel,libs}} scrot tmux tree unzip usbutils vim-X11 x{init,randr,set} \
+     bpftrace chromium{,-libs-media-freeworld} cloc connman dmenu dnf-utils docker emacs geary git gnome-terminal golang htop i3{,lock,status} linux-firmware mlocate nodejs pavucontrol pciutils pipewire plasma-breeze pulseaudio{,-utils} scrot tmux tree unzip usbutils vim-X11 x{init,randr,set} \
      > /dev/null 2>&1 \
     || exit 1
 printf "done\n"
