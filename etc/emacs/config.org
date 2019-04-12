@@ -688,9 +688,9 @@ implies, are essential for me.
 #+end_src
 
 *** xclip
+
 #+begin_src emacs-lisp
 (use-package xclip
-  :disabled
   :init
   (xclip-mode 1))
 #+end_src
