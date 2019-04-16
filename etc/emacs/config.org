@@ -25,8 +25,8 @@ behavior.
 The way my configuration is defined is that you should only need to
 share this file to replicate the entire setup.
 
-To use this configuration file, simply download and move it to 
-"~/.emacs.d/config.org". Next, you will run the following in your 
+To use this configuration file, simply download and move it to
+"~/.emacs.d/config.org". Next, you will run the following in your
 terminal:
 
 #+begin_src shell :tangle no
@@ -399,7 +399,6 @@ toggle displaying images in a specific buffer, you may now do so.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package eww
-  :disabled
   :init
   (setq browse-url-browser-function 'eww-browse-url)
 
@@ -427,7 +426,6 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package eww-lnum
-  :disabled
   :after (eww)
   :init
   (add-hook 'eww-mode-hook
