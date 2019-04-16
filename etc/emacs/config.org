@@ -744,7 +744,6 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package xclip
-  :disabled
   :init
   (xclip-mode 1))
 #+end_src
