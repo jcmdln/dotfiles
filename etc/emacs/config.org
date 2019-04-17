@@ -1461,6 +1461,8 @@ suspect others wouldn't use, though I use these rather heavily.
 ***** auto-dictionary
 Missing description
 
+Source: https://github.com/nschum/auto-dictionary-mode
+
 #+begin_src emacs-lisp :tangle config.el
 (use-package auto-dictionary
   :disabled
@@ -1469,7 +1471,9 @@ Missing description
 #+end_src
 
 ***** circe
-Missing description
+This package adds _another_ IRC client, which is my preferred client
+even over irssi, weechat, or other clients I've used in the past. This
+should only be situationally enabled, and is disabled by default.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package circe
@@ -1518,7 +1522,10 @@ Missing description
 #+end_src
 
 ***** define-word
-Missing description
+This package lets you quickly see the definition of a word or a phrase,
+and is disabled by default.
+
+Source: https://github.com/abo-abo/define-word
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package define-word
@@ -1526,7 +1533,11 @@ Missing description
 #+end_src
 
 ***** dimmer
-Missing description
+This package provides a minor mode which dims inactive buffers, namely
+the buffers the cursor is not currently active in. It can be helpful
+for those who use many buffers, though is disabled by default.
+
+Source: https://github.com/gonewest818/dimmer.el
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package dimmer
@@ -1536,7 +1547,10 @@ Missing description
 #+end_src
 
 ***** elfeed
-Missing description
+This package provides an extensible web feed reader, supporting both
+RSS and Atom.
+
+Source: https://github.com/skeeto/elfeed
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package elfeed
@@ -1550,7 +1564,11 @@ Missing description
 #+end_src
 
 ***** exwm
-Missing description
+This package provides a full-featured X tiling window manager, and is
+disabled by default. I consider this to be a novelty, or a fun tech
+demo, but not a viable alternative to i3wm or dwm.
+
+Source: https://github.com/ch11ng/exwm
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package exwm
@@ -1567,14 +1585,19 @@ Missing description
 #+end_src
 
 ***** helpful
-Missing description
+This pacakge provides an alternative to the built-in Emacs help that
+provides much more contextual information.
+
+Source: https://github.com/Wilfred/helpful
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package helpful)
 #+end_src
 
 ***** nov
-Missing description
+This package provides a major mode for reading EPUB documents.
+
+Source: https://github.com/wasamasa/nov.el
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package nov
@@ -1598,7 +1621,11 @@ https://github.com/politza/pdf-tools#installation
 #+end_src
 
 ***** ranger
-Missing description
+This package adds a minor mode that runs within ~dired~ that emulates
+much of the features provided by the ~ranger~ terminal file browser.
+Hardcore ~dired~ users may want to disable this.
+
+Source: [[https://github.com/ralesi/ranger.el]]
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package ranger
