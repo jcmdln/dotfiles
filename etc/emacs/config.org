@@ -980,8 +980,8 @@ Missing description
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
-            (setq-local c-default-style  "linux")
-            (setq-local c-set-style      "linux")
+            (setq-local c-default-style  "bsd")
+            (setq-local c-set-style      "bsd")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
