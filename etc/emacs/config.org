@@ -1280,15 +1280,13 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package php-mode
-  :disabled)
+(use-package php-mode)
 #+end_src
 
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package company-php
-  :disabled
   :after (company php-mode))
 #+end_src
 
