@@ -1077,15 +1077,13 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package docker-compose-mode
-  :disabled)
+(use-package docker-compose-mode)
 #+end_src
 
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package dockerfile-mode
-  :disabled)
+(use-package dockerfile-mode)
 #+end_src
 
 ****** DotEnv
