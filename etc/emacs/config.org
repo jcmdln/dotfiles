@@ -1139,7 +1139,6 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package go-eldoc
-  :disabled
   :after (go-mode)
   :init
   (add-hook 'go-mode-hook 'go-eldoc-setup))
