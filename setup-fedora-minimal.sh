@@ -7,13 +7,7 @@ sudo dnf install --best -y \
      https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 sudo dnf install --best -y \
-     arandr bind-utils bpftrace breeze-{cursor-theme,gtk,icon-theme} casync \
-     chromium{,-libs-media-freeworld} clang clang-devel cloc cmake ctags \
-     dnf-utils emacs geary gimp git gnome-terminal golang \
-     google-noto-{cjk,emoji{,-color},sans,serif}-fonts htop i3{,lock,status} \
-     iftop iotop libreoffice lld lldb make mlocate mosh mpv nodejs pavucontrol \
-     pciutils pipewire plasma-breeze pulseaudio{,-utils} rtags scrot tar time \
-     tmux traceroute tree unzip usbutils whois x{init,randr,set} youtube-dl zip
+     bind-utils bpftrace casync clang clang-devel cloc cmake ctags docker dnf-utils emacs gimp git golang google-noto-{cjk,emoji{,-color},sans,serif}-fonts iftop iotop lld lldb make mlocate mosh mpv nodejs pciutils pipewire pulseaudio{,-utils} rtags scrot tar time tmux traceroute tree unzip usbutils whois youtube-dl zip
 
 if [ -d "~/Projects" ]; then
     mkdir -p ~/Projects
@@ -42,24 +36,9 @@ for t in $targets; do
     [ -e "$t" ] && rm -rf "$t"
 done
 
-ln -sf ~/Projects/config/etc/bash/bash_profile ~/.bash_profile
-ln -sf ~/Projects/config/etc/bash/bashrc ~/.bashrc
+#ln -sf ~/Projects/config/etc/bash/bash_profile ~/.bash_profile
+#ln -sf ~/Projects/config/etc/bash/bashrc ~/.bashrc
 ln -sf ~/Projects/config/etc/emacs ~/.emacs.d
-ln -sf ~/Projects/config/etc/i3 ~/.config/i3
-ln -sf ~/Projects/config/etc/i3status.conf ~/.i3status.conf
 ln -sf ~/Projects/config/etc/mpv ~/.mpv
-ln -sf ~/Projects/config/etc/profile ~/.profile
-ln -sf ~/Projects/config/etc/profile.d ~/.profile.d
-ln -sf ~/Projects/config/etc/tmux.conf ~/.tmux.conf
-ln -sf ~/Projects/config/etc/vim ~/.vim
-ln -sf ~/Projects/config/etc/xinitrc ~/.xinitrc
-ln -sf ~/Projects/config/etc/xsession ~/.xsession
-ln -sf ~/Projects/config/etc/zsh ~/.zsh
-
-
-ln -sf ~/Projects/config/usr/share/themes/gtk-2.0/gtkrc-2.0 ~/.gtkrc-2.0
-
-[ ! -e "~/.config/gtk-3.0" ] &&
-    mkdir -p ~/.config/gtk-3.0
-
-ln -sf ~/Projects/config/usr/share/themes/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
+#ln -sf ~/Projects/config/etc/profile ~/.profile
+#ln -sf ~/Projects/config/etc/profile.d ~/.profile.d
