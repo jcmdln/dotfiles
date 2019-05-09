@@ -55,3 +55,11 @@ ln -sf ~/Projects/config/etc/vim ~/.vim
 ln -sf ~/Projects/config/etc/xinitrc ~/.xinitrc
 ln -sf ~/Projects/config/etc/xsession ~/.xsession
 ln -sf ~/Projects/config/etc/zsh ~/.zsh
+
+
+ln -sf ~/Projects/config/usr/share/themes/gtk-2.0/gtkrc-2.0 ~/.gtkrc-2.0
+
+[ ! -e "~/.config/gtk-3.0" ] &&
+    mkdir -p ~/.config/gtk-3.0
+
+ln -sf ~/Projects/config/usr/share/themes/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
