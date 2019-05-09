@@ -11,9 +11,9 @@ sudo dnf install --best -y \
      chromium{,-libs-media-freeworld} clang clang-devel cloc cmake ctags \
      dnf-utils emacs geary gimp git gnome-terminal golang \
      google-noto-{cjk,emoji{,-color},sans,serif}-fonts htop i3{,lock,status} \
-     libreoffice lld lldb make mlocate mosh mpv nodejs pavucontrol pciutils \
-     pipewire plasma-breeze pulseaudio{,-utils} rtags scrot tar time tmux \
-     traceroute tree unzip usbutils whois x{init,randr,set} youtube-dl zip
+     iotop libreoffice lld lldb make mlocate mosh mpv nodejs pavucontrol \
+     pciutils pipewire plasma-breeze pulseaudio{,-utils} rtags scrot tar time \
+     tmux traceroute tree unzip usbutils whois x{init,randr,set} youtube-dl zip
 
 if [ -d "~/Projects" ]; then
     mkdir -p ~/Projects
