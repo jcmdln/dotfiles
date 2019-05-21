@@ -496,7 +496,8 @@ readable sizes, and define a ton of filter groups.
 
   (setq ibuffer-saved-filter-groups
         (quote (("default"
-                 ("EXWM" (mode . exwm-mode))
+                 ("exwm"
+                  (mode . exwm-mode))
 
                  ("emacs"
                   (or (name . "^\\*scratch\\*$")
@@ -511,18 +512,6 @@ readable sizes, and define a ton of filter groups.
                   (or (mode . dired-mode)
                       (mode . eshell-mode)))
 
-                 ("docs"
-                  (or (name . "^\\*Man ")
-                      (name . "^\\*WoMan")
-                      (mode . pdf-view-mode)))
-
-                 ("net"
-                  (or (mode . eww-mode)
-                      (name . "^\\*elfeed")
-                            (mode . circe-mode)
-                      (mode . circe-channel-mode)
-                      (mode . circe-server-mode)))
-
                  ("mail"
                   (or (mode . message-mode)
                       (mode . bbdb-mode)
@@ -533,6 +522,15 @@ readable sizes, and define a ton of filter groups.
                       (name . "^\\.bbdb$")
                       (name . "^\\.newsrc-dribble")))
 
+                 ("feed"
+                  (or (mode . eww-mode)
+                      (name . "^\\*elfeed")))
+
+                 ("irc"
+                  (or (mode . circe-mode)
+                      (mode . circe-channel-mode)
+                      (mode . circe-server-mode)))
+
                  ("dev"
                   (or (name . "^\\*clang")
                       (name . "^\\*gcc")
@@ -541,7 +539,12 @@ readable sizes, and define a ton of filter groups.
                       (name . "magit")
                       (name . "COMMIT_EDITMSG")
                       (name . "^\\*Flycheck")
-                      (name . "^\\*Flyspell")))))))
+                      (name . "^\\*Flyspell")))
+
+                 ("docs"
+                  (or (name . "^\\*Man ")
+                      (name . "^\\*WoMan")
+                      (mode . pdf-view-mode)))))))
 
   (setq ibuffer-formats
         '((mark modified read-only " "
@@ -1409,6 +1412,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package rtags
+  :disable
   :init
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
@@ -1427,6 +1431,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package company-rtags
+  :disable
   :after (company)
   :config
   (push 'company-rtags company-backends))
@@ -1436,6 +1441,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package flycheck-rtags
+  :disable
   :after (rtags flycheck)
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode))
@@ -1445,6 +1451,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package ivy-rtags
+  :disable
   :config
   (setq rtags-display-result-backend 'ivy))
 #+end_src
