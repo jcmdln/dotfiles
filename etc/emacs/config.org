@@ -130,6 +130,17 @@ Change default buffer behaviors
       inhibit-startup-buffer-menu t)
 #+end_src
 
+Enforce always re-using the currently selected frame when a new buffer
+is opened or focused.
+
+#+begin_src emacs-lisp :tangle init.el
+(setq pop-up-frames nil
+      pop-up-windows nil
+      display-buffer-reuse-frames t)
+
+(setq Man-notify-method 'pushy)
+#+end_src
+
 **** Toolbars
 Prevent tool bars from ever being initialized. We do this by defining
 toolbars as "disabled" so that when they are called after init, they are
@@ -151,6 +162,30 @@ system defaults.
 #+begin_src emacs-lisp :tangle init.el
 (load-theme 'tango-dark)
 (set-face-attribute :family "Monospace")
+#+end_src
+
+Change some default behaviors so that tabs aren't used, trailing
+whitespace is deleted, and on save all tabs are replaced with spaces.
+
+#+begin_src emacs-lisp :tangle init.el
+(setq indent-tabs-mode nil)
+
+(add-hook 'before-save-hook
+          (lambda()
+            (delete-trailing-whitespace)
+            (if (not indent-tabs-mode)
+                (untabify (point-min) (point-max)))))
+#+end_src
+
+Next we'll adjust some settings to improve editing files.
+
+#+begin_src emacs-lisp :tangle init.el
+(setq column-number-mode    t
+      require-final-newline t
+      show-paren-delay      0.0
+      visible-bell          nil)
+
+(show-paren-mode t)
 #+end_src
 
 *** Bootstrap
@@ -753,32 +788,6 @@ Missing description
 This section contains packages that are primarily used for development.
 If you aren't using Emacs for development, this section will not be very
 useful for you.
-
-***** General
-Before we continue to individual packages, first we'll change some
-default behaviors so that tabs aren't used, trailing whitespace is
-deleted, and on save all tabs are replaced with spaces.
-
-#+begin_src emacs-lisp :tangle config.el
-(setq indent-tabs-mode nil)
-
-(add-hook 'before-save-hook
-          (lambda()
-            (delete-trailing-whitespace)
-            (if (not indent-tabs-mode)
-                (untabify (point-min) (point-max)))))
-#+end_src
-
-Next we'll adjust some settings to improve editing files.
-
-#+begin_src emacs-lisp :tangle init.el
-(setq column-number-mode    t
-      require-final-newline t
-      show-paren-delay      0.0
-      visible-bell          nil)
-
-(show-paren-mode t)
-#+end_src
 
 ***** clang-format
 Missing description
@@ -1412,7 +1421,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package rtags
-  :disable
+  :disabled
   :init
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
@@ -1431,7 +1440,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package company-rtags
-  :disable
+  :disabled
   :after (company)
   :config
   (push 'company-rtags company-backends))
@@ -1441,7 +1450,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package flycheck-rtags
-  :disable
+  :disabled
   :after (rtags flycheck)
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode))
@@ -1451,7 +1460,7 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package ivy-rtags
-  :disable
+  :disabled
   :config
   (setq rtags-display-result-backend 'ivy))
 #+end_src
