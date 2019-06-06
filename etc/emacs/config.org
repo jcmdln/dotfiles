@@ -182,7 +182,7 @@ Next we'll adjust some settings to improve editing files.
 #+begin_src emacs-lisp :tangle init.el
 (setq column-number-mode    t
       require-final-newline t
-      show-paren-delay      0.0
+      show-paren-delay      0.2
       visible-bell          nil)
 
 (show-paren-mode t)
@@ -1017,8 +1017,7 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package caddyfile-mode
-  :disabled)
+(use-package caddyfile-mode)
 #+end_src
 
 ****** Clojure
@@ -1114,7 +1113,7 @@ Missing description
 #+end_src
 
 ****** Git
-Missing description
+These packages provide modes that make git-related files more readable.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package gitattributes-mode)
@@ -1179,7 +1178,11 @@ Missing description
 #+end_src
 
 ****** JavaScript
-Missing description
+JavaScript is a bit of a nightmare because there are multiple competing
+and not quite similar ways to write it, so clearly we need multiple
+modes to choose from.  I prefer the built-in as much as possible
+considering rjsx-mode is something like 30mb, and I don't really do
+enough JS development to really know what the canonical mode is.
 
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'js-mode-hook
@@ -1193,6 +1196,21 @@ Missing description
 #+begin_src emacs-lisp :tangle config.el
 (use-package es-mode
   :disabled)
+#+end_src
+
+Missing description
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package rjsx-mode
+  :disabled
+  :init
+  (add-to-list 'auto-mode-alist
+               '("components\\/.*\\.js\\'" . rjsx-mode))
+
+  (add-hook 'rjsx-mode
+            (lambda()
+              (setq-local js-indent-level 2)
+              (setq-local tab-width       2))))
 #+end_src
 
 ****** JSON
@@ -1315,22 +1333,6 @@ Missing description
   :disabled)
 #+end_src
 
-****** ReactJS
-Missing description
-
-#+begin_src emacs-lisp :tangle config.el
-(use-package rjsx-mode
-  :disabled
-  :init
-  (add-to-list 'auto-mode-alist
-               '("components\\/.*\\.js\\'" . rjsx-mode))
-
-  (add-hook 'rjsx-mode
-            (lambda()
-              (setq-local js-indent-level 2)
-              (setq-local tab-width       2))))
-#+end_src
-
 ****** Rust
 Missing description
 
@@ -1355,12 +1357,11 @@ Missing description
   :disabled)
 #+end_src
 
-****** SystemD
+****** systemd
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package systemd
-  :disabled)
+(use-package systemd)
 #+end_src
 
 ****** TypeScript
@@ -1377,6 +1378,20 @@ Missing description
 #+begin_src emacs-lisp :tangle config.el
 (use-package vue-mode
   :disabled)
+#+end_src
+
+Missing description
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package vue-html-mode
+  :disabled)
+#+end_src
+
+****** Web
+Missing description
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package web-beautify)
 #+end_src
 
 ****** YAML
