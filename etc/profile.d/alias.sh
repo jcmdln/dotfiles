@@ -22,4 +22,5 @@ if [ "$(uname -s)" = "Linux" ] && [ "$SHELL" != "/bin/ash" ]; then
     alias ls="ls -h --color=auto --group-directories-first"
     alias mv="mv -i"
     alias rm="rm -i"
+    alias tree="tree -C --dirsfirst"
 fi
