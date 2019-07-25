@@ -718,7 +718,6 @@ Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package flyspell
-  :disabled
   :init
   (add-hook 'markdown-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook     'flyspell-prog-mode)
@@ -1044,15 +1043,13 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package ansible-vault
-  :disabled)
+(use-package ansible-vault)
 #+end_src
 
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package company-ansible
-  :disabled
   :after (company ansible-vault))
 #+end_src
 
@@ -1491,7 +1488,7 @@ Source: https://github.com/nschum/auto-dictionary-mode
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package auto-dictionary
-  :disabled
+  :after (flyspell)
   :config
   (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
 #+end_src
@@ -1567,7 +1564,6 @@ Source: https://github.com/gonewest818/dimmer.el
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package dimmer
-  :disabled
   :init
   (add-hook 'after-init-hook 'dimmer-mode))
 #+end_src
