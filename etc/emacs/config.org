@@ -1263,8 +1263,9 @@ enough JS development to really know what the canonical mode is.
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'js-mode-hook
           (lambda()
-            (setq-local js-indent-level 2)
-            (setq-local tab-width       2)))
+            (setq-local js-indent-level  2)
+            (setq-local indent-tabs-mode f)
+            (setq-local tab-width        2)))
 #+end_src
 
 Missing description
@@ -1413,8 +1414,16 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
-(use-package rust-mode
-  :disabled)
+(use-package rust-mode)
+#+end_src
+
+Flycheck helper for Rust
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package flycheck-rust
+  :after (rust-mode)
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+end_src
 
 **** Sass
