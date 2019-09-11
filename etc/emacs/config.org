@@ -1509,7 +1509,6 @@ should only be situationally enabled, and is disabled by default.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package circe
-  :disabled
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
@@ -1585,7 +1584,6 @@ Source: https://github.com/skeeto/elfeed
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package elfeed
-  :disabled
   :bind ("C-x w" . elfeed)
   :config
   (setq-local elfeed-search-filter "@1-week-ago +unread ")
