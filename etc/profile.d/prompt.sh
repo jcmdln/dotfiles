@@ -1,5 +1,5 @@
 # /etc/profile.d/prompt.sh
-
+#
 # Set PS1 to a uniform look across multiple shell environments. The PS1
 # should always appear as follows:
 #
