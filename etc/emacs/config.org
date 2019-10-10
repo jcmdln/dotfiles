@@ -231,9 +231,16 @@ Missing description
 Missing description
 
 #+begin_src emacs-lisp :tangle config.el
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+#+end_src
+
+Missing description
+
+#+begin_src emacs-lisp :tangle config.el
 (setq package-user-dir "~/.emacs.d/pkg/"
+      package-check-signature nil
       package-archives
-      '(("GNU ELPA"     . "http://elpa.gnu.org/packages/")
+      '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
         ("MELPA Stable" . "https://stable.melpa.org/packages/")
         ("MELPA"        . "https://melpa.org/packages/"))
       package-archive-priorities
@@ -283,6 +290,7 @@ Missing description
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
+
 ** Input
 I do make some minor changes to input methods, though I intend to remain
 as faithful to "the Emacs way" as I can.
