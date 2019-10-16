@@ -16,9 +16,9 @@ Fully bloated Emacs, with _almost_ everything enabled:
 	cd emacs && \
 	./autogen.sh && \
 	./configure \
-		CC="clang" \
 		CFLAGS="-march=native -pipe -O2 -g3" \
 		--with-all \
+		--with-imagemagick \
 		--with-mailutils \
 		--with-modules \
 		--with-xwidgets && \
@@ -32,7 +32,6 @@ Minimal Emacs without graphical support or other such posh features:
 	cd emacs && \
 	./autogen.sh && \
 	./configure \
-		CC="clang" \
 		CFLAGS="-march=native -pipe -O2 -g3" \
 		--without-all \
 		--enable-acl \
