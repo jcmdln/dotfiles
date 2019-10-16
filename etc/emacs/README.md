@@ -12,25 +12,25 @@ depending on the target platform.
 
 Fully bloated Emacs, with _almost_ everything enabled:
 
-	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
-	cd emacs && \
-	./autogen.sh && \
+	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch &&
+	cd emacs &&
+	./autogen.sh &&
 	./configure \
 		CFLAGS="-march=native -pipe -O2 -g3" \
 		--with-all \
 		--with-imagemagick \
 		--with-mailutils \
 		--with-modules \
-		--with-xwidgets && \
-	make -j$(grep -c ^processor /proc/cpuinfo) && \
+		--with-xwidgets &&
+	make -j$(grep -c ^processor /proc/cpuinfo) &&
 	sudo make install
 
 
 Minimal Emacs without graphical support or other such posh features:
 
-	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch && \
-	cd emacs && \
-	./autogen.sh && \
+	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch &&
+	cd emacs &&
+	./autogen.sh &&
 	./configure \
 		CFLAGS="-march=native -pipe -O2 -g3" \
 		--without-all \
@@ -45,7 +45,8 @@ Minimal Emacs without graphical support or other such posh features:
 		--with-modules \
 		--with-selinux \
 		--with-threads \
+		--with-xwidgets=no \
 		--with-xml2 \
-		--with-zlib && \
-	make -j$(grep -c ^processor /proc/cpuinfo) && \
+		--with-zlib &&
+	make -j$(grep -c ^processor /proc/cpuinfo) &&
 	sudo make install
