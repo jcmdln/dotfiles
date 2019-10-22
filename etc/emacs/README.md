@@ -1,18 +1,17 @@
-## About
-Please see
+Please see the
 [config.org](https://github.com/jcmdln/config/blob/master/etc/emacs/config.org)
-for documentation about my configuration.
+file for the configuration itself as well as inline documentation and
+instructions on usage.
 
 
 ## Compiling
-I prefer using the master branch of the official Emacs git repository,
-and track it for updates. Below are two variants I commonly use
-depending on the target platform.
-
+I currently maintain a fork of GNU/Emacs that includes changes that I
+intend to push upstream, and I only supply the master branch since
+that's what I personally use.
 
 Fully bloated Emacs, with _almost_ everything enabled:
 
-	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch &&
+	git clone git@github.com:jcmdln/emacs.git &&
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
@@ -30,7 +29,7 @@ Fully bloated Emacs, with _almost_ everything enabled:
 
 Minimal Emacs without graphical support or other such posh features:
 
-	git clone https://git.savannah.gnu.org/git/emacs --branch master --single-branch &&
+	git clone git@github.com:jcmdln/emacs.git &&
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
