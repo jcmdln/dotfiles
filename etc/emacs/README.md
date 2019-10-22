@@ -16,7 +16,9 @@ Fully bloated Emacs, with _almost_ everything enabled:
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
-		CFLAGS="-march=native -pipe -O2 -g3" \
+		MAKE="gmake" \
+		CC="clang" \
+		CFLAGS="-O2 -g3 -march=native -pipe" \
 		--with-all \
 		--with-imagemagick \
 		--with-mailutils \
@@ -32,18 +34,17 @@ Minimal Emacs without graphical support or other such posh features:
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
-		CFLAGS="-march=native -pipe -O2 -g3" \
+		MAKE="gmake" \
+		CC="clang" \
+		CFLAGS="-O2 -g3 -march=native -pipe" \
 		--without-all \
-		--enable-acl \
 		--with-dbus \
 		--with-file-notification \
 		--with-gnutls \
 		--with-json \
-		--with-libsystemd \
 		--with-m17n-flt \
 		--with-mailutils \
 		--with-modules \
-		--with-selinux \
 		--with-threads \
 		--with-xwidgets=no \
 		--with-xml2 \
