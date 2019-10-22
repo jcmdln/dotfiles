@@ -18,11 +18,34 @@ Fully bloated Emacs, with _almost_ everything enabled:
 		MAKE="gmake" \
 		CC="clang" \
 		CFLAGS="-O2 -g3 -march=native -pipe" \
-		--with-all \
-		--with-imagemagick \
+		--without-all \
+		--with-dbus \
+		--with-file-notification \
+		--with-gif \
+		--with-gpm \
+		--with-gnutls \
+		--with-harfbuzz \
+		--with-jpeg \
+		--with-json \
+		--with-lcms2 \
+		--with-libotf \
+		--with-m17n-flt \
 		--with-mailutils \
 		--with-modules \
-		--with-xwidgets &&
+		--with-png \
+		--with-rsvg \
+		--with-selinux \
+		--with-sound \
+		--with-threads \
+		--with-tiff \
+		--with-toolkit-scroll-bars \
+		--with-x \
+		--with-x-toolkit \
+		--with-xft \
+		--with-xml2 \
+		--with-xpm \
+		--with-xwidgets \
+		--with-zlib &&
 	make -j$(grep -c ^processor /proc/cpuinfo) &&
 	sudo make install
 
