@@ -413,21 +413,9 @@ behave and look like typical unix shells, so maybe try it for yourself.
         eshell-scroll-show-maximum-output nil
         eshell-prompt-regexp              "^[^#$\n]*[#$] ")
 
-  (setq eshell-prompt-function
-        (lambda nil
-          (concat "[" (user-login-name) "@"
-                  (substring (car (split-string (system-name) "\\."))) " "
-                  (if (string= (eshell/pwd) (getenv "HOME"))
-                      "~" (eshell/basename (eshell/pwd))) "]"
-                  (if (= (user-uid) 0) "# " "$ "))))
-
   (setq eshell-visual-commands
         '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh"
           "tail" "top" "vi" "vim" "watch"))
-
-  (defun eshell/clear()
-    (interactive)
-    (recenter 0))
 
   (defun eshell-new()
     "Open a new instance of eshell."
