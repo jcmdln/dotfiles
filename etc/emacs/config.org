@@ -427,8 +427,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 I like eww, but it was missing a few things for me to use it as my
 primary browser for non-interactive sites. Here we will ensure that eww
 is our primary browser when visiting links, and that images are blocked
-by default. Should you have multiple eww buffers open and want to
-toggle displaying images in a specific buffer, you may now do so.
+by default.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package eww
@@ -436,23 +435,7 @@ toggle displaying images in a specific buffer, you may now do so.
   (setq browse-url-browser-function 'eww-browse-url)
 
   :config
-  (setq shr-blocked-images "")
-
-  (defun eww-toggle-images()
-    "Toggle blocking images in eww."
-    (interactive)
-    (if (bound-and-true-p shr-blocked-images)
-        (setq-local shr-blocked-images nil)
-      (setq-local shr-blocked-images ""))
-    (eww-reload))
-
-  (defun eww-new()
-    "Open a new instance of eww."
-    (interactive)
-    (let ((url (read-from-minibuffer "Enter URL or keywords: ")))
-      (switch-to-buffer (generate-new-buffer "*eww*"))
-      (eww-mode)
-      (eww url))))
+  (setq shr-blocked-images ""))
 #+end_src
 
 Missing description
