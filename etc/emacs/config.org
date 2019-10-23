@@ -68,15 +68,16 @@ these changes.
 **** gc-cons-percentage
 For the purposes of initialization, we'll increase `gc-cons-percentage`
 to defer garbage collection.  The settings below mean that until
-reaching 75% of the current heap size, GC will not occur.  After init
-completes we will set this to 15%, though the default is 10%.
+reaching 80% of the current heap size, GC will not occur.  After init
+completes we will set this back to the default.
 
 #+begin_src emacs-lisp :tangle init.el
-(setq gc-cons-percentage 0.75)
+(setq gc-cons-percentage-default gc-cons-percentage
+      gc-cons-percentage         0.80)
 
 (add-hook 'after-init-hook
           (lambda ()
-            (setq gc-cons-percentage 0.15)))
+            (setq gc-cons-percentage gc-cons-percentage-default)))
 #+end_src
 
 **** gc-cons-threshold
@@ -86,12 +87,14 @@ garbage collection in order to trigger another garbage collection.  On
 32-bit systems, this is 400KB and on 64-bit systems this is 800KB.  By
 specifying a larger value, garbage collection will occur less often.
 
-We'll set this value to 2MB globally, which will more than halve the
-total number of GC pauses we experience while not drastically
+We'll set this value to 4MB globally, which will significantly reduce
+the total number of GC pauses we experience.  At this size, most
+platforms should only notice a performance improvement without
 increasing the amount of time needed for GC to complete.
 
 #+begin_src emacs-lisp :tangle init.el
-(setq gc-cons-threshold (* 2 1024 1024))
+(setq gc-cons-threshold-default gc-cons-threshold
+      gc-cons-threshold         (* 4 1024 1024))
 #+end_src
 
 *** Encoding
@@ -139,8 +142,8 @@ Enforce always re-using the currently selected frame when a new buffer
 is opened or focused.
 
 #+begin_src emacs-lisp :tangle init.el
-(setq pop-up-frames nil
-      pop-up-windows nil
+(setq pop-up-frames               nil
+      pop-up-windows              nil
       display-buffer-reuse-frames t)
 
 (setq Man-notify-method 'pushy)
@@ -203,7 +206,7 @@ refreshed automatically.
   (interactive)
   (require 'org)
   (org-babel-load-file "~/.emacs.d/config.org")
-  (byte-compile-file "~/.emacs.d/config.el"))
+  (byte-compile-file   "~/.emacs.d/config.el"))
 #+end_src
 
 Missing description
@@ -349,9 +352,14 @@ xterm support:
             (xterm-mouse-mode 1)))
 
 (global-set-key (kbd "<mouse-4>")
-                (lambda() (interactive) (scroll-down-line 3)))
+                (lambda()
+                  (interactive)
+                  (scroll-down-line 3)))
+
 (global-set-key (kbd "<mouse-5>")
-                (lambda() (interactive) (scroll-up-line 3)))
+                (lambda()
+                  (interactive)
+                  (scroll-up-line 3)))
 #+end_src
 
 *** Scrolling
@@ -413,9 +421,22 @@ behave and look like typical unix shells, so maybe try it for yourself.
         eshell-scroll-show-maximum-output nil
         eshell-prompt-regexp              "^[^#$\n]*[#$] ")
 
+  (setq eshell-prompt-function
+        (lambda nil
+          (concat "[" (user-login-name) "@"
+                  (car (split-string (system-name) "\\.")) " "
+                  (if (string= (eshell/pwd) (getenv "HOME"))
+                      "~" (eshell/basename (eshell/pwd))) "]"
+                  (if (= (user-uid) 0) "# " "$ "))))
+
   (setq eshell-visual-commands
         '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh"
           "tail" "top" "vi" "vim" "watch"))
+
+  (defun eshell/clear()
+    "Hide previous scrollback to provide a clear view."
+    (interactive)
+    (recenter 0))
 
   (defun eshell-new()
     "Open a new instance of eshell."
@@ -427,7 +448,8 @@ behave and look like typical unix shells, so maybe try it for yourself.
 I like eww, but it was missing a few things for me to use it as my
 primary browser for non-interactive sites. Here we will ensure that eww
 is our primary browser when visiting links, and that images are blocked
-by default.
+by default. Should you have multiple eww buffers open and want to
+toggle displaying images in a specific buffer, you may now do so.
 
 #+begin_src emacs-lisp :tangle config.el
 (use-package eww
@@ -435,7 +457,23 @@ by default.
   (setq browse-url-browser-function 'eww-browse-url)
 
   :config
-  (setq shr-blocked-images ""))
+  (setq shr-blocked-images "")
+
+  (defun eww-toggle-images()
+    "Toggle blocking images in eww."
+    (interactive)
+    (if (bound-and-true-p shr-blocked-images)
+        (setq-local shr-blocked-images nil)
+      (setq-local shr-blocked-images ""))
+    (eww-reload))
+
+  (defun eww-new()
+    "Open a new instance of eww."
+    (interactive)
+    (let ((url (read-from-minibuffer "Enter URL or keywords: ")))
+      (switch-to-buffer (generate-new-buffer "*eww*"))
+      (eww-mode)
+      (eww url))))
 #+end_src
 
 Missing description
@@ -471,9 +509,8 @@ clients.
         gnus-sum-thread-tree-leaf-with-other   "├─> "
         gnus-sum-thread-tree-root              ""
         gnus-sum-thread-tree-single-leaf       "╰─> "
-        gnus-sum-thread-tree-vertical          "│ ")
-
-  (setq gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
+        gnus-sum-thread-tree-vertical          "│ "
+        gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
         gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
         gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
 
@@ -941,8 +978,8 @@ Missing description
 (use-package rtags
   :disabled
   :init
-  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'c-mode-hook    'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook  'rtags-start-process-unless-running)
   (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
 
   :config
@@ -1512,9 +1549,9 @@ should only be situationally enabled, and is disabled by default.
         circe-default-quit-message ""
         circe-format-server-topic  "*** Topic: {userhost}: {topic-diff}"
         circe-reduce-lurker-spam   t
-        circe-use-cycle-completion t)
+        circe-use-cycle-completion t
 
-  (setq lui-fill-type              nil
+        lui-fill-type              nil
         lui-flyspell-alist         '((".*" "american"))
         lui-flyspell-p             t
         lui-logging-directory      "~/.emacs.d/var/circe"
