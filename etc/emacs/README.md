@@ -4,14 +4,9 @@ file for the configuration itself as well as inline documentation and
 instructions on usage.
 
 
-## Compiling
-I currently maintain a fork of GNU/Emacs that includes changes that I
-intend to push upstream, and I only supply the master branch since
-that's what I personally use.
-
 Fully bloated Emacs, with _almost_ everything enabled:
 
-	git clone git@github.com:jcmdln/emacs.git &&
+	git clone https://github.com/emacs-mirror/emacs.git --depth 1 &&
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
@@ -52,7 +47,7 @@ Fully bloated Emacs, with _almost_ everything enabled:
 
 Minimal Emacs without graphical support or other such posh features:
 
-	git clone git@github.com:jcmdln/emacs.git &&
+	git clone https://github.com/emacs-mirror/emacs.git --depth 1 &&
 	cd emacs &&
 	./autogen.sh &&
 	./configure \
@@ -60,7 +55,6 @@ Minimal Emacs without graphical support or other such posh features:
 		CC="clang" \
 		CFLAGS="-O2 -g3 -march=native -pipe" \
 		--without-all \
-		--with-dbus \
 		--with-file-notification \
 		--with-gnutls \
 		--with-json \
