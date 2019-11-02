@@ -1,4 +1,4 @@
-# /etc/profile.d/defaults.sh
+# ~/.profile.d/defaults.sh
 #
 # Define various exports that don't need a separate section or file.
 

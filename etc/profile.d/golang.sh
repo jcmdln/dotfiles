@@ -1,8 +1,10 @@
-# /etc/profile.d/golang.sh
+# ~/profile.d/golang.sh
 
-GOPATH="$HOME/.local/go"
-GOBIN="$GOPATH/bin"
-GODOC="$GOPATH/doc"
+if [ -x "$(command -v go)" ]; then
+    GOPATH="$HOME/.local/go"
+    GOBIN="$GOPATH/bin"
+    GODOC="$GOPATH/doc"
+    PATH="$PATH:$GOBIN"
 
-export GOPATH GOBIN GODOC \
-       PATH="$PATH:$GOBIN"
+    export GOPATH GOBIN GODOC PATH
+fi

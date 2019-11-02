@@ -1,54 +1,20 @@
-# /etc/profile
-
-# Check for an interactive shell and set umask accordingly. Currently the
-# threshold for system-reserved uid/guid's is 200 though you may check
-# '/usr/share/doc/setup/uidgid' to confirm this is valid.
-
-case $- in
-    *i*) INTERACTIVE="true" ;;
-
-    *)
-        if [ "$UID" -gt 199 ] && [ "`id -gn`" = "`id -un`" ]; then
-            # Mask current process as a daemon
-            umask 002
-        else
-            # Mask current process as an initscript
-            umask 022
-        fi
-
-        return
-esac
-
-
-# Define PATH and MANPATH, somewhat exhaustively, to support most UNIX
-# systems. Non-generic additions to these variables should exist in
-# their own respective 'profile.d/*.sh' file.
+# ~/.profile
 
 PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
 PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
-PATH="$PATH:$HOME/.local/bin"
+PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 
 MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
-MANPATH="$MANPATH:$HOME/.local/man:$HOME/.local/share/man"
+MANPATH="$MANPATH:$HOME/man:$HOME/.local/man:$HOME/.local/share/man"
 
 export PATH MANPATH
 
-
-# Check for global, then local configuration files within 'profile.d' so
-# that user-specified configurations are preferred.
-
-if [ -d "/etc/profile.d" ]; then
-    for sh in /etc/profile.d/*.sh; do
-        [ -r "$sh" ] && . "$sh"
-    done
-
-    unset sh
-fi
-
 if [ -d "$HOME"/.profile.d ]; then
-    for sh in "$HOME"/.profile.d/*.sh; do
-        [ -r "$sh" ] && . "$sh"
+    for i in "$HOME"/.profile.d/*.sh; do
+        if [ -r "$i" ]; then
+	    . "$i"
+	fi
     done
 
-    unset sh
+    unset i
 fi
