@@ -1,59 +1,78 @@
-# /etc/i3/config
+# ~/.config/i3/config
 
-### Startup ######################################
+#
+# Startup
+#
 
-## Disable DPMS
+# Disable DPMS
 exec --no-startup-id xset s off -dpms
 
-## i3wm modifier key
+# i3wm modifier key
 set $mod Mod4
 
-## Applications
-bindsym $mod+d      exec --no-startup-id dmenu_run
-bindsym $mod+Return exec --no-startup-id "st -e sh -l"
 
-## Display
-#exec --no-startup-id "srandr"
+#
+# Applications
+#
+
+set $Menu dmenu_run
+set $Terminal st -e sh -l
+
+bindsym $mod+d      exec --no-startup-id "$Menu"
+bindsym $mod+Return exec --no-startup-id "$Terminal"
 
 
-### Appearance ###################################
+#
+# Appearance
+#
 
-## Xresources
+# load ~/.Xresources
 exec --no-startup-id "xrdb ~/.Xresources"
 
-## Font
+# Set font using pango
 font pango:Monospace 9
 
-## Taskbar
+# Color Palette
+set $Black	     #333333
+set $Green	     #00894e
+set $LightGreen	     #30f277
+set $Grey	     #eeeeee
+set $DarkGrey	     #888888
+set $Red	     #ff5454
+set $DarkRed	     #b22222
+
+# Set i3 theme with adjusted color palette
+exec --no-startup-id xsetroot -solid '$Black'
+client.background       $Black
+client.focused          $Green   $Green   $Grey     $LightGreen $Green
+client.focused_inactive $Black   $Black   $Grey     $DarkGrey   $Black
+client.placeholder      $Black   $Black   $Grey     $Black      $Black
+client.unfocused        $Black   $Black   $DarkGrey $DarkGrey   $Black
+client.urgent           $DarkRed $DarkRed $Grey     $Red        $DarkRed
+
+# Set i3status with adjusted color palette
 bar {
   position       top
   status_command i3status
 
   colors {
-    background #333333
-    statusline #eeeeee
-    separator  #eeeeee
+    background $Black
+    statusline $Grey
+    separator  $Grey
 
-    focused_workspace  #eeeeee #00894e
-    active_workspace   #eeeeee #777777
-    inactive_workspace #eeeeee #333333
-    urgent_workspace   #eeeeee #b22222
+    focused_workspace  $Grey $Green
+    active_workspace   $Grey $DarkGrey
+    inactive_workspace $Grey $Black
+    urgent_workspace   $Grey $DarkRed
   }
 }
 
-## Colors
-exec --no-startup-id xsetroot -solid '#333333'
-client.background       #333333
-client.focused          #00894e #00894e #eeeeee #30f277 #00894e
-client.focused_inactive #333333 #333333 #eeeeee #888888 #333333
-client.placeholder      #333333 #333333 #eeeeee #333333 #333333
-client.unfocused        #333333 #333333 #888888 #888888 #333333
-client.urgent           #b22222 #b22222 #eeeeee #ff5454 #b22222
 
+#
+# System
+#
 
-### System #######################################
-
-## Reload
+# Reload
 set $Config Reload i3 config (r), Live restart of i3 (Shift+r)
 bindsym $mod+Shift+r mode "$Config"
 mode "$Config" {
@@ -63,14 +82,14 @@ mode "$Config" {
   bindsym Escape mode "default"
 }
 
-## i3lock
+# i3lock
 set $Locker xset s 10 dpms 10 && i3lock -c 333333 -n && xset s off -dpms
+bindsym $mod+l exec --no-startup-id "$Locker"
 
 ## Menu
-set $System Lock (l), Logout (e), Reboot (r), Shutdown (s)
+set $Logout (e), Reboot (r), Shutdown (s)
 bindsym $mod+Home mode "$System"
 mode "$System" {
-  bindsym l exec --no-startup-id $Locker,     mode "default"
   bindsym e exec --no-startup-id i3-msg exit, mode "default"
   bindsym r exec --no-startup-id reboot,      mode "default"
   bindsym s exec --no-startup-id poweroff -i, mode "default"
@@ -79,44 +98,38 @@ mode "$System" {
 }
 
 
-#### Keybinds ####################################
+#
+# Keybinds
+#
 
-## Window splitting
+# Window splitting
 bindsym $mod+h split h
 bindsym $mod+v split v
 
-## Fullscreen focused container
+# Fullscreen focused container
 bindsym $mod+f fullscreen toggle
 
-## Kill focused window
+# Kill focused window
 bindsym $mod+Shift+q kill
 
-## Cycle frame layout
+# Cycle frame layout
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
-## Change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+# Change focus
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-## Move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+# Move focused window
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-## Switch to workspace
+# Switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -128,7 +141,7 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
-## Move focused container to workspace
+# Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
@@ -140,22 +153,22 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-## Focus the parent container
+# Focus the parent container
 bindsym $mod+a focus parent
 
-## Drag floating windows with Mouse+$mod
+# Drag floating windows with Mouse+$mod
 floating_modifier $mod
 
-## Toggle floating on focused frame
+# Toggle floating on focused frame
 bindsym $mod+Shift+space floating toggle
 
-## Change focus between tiling / floating windows
+# Change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-## Floating rules
+# Floating rules
 for_window [window_role="pop-up"] floating enable
 
-## Resize
+# Resize
 bindsym $mod+r mode "resize"
 mode "resize" {
   bindsym j resize shrink width 10 px or 10 ppt
@@ -171,14 +184,16 @@ mode "resize" {
 }
 
 
-#### Multimedia ##################################
+#
+# Multimedia
+#
 
-## Audio (ALSA)
+# Audio (ALSA)
 # bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5+
 # bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5-
 # bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
 
-## Audio (Pulseaudio)
+# Audio (Pulseaudio)
 # bindsym XF86AudioRaiseVolume exec --no-startup-id \
 #   pactl set-sink-volume @DEFAULT_SINK@ +5%
 # bindsym XF86AudioLowerVolume exec --no-startup-id \
@@ -190,21 +205,20 @@ mode "resize" {
 # bindsym XF86AudioNext  exec --no-startup-id pactl next
 # bindsym XF86AudioPrev  exec --no-startup-id pactl previous
 
-## Audio (Sndio)
+# Audio (Sndio)
 bindsym XF86AudioRaiseVolume exec --no-startup-id mixerctl outputs.master=+5
 bindsym XF86AudioLowerVolume exec --no-startup-id mixerctl outputs.master=-5
 bindsym XF86AudioMute        exec --no-startup-id mixerctl outputs.master.mute=toggle
 
-
-## Backlight
+# Backlight (brightnessctl)
 # bindsym XF86MonBrightnessUp   exec --no-startup-id brightnessctl set 5%+
 # bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
+# Backlight (xbacklight)
 # bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
 # bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
 
-
-## Screenshot (scrot)
+# Screenshot (scrot)
 bindsym Print exec --no-startup-id \
   scrot $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym $mod+Print exec --no-startup-id \
