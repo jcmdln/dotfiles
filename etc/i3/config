@@ -10,7 +10,7 @@ set $mod Mod4
 
 ## Applications
 bindsym $mod+d      exec --no-startup-id dmenu_run
-bindsym $mod+Return exec --no-startup-id gnome-terminal
+bindsym $mod+Return exec --no-startup-id "st -e sh -l"
 
 ## Display
 #exec --no-startup-id "srandr"
@@ -19,7 +19,7 @@ bindsym $mod+Return exec --no-startup-id gnome-terminal
 ### Appearance ###################################
 
 ## Xresources
-exec --no-startup-id "xrdb /etc/Xresources"
+exec --no-startup-id "xrdb ~/.Xresources"
 
 ## Font
 font pango:Monospace 9
@@ -173,21 +173,27 @@ mode "resize" {
 
 #### Multimedia ##################################
 
-## Audio
+## Audio (ALSA)
 # bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5+
 # bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5-
 # bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id \
-  pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id \
-  pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec --no-startup-id \
-  pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioPlay  exec --no-startup-id pactl play-pause
-bindsym XF86AudioPause exec --no-startup-id pactl pause
-bindsym XF86AudioNext  exec --no-startup-id pactl next
-bindsym XF86AudioPrev  exec --no-startup-id pactl previous
+## Audio (Pulseaudio)
+# bindsym XF86AudioRaiseVolume exec --no-startup-id \
+#   pactl set-sink-volume @DEFAULT_SINK@ +5%
+# bindsym XF86AudioLowerVolume exec --no-startup-id \
+#   pactl set-sink-volume @DEFAULT_SINK@ -5%
+# bindsym XF86AudioMute exec --no-startup-id \
+#   pactl set-sink-mute @DEFAULT_SINK@ toggle
+# bindsym XF86AudioPlay  exec --no-startup-id pactl play-pause
+# bindsym XF86AudioPause exec --no-startup-id pactl pause
+# bindsym XF86AudioNext  exec --no-startup-id pactl next
+# bindsym XF86AudioPrev  exec --no-startup-id pactl previous
+
+## Audio (Sndio)
+bindsym XF86AudioRaiseVolume exec --no-startup-id mixerctl outputs.master=+5
+bindsym XF86AudioLowerVolume exec --no-startup-id mixerctl outputs.master=-5
+bindsym XF86AudioMute        exec --no-startup-id mixerctl outputs.master.mute=toggle
 
 
 ## Backlight
