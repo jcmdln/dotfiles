@@ -15,11 +15,8 @@ set $mod Mod4
 # Applications
 #
 
-set $Menu dmenu_run
-set $Terminal st -e sh -l
-
-bindsym $mod+d      exec --no-startup-id "$Menu"
-bindsym $mod+Return exec --no-startup-id "$Terminal"
+bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Return exec --no-startup-id st -e ksh -l
 
 
 #
@@ -189,39 +186,54 @@ mode "resize" {
 #
 
 # Audio (ALSA)
-# bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5+
-# bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5-
-# bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
+# bindsym XF86AudioRaiseVolume exec --no-startup-id \
+# amixer set Master 5+
+
+# bindsym XF86AudioLowerVolume exec --no-startup-id \
+# amixer set Master 5-
+
+# bindsym XF86AudioMute exec --no-startup-id \
+# amixer set Master toggle
 
 # Audio (Pulseaudio)
 # bindsym XF86AudioRaiseVolume exec --no-startup-id \
-#   pactl set-sink-volume @DEFAULT_SINK@ +5%
+# pactl set-sink-volume @DEFAULT_SINK@ +5%
+
 # bindsym XF86AudioLowerVolume exec --no-startup-id \
-#   pactl set-sink-volume @DEFAULT_SINK@ -5%
+# pactl set-sink-volume @DEFAULT_SINK@ -5%
+
 # bindsym XF86AudioMute exec --no-startup-id \
-#   pactl set-sink-mute @DEFAULT_SINK@ toggle
+# pactl set-sink-mute @DEFAULT_SINK@ toggle
+
 # bindsym XF86AudioPlay  exec --no-startup-id pactl play-pause
 # bindsym XF86AudioPause exec --no-startup-id pactl pause
 # bindsym XF86AudioNext  exec --no-startup-id pactl next
 # bindsym XF86AudioPrev  exec --no-startup-id pactl previous
 
 # Audio (Sndio)
-bindsym XF86AudioRaiseVolume exec --no-startup-id mixerctl outputs.master=+5
-bindsym XF86AudioLowerVolume exec --no-startup-id mixerctl outputs.master=-5
-bindsym XF86AudioMute        exec --no-startup-id mixerctl outputs.master.mute=toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id \
+mixerctl outputs.master=+5
+
+bindsym XF86AudioLowerVolume exec --no-startup-id \
+mixerctl outputs.master=-5
+
+bindsym XF86AudioMute exec --no-startup-id \
+mixerctl outputs.master.mute=toggle
 
 # Backlight (brightnessctl)
-# bindsym XF86MonBrightnessUp   exec --no-startup-id brightnessctl set 5%+
-# bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+# bindsym XF86MonBrightnessUp   exec --no-startup-id \
+# brightnessctl set 5%+
+#
+# bindsym XF86MonBrightnessDown exec --no-startup-id \
+# brightnessctl set 5%-
 
 # Backlight (xbacklight)
 # bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
 # bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
 
 # Screenshot (scrot)
-bindsym Print exec --no-startup-id \
-  scrot $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
-bindsym $mod+Print exec --no-startup-id \
-  scrot -u $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
-bindsym Shift+Print --release exec --no-startup-id \
-  scrot -s $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym $mod+p exec --no-startup-id \
+scrot $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
+
+bindsym $mod+Shift+p --release exec --no-startup-id \
+scrot -s $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
