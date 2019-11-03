@@ -1,13 +1,10 @@
-# ~/.profile.d/alias.sh
+# ~/.profile.d/linux.sh
 
 if [ "$(uname -s)" = "Linux" ]; then
     alias dd="dd status=progress"
-    alias df="df"
     alias grep="grep"
     alias ls="ls -F"
     alias mkdir="mkdir -p"
-    alias mv="mv"
-    alias rm="rm"
     alias rsync="rsync -haczP --ignore-existing"
 
     if [ "$SHELL" != "/bin/ash" ]; then

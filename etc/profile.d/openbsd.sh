@@ -1,6 +1,15 @@
 # ~/.profile.d/openbsd.sh
 
 if [ "$(uname -s)" == "OpenBSD" ]; then
+    alias df="df -h"
+    alias mkdir="mkdir -p"
+    alias ls="ls -hCF"
+    alias openrsync="openrsync"
+
+    if [ -x "$(command -v rsync)" ]; then
+        alias rsync="rsync -haczP --ignore-existing"
+    fi
+
     # If present, add Xenocera to PATH and MANPATH
     if [ -d "/usr/X11R6" ]; then
         export PATH="$PATH:/usr/X11R6/bin"
