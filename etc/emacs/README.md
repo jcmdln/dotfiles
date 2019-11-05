@@ -55,15 +55,15 @@ Minimal Emacs without graphical support or other such posh features:
 		CC="clang" \
 		CFLAGS="-O2 -g3 -march=native -pipe" \
 		--without-all \
-		--with-file-notification \
-		--with-gnutls \
-		--with-json \
-		--with-m17n-flt \
-		--with-mailutils \
-		--with-modules \
-		--with-threads \
+		--with-file-notification=yes \
+		--with-gnutls=yes \
+		--with-json=yes \
+		--with-mailutils=yes \
+		--with-modules=yes \
+		--with-threads=yes \
+		--with-x-toolkit=no \
+		--with-xml2=yes \
 		--with-xwidgets=no \
-		--with-xml2 \
-		--with-zlib &&
+		--with-zlib=yes &&
 	make -j$(grep -c ^processor /proc/cpuinfo) &&
 	sudo make install
