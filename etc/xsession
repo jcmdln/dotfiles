@@ -1,4 +1,5 @@
-# /etc/xinitrc
+#!/usr/bin/env sh
 
 export ENV="$HOME/.profile"
+xbacklight -set 30%
 i3

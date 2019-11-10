@@ -228,8 +228,8 @@ mixerctl outputs.master.mute=toggle
 # brightnessctl set 5%-
 
 # Backlight (xbacklight)
-# bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
-# bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
 
 # Screenshot (scrot)
 bindsym Print exec --no-startup-id \
