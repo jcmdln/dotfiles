@@ -27,40 +27,33 @@ bindsym $mod+Return exec --no-startup-id st -e ksh -l
 exec --no-startup-id "xrdb ~/.Xresources"
 
 # Set font using pango
-font pango:Monospace 9
+font pango:Monospace 10
 
-# Color Palette
-set $Black	     #333333
-set $Green	     #00894e
-set $LightGreen	     #30f277
-set $Grey	     #eeeeee
-set $DarkGrey	     #888888
-set $Red	     #ff5454
-set $DarkRed	     #b22222
+# Set background color
+exec --no-startup-id xsetroot -solid '#333333'
 
-# Set i3 theme with adjusted color palette
-exec --no-startup-id xsetroot -solid '$Black'
-client.background       $Black
-client.focused          $Green   $Green   $Grey     $LightGreen $Green
-client.focused_inactive $Black   $Black   $Grey     $DarkGrey   $Black
-client.placeholder      $Black   $Black   $Grey     $Black      $Black
-client.unfocused        $Black   $Black   $DarkGrey $DarkGrey   $Black
-client.urgent           $DarkRed $DarkRed $Grey     $Red        $DarkRed
+# Set theme colors
+client.background       #333333
+client.focused          #00894e  #00894e  #eeeeee  #30f277  #00894e
+client.focused_inactive #333333  #333333  #eeeeee  #888888  #333333
+client.placeholder      #333333  #333333  #eeeeee  #333333  #333333
+client.unfocused        #333333  #333333  #888888  #888888  #333333
+client.urgent           #b22222  #b22222  #eeeeee  #ff5454  #b22222
 
-# Set i3status with adjusted color palette
+# Configure i3status with adjusted color palette
 bar {
   position       top
   status_command i3status
 
   colors {
-    background $Black
-    statusline $Grey
-    separator  $Grey
+    background #333333
+    statusline #eeeeee
+    separator  #eeeeee
 
-    focused_workspace  $Grey $Green
-    active_workspace   $Grey $DarkGrey
-    inactive_workspace $Grey $Black
-    urgent_workspace   $Grey $DarkRed
+    focused_workspace  #eeeeee  #00894e
+    active_workspace   #eeeeee  #888888
+    inactive_workspace #eeeeee  #333333
+    urgent_workspace   #eeeeee  #b22222
   }
 }
 
@@ -80,11 +73,11 @@ mode "$Config" {
 }
 
 # i3lock
-set $Locker xset s 10 dpms 10 && i3lock -c 333333 -n && xset s off -dpms
-bindsym $mod+l exec --no-startup-id "$Locker"
+bindsym $mod+l exec --no-startup-id \
+xset s 10 dpms 10 && i3lock -c 333333 -n && xset s off -dpms
 
-## Menu
-set $Logout (e), Reboot (r), Shutdown (s)
+# Menu
+set $System Logout (e), Reboot (r), Shutdown (s)
 bindsym $mod+Home mode "$System"
 mode "$System" {
   bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -185,31 +178,6 @@ mode "resize" {
 # Multimedia
 #
 
-# Audio (ALSA)
-# bindsym XF86AudioRaiseVolume exec --no-startup-id \
-# amixer set Master 5+
-
-# bindsym XF86AudioLowerVolume exec --no-startup-id \
-# amixer set Master 5-
-
-# bindsym XF86AudioMute exec --no-startup-id \
-# amixer set Master toggle
-
-# Audio (Pulseaudio)
-# bindsym XF86AudioRaiseVolume exec --no-startup-id \
-# pactl set-sink-volume @DEFAULT_SINK@ +5%
-
-# bindsym XF86AudioLowerVolume exec --no-startup-id \
-# pactl set-sink-volume @DEFAULT_SINK@ -5%
-
-# bindsym XF86AudioMute exec --no-startup-id \
-# pactl set-sink-mute @DEFAULT_SINK@ toggle
-
-# bindsym XF86AudioPlay  exec --no-startup-id pactl play-pause
-# bindsym XF86AudioPause exec --no-startup-id pactl pause
-# bindsym XF86AudioNext  exec --no-startup-id pactl next
-# bindsym XF86AudioPrev  exec --no-startup-id pactl previous
-
 # Audio (Sndio)
 bindsym XF86AudioRaiseVolume exec --no-startup-id \
 mixerctl outputs.master=+5
@@ -220,16 +188,11 @@ mixerctl outputs.master=-5
 bindsym XF86AudioMute exec --no-startup-id \
 mixerctl outputs.master.mute=toggle
 
-# Backlight (brightnessctl)
-# bindsym XF86MonBrightnessUp   exec --no-startup-id \
-# brightnessctl set 5%+
-#
-# bindsym XF86MonBrightnessDown exec --no-startup-id \
-# brightnessctl set 5%-
 
 # Backlight (xbacklight)
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+
 
 # Screenshot (scrot)
 bindsym Print exec --no-startup-id \
