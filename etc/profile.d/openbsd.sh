@@ -4,7 +4,7 @@ if [ "$(uname -s)" == "OpenBSD" ]; then
     alias df="df -h"
     alias mkdir="mkdir -p"
     alias ls="ls -hCF"
-    alias openrsync="openrsync"
+    alias openrsync="openrsync --rsync-path=openrsync -lrt"
 
     if [ -x "$(command -v rsync)" ]; then
         alias rsync="rsync -haczP --ignore-existing"
