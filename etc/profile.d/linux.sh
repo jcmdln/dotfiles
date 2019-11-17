@@ -5,7 +5,7 @@ if [ "$(uname -s)" = "Linux" ]; then
     alias grep="grep"
     alias ls="ls -F"
     alias mkdir="mkdir -p"
-    alias rsync="rsync -haczP --ignore-existing"
+    alias rsync="rsync -achzP"
 
     if [ "$SHELL" != "/bin/ash" ]; then
         alias df="df -h"

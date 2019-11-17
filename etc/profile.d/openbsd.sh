@@ -7,7 +7,7 @@ if [ "$(uname -s)" == "OpenBSD" ]; then
     alias openrsync="openrsync --rsync-path=openrsync -lrt"
 
     if [ -x "$(command -v rsync)" ]; then
-        alias rsync="rsync -haczP --ignore-existing"
+        alias rsync="rsync -achzP"
     fi
 
     # If present, add Xenocera to PATH and MANPATH
