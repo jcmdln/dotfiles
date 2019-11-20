@@ -1,4 +1,4 @@
-# ~/.zshrc
+#!/usr/bin/env zsh
 
 # ZSH-specific configuration
 ZSH="/home/$(whoami)/.oh-my-zsh"

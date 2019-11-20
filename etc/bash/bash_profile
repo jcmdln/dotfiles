@@ -1,4 +1,4 @@
-# /etc/bash/bash_profile
+#!/usr/bin/env bash
 
 # This file only exists for ensuring that bashrc gets loaded. I don't
 # care about any formal distinction between these files in terms of how
