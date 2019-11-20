@@ -1,4 +1,4 @@
-# !/profile.d/user.sh
+#!/usr/bin/env sh
 
 # Create missing user directories that are likely to be needed at some
 # point.

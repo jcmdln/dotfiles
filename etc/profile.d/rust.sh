@@ -1,3 +1,4 @@
-# /etc/profile.d/rush.sh
+#!/usr/bin/env sh
 
-export PATH="$PATH:$HOME/.cargo/bin"
+PATH="$PATH:$HOME/.cargo/bin"
+export PATH

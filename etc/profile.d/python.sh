@@ -1,4 +1,4 @@
-# ~/profile.d/python.sh
+#!/usr/bin/env sh
 
 if [ -x "$(command -v pip)" ]; then
     alias pip="pip --disable-pip-version-check"

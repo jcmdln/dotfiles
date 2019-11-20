@@ -1,4 +1,4 @@
-# ~/profile.d/editor.sh
+#!/usr/bin/env sh
 
 if [ -x "$(command -v emacs)" ]; then
     EDITOR="emacsclient"

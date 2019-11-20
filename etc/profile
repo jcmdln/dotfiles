@@ -1,4 +1,4 @@
-# ~/.profile
+#!/usr/bin/env sh
 
 PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
 PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"

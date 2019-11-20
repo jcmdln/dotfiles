@@ -1,8 +1,7 @@
-# ~/.profile.d/linux.sh
+#!/usr/bin/env sh
 
 if [ "$(uname -s)" = "Linux" ]; then
     alias dd="dd status=progress"
-    alias grep="grep"
     alias ls="ls -F"
     alias mkdir="mkdir -p"
     alias rsync="rsync -achzP"

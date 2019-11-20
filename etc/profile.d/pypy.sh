@@ -1,4 +1,4 @@
-# ~/profile.d/pypy.sh
+#!/usr/bin/env sh
 
 if [ -x "$(command -v pypy)" ]; then
     alias pyp="pypy -m pip --disable-pip-version-check"
