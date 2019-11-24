@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ "$(uname -s)" == "OpenBSD" ]; then
+if [ "$(uname -s)" = "OpenBSD" ]; then
     alias df="df -h"
     alias mkdir="mkdir -p"
     alias ls="ls -hCF"
