@@ -7,7 +7,7 @@ else
     PS1="[\u@\h \W]\$ "
 
     # Set terminal title
-    PS1="\[\e]0;\u@\h: \W\a\]$PS1"
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
 fi
 
 export PS1
