@@ -49,7 +49,7 @@ scrot -s $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
 
 # sndio
 bindsym XF86AudioMute exec --no-startup-id \
-mixerctl outputs.master.mute=toggle
+sh mixerctl outputs.master.mute=toggle
 
 bindsym XF86AudioLowerVolume exec --no-startup-id \
 mixerctl outputs.master=-5
