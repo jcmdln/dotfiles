@@ -6,8 +6,5 @@ export ENV="$HOME/.profile"
 # Set screen brightness to 30%
 xbacklight -set 30%
 
-# Natural touchpad scrolling
-xinput set-button-map /dev/wsmouse0 1 2 3 5 4 7 6
-
 # Start i3wm
 i3
