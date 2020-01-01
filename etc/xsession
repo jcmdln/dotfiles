@@ -3,8 +3,12 @@
 # Ensure ~/.profile is loaded
 export ENV="$HOME/.profile"
 
-# Set screen brightness to 30%
-xbacklight -set 30%
+# Set screen brightness to 20%
+xbacklight -set 20%
+
+# Mute output/input audio
+mixerctl outputs.master.mute=on
+mixerctl record.volume.mute=on
 
 # Start i3wm
 i3
