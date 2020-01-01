@@ -6,8 +6,12 @@ export ENV="$HOME/.profile"
 # Set screen brightness to 20%
 xbacklight -set 20%
 
-# Mute output/input audio
+# Mute master audio output channels
+mixerctl outputs.master=0
 mixerctl outputs.master.mute=on
+
+# Mute master audio input channels
+mixerctl record.volume=0
 mixerctl record.volume.mute=on
 
 # Start i3wm
