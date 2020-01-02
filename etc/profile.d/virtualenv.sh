@@ -12,7 +12,7 @@ if [ -d ~/.local/virtualenv ]; then
         alias virtualenv_ansible=". ~/.local/virtualenv/ansible/bin/activate"
     fi
 
-    if [ -d ~/.local/virtualenv/redfish ]; then
-        alias virtualenv_redfish=". ~/.local/virtualenv/redfish/bin/activate"
+    if [ -d ~/.local/virtualenv/redfishtool ]; then
+        alias virtualenv_redfishtool=". ~/.local/virtualenv/redfishtool/bin/activate"
     fi
 fi
