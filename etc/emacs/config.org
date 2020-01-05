@@ -4,60 +4,51 @@
 #+STARTUP: indent
 #+LANGUAGE: en
 
-This singular file represents my entire GNU/Emacs configuration.  When
-creating and/or modifying this configuration, I've kept the following
-goals in mind:
+This singular file is meant to represent my personal GNU/Emacs
+configuration.  It all started when I saw a [[https://www.youtube.com/watch?v=dljNabciEGg][video]] by Howard Abrams that
+was shared in #emacs on Freenode which really got me into the whole
+idea of using org-mode to manage my configuration.
 
-- Leave core Emacs functionality alone, when tolerable
+My goals for using org-mode to manage my configuration are as follows:
 - Use Org-Mode to provide contextual information, (almost) always
-- Leverage use-package to make things "just work"
-- Initialization time is a reasonable concern.
+- Preserve core GNU/Emacs functionality, though enhance it when desired
+- Leverage use-package for replicability
+- Initialization time is a reasonable concern
 
 * Warnings
-I have made many changes to how Emacs functions.  While I intend to keep
-default Emacs keybinds and behaviors as much as possible, over the years
-I have slightly diverged when deemed suitable.  Whether you find these
-changes intrusive or not is entirely fair, though heed this brief
-warning.
+Before we get too far, keep in mind that this file represents my
+personal workflow.  I have made many changes to how Emacs functions.
 
 I would suggest that you use the contents of this file as a reference
 for your own configuration, as you may otherwise experience unexpected
 behavior.
 
 * Usage
-The way my configuration is defined is that you should only need to
-share this singular file to fully replicate it. To use this
-configuration file, simply download and move it to
-"~/.emacs.d/config.org". Next, you will run the following in your
-terminal:
+This file may be used to fully replicate my setup, and acts as both
+documentation as well as configuration.  There are two strategies you
+may choose from to deploy this configuration:
 
-#+begin_src shell :tangle no
+1. Use Emacs to evaluate this file via command line:
+
+#+BEGIN_SRC shell
 emacs --eval='(org-babel-load-file "~/.emacs.d/config.org")'
-#+end_src
+#+END_SRC
 
-You may also open Emacs and run the following at the same file to
-complete the setup:
+2. Configure Emacs by loading this file
 
-#+begin_src elisp :tangle no
+#+BEGIN_SRC emacs-lisp
 M-x org-babel-load-file RET ~/.emacs.d/config.org
-#+end_src
+#+END_SRC
 
-* init.el
-During the startup process, Emacs will look for this specific file once
-it reaches the initialization process.  For the purposes of this
-configuration, this file is used to perform precursory work or set
-certain things as early as possible.
+* Files
+To make the most effective use of the various startup files that Emacs
+will check for, each file listed in this section will detail the
+configurations that they contain.
 
-*** General
-Here we will make some modifications to minor, but important things
-that should be handled early.
-
-First, we'll specify our `custom-file` so that our configuration files
-won't have a configuration block appended to them.
-
-#+begin_src emacs-lisp :tangle init.el
-(setq custom-file "~/.emacs.d/custom.el")
-#+end_src
+** init.el
+Emacs will look for this specific file once it reaches the
+initialization phase.  Here we will make modifications to things that
+ship with Emacs and should be changed early.
 
 *** Garbage Collection
 Emacs has some considerations for older and more memory restricted
@@ -67,55 +58,61 @@ these changes.
 
 **** gc-cons-percentage
 For the purposes of initialization, we'll increase `gc-cons-percentage`
-to defer garbage collection.  The settings below mean that until
-reaching 80% of the current heap size, GC will not occur.  After init
-completes we will set this back to the default.
+to defer garbage collection.  The settings below mean that garbage
+collection is deferred until reaching 80% of the heap size.  After init
+completes, we restore the default value.
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq gc-cons-percentage-default gc-cons-percentage
       gc-cons-percentage         0.80)
 
 (add-hook 'after-init-hook
           (lambda ()
             (setq gc-cons-percentage gc-cons-percentage-default)))
-#+end_src
+#+END_SRC
 
 **** gc-cons-threshold
-Now we will increase the `gc-cons-threshold`, which is the number of
-bytes of storage that must be allocated for Lisp objects after one
-garbage collection in order to trigger another garbage collection.  On
-32-bit systems, this is 400KB and on 64-bit systems this is 800KB.  By
-specifying a larger value, garbage collection will occur less often.
+Now we will increase the `gc-cons-threshold`, which referrs to the
+total bytes of storage for lisp objects that must be allocated to
+trigger subsequent garbage collections.
+
+On 32-bit systems this threshold is 400KB, while on 64-bit systems it
+is 800KB.  The idea is that by specifying a larger theshold, garbage
+collection will occur less often, meaning fewer GC pauses.
 
 We'll set this value to 4MB globally, which will significantly reduce
-the total number of GC pauses we experience.  At this size, most
-platforms should only notice a performance improvement without
-increasing the amount of time needed for GC to complete.
+the total number of GC pauses we experience.
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq gc-cons-threshold-default gc-cons-threshold
       gc-cons-threshold         (* 4 1024 1024))
-#+end_src
+#+END_SRC
+
+*** Handling Custom Configuration
+Specify our `custom-file` so that our generated configuration files
+won't have a configuration block uncleanly appended to them:
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(setq custom-file "~/.emacs.d/custom.el")
+#+END_SRC
 
 *** Encoding
-Here we will attempt to enforce using utf-8 encoding by default.  While
-this may not be very important for general usage, I much prefer this
-behavior.
+Here we will attempt to enforce using utf-8 encoding:
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq prefer-coding-system       'utf-8
       set-default-coding-systems 'utf-8
       set-language-environment   "UTF-8"
       set-locale-environment     "en_US.UTF-8")
-#+end_src
+#+END_SRC
 
 *** Environment
 Emacs already inherits much of what is currently in the system's
-environment, though here we'll ensure that this is occurring.  We will
-modify our environment slightly so that the current Emacs session is
-our default editor, which is mainly useful for git/magit.
+environment, though here we'll modify our environment slightly so that
+the current Emacs session is our default editor, and disable
+PROMPT_COMMAND which might cause problems with ssh connections:
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setenv "EDITOR"         "emacsclient")
 (setenv "GIT_EDITOR"     "emacsclient")
 (setenv "MANPATH"        (getenv "MANPATH"))
@@ -123,125 +120,124 @@ our default editor, which is mainly useful for git/magit.
 (setenv "PROMPT_COMMAND" "")
 (setenv "SHELL"          (getenv "SHELL"))
 (setenv "TERM"           (getenv "TERM"))
-#+end_src
+#+END_SRC
 
 *** Appearance
 In terms of appearance, I prefer to have as little wasted space and
 visual clutter while using built-in themes.
 
-**** Buffers
-Change default buffer behaviors
+**** Disable toolbars
+I don't find the toolbars to be useful.  The following will disable the
+various toolbars when their functions are bound, which prevents them
+from ever loading or being fully initialized:
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(when (fboundp 'menu-bar-mode)   (menu-bar-mode   -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
+#+END_SRC
+
+**** Disable startup buffers and actions
+
+Disable the various buffers and actions that occur post-init, other
+than showing an empty scratch buffer:
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq initial-scratch-message     ""
       inhibit-splash-screen       t
       inhibit-startup-buffer-menu t)
-#+end_src
+#+END_SRC
+
+**** Re-use frames rather than creating new ones
+One big annoyance is Emacs arbitrary splitting my window to show a
+newly created buffer.  This is especially annoying when I run a command
+myself such as man which distorts my
 
 Enforce always re-using the currently selected frame when a new buffer
 is opened or focused.
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq pop-up-frames               nil
       pop-up-windows              nil
       display-buffer-reuse-frames t)
 
 (setq Man-notify-method 'pushy)
-#+end_src
+#+END_SRC
 
-**** Toolbars
-Prevent tool bars from ever being initialized.  We do this by defining
-toolbars as "disabled" so that when they are called after init, they are
-never loaded.
+**** Set a basic theme and font
+Tango-Dark, a monospace font, what else do you need?
 
-#+begin_src emacs-lisp :tangle init.el
-(when (fboundp 'menu-bar-mode)   (menu-bar-mode   -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
-#+end_src
-
-**** Theme
-I don't care for using third-party themes, and think that tango-dark is
-more than adequate.  We will load the built-in tango-dark theme and use
-the default Monospace system font.  I used to adjust the font size and
-line spacing but the same behavior may be achieved by adjusting your
-system defaults.
-
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (load-theme 'tango-dark)
 (set-face-attribute :family "Monospace")
-#+end_src
+#+END_SRC
 
-Change some default behaviors so that tabs aren't used, trailing
-whitespace is deleted, and on save all tabs are replaced with spaces.
+**** Improve editing generic files
+At the very least, I like to see the column number, ensure that \n
+always preceeds EOF, tweak the paren matching delay, and disable the
+visual bell:
 
-#+begin_src emacs-lisp :tangle init.el
-(setq indent-tabs-mode nil)
-
-(add-hook 'before-save-hook
-          (lambda()
-            (delete-trailing-whitespace)
-            (if (not indent-tabs-mode)
-                (untabify (point-min) (point-max)))))
-#+end_src
-
-Next we'll adjust some settings to improve editing files.
-
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (setq column-number-mode    t
       require-final-newline t
       show-paren-delay      0.2
       visible-bell          nil)
 
 (show-paren-mode t)
-#+end_src
+#+END_SRC
 
-*** Bootstrap
-This section ensures that the configuration gets loaded, and is
-refreshed automatically.
+**** Remove trailing whitespace on save
 
-#+begin_src emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+*** Bootstrap config.el
+On init, ensure that the generated config files are always newer than
+this file.  By doing so, we only have to make edits to this file and
+the changes will cause our configuration to be regenerated.
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (defun emacs-reconfig()
   "Build and compile 'org-mode' config."
   (interactive)
   (require 'org)
   (org-babel-load-file "~/.emacs.d/config.org")
   (byte-compile-file   "~/.emacs.d/config.el"))
-#+end_src
 
-Missing description
-
-#+begin_src emacs-lisp :tangle init.el
 (if (file-newer-than-file-p "~/.emacs.d/config.org"
                             "~/.emacs.d/config.el")
     (emacs-reconfig)
   (load "~/.emacs.d/config.el"))
-#+end_src
+#+END_SRC
 
-* config.el
-This file is specific to this configuration, and is basically a dumping
-ground for the primary components of our configuration.  Basically this
-involves things that we didn't want to be loaded during initialization
-though need to load before
+** config.el
+Emacs won't be looking for this file itself, though our init.el will
+load this file which contains changes we want to make post-init.
 
-** Package Management
-Missing description
+*** Package Management
+Package management isn't loaded by default, so we have to explicitly
+require it be loaded now:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (require 'package)
-#+end_src
+#+END_SRC
 
-Missing description
+There was a bug in the Emacs 26.x release that caused errors when
+attempting to retrieve the package list from elpa that requires this
+workaround, though it probably isn't needed anymore:
 
-#+begin_src emacs-lisp :tangle config.el
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-#+end_src
+#+BEGIN_SRC emacs-lisp :tangle config.el
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"
+      package-check-signature nil)
+#+END_SRC
 
-Missing description
+Here we're defining where to put packages, where we should get packages
+from, and the priority we should retrive packages if a package with the
+same name exists on multiple sources.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (setq package-user-dir "~/.emacs.d/pkg/"
-      package-check-signature nil
       package-archives
       '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
         ("MELPA Stable" . "https://stable.melpa.org/packages/")
@@ -250,64 +246,68 @@ Missing description
       '(("GNU ELPA"     . 3)
         ("MELPA Stable" . 2)
         ("MELPA"        . 1)))
-#+end_src
+#+END_SRC
 
-Missing description
+With the above changes made, we can now initialize the package module:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (package-initialize)
-#+end_src
+#+END_SRC
 
-*** use-package
-Missing description
+**** use-package
+The first pacakge we'll ensure exists is use-package, which the rest of
+this file relies on for handling per-package configuration.  In newer
+versions of Emacs use-package is now a built-in, but we should check to
+be nice to older versions:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-#+end_src
 
-Missing description
-
-#+begin_src emacs-lisp :tangle config.el
 (eval-when-compile
   (require 'use-package)
   (require 'bind-key))
-#+end_src
+#+END_SRC
 
-Missing description
+Some decent use-package tweaks are to defer loading a package unless
+demanded, ensure a package exists or can be retrieved before loading
+its configuration, and check that use-package is installed and active
+before attempting to initialize:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (setq use-package-always-defer      t
       use-package-always-ensure     t
       use-package-check-before-init t)
-#+end_src
+#+END_SRC
 
-**** no-littering
-Missing description
+***** no-littering
+The second package will keep our ~/.emacs.d nice and tidy by adjusting
+the locations of configuration files.  It uses a unix-y format, which
+is a nice change.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package no-littering
   :demand t
   :config
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-#+end_src
+#+END_SRC
 
-** Input
+*** Input
 I do make some minor changes to input methods, though I intend to remain
 as faithful to "the Emacs way" as I can.
 
-*** Keyboard
+**** Keyboard
 In terms of keyboard input, I only make slight adjustments though their
 usefulness is highly subjective.
 
-***** Keybinds
+****** Keybinds
 From my time of using tmux + vim I had grown to prefer some custom
 keybinds I made for handling splits or navigating through panes. Here
 I've attempted to recreated the subjective ease of navigation I prefer:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (global-set-key (kbd "M--")
                 (lambda()
                   (interactive)
@@ -321,28 +321,28 @@ I've attempted to recreated the subjective ease of navigation I prefer:
                   (split-window-horizontally)
                   (other-window 1 nil)
                   (switch-to-next-buffer)))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (global-set-key (kbd "<M-down>")  'windmove-down)
 (global-set-key (kbd "<M-left>")  'windmove-left)
 (global-set-key (kbd "<M-right>") 'windmove-right)
 (global-set-key (kbd "<M-up>")    'windmove-up)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (global-set-key (kbd "C-c c")     'comment-or-uncomment-region)
-#+end_src
+#+END_SRC
 
-*** Mouse
+**** Mouse
 In terms of the mouse, I really only adjust scrolling behavior and add
 xterm support:
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (setq mouse-wheel-follow-mouse      't
       mouse-wheel-progressive-speed nil
       mouse-wheel-scroll-amount     '(1 ((shift) . 1)))
@@ -360,15 +360,15 @@ xterm support:
                 (lambda()
                   (interactive)
                   (scroll-up-line 3)))
-#+end_src
+#+END_SRC
 
-*** Scrolling
+**** Scrolling
 I prefer scrolling to behave more like other editors, where the cursor
 reaches the final line before scrolling and the cursor scrolls one line
 at a time. This does cause emacs to use additional resources, though I
 prefer this behavior to the default.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (setq auto-window-vscroll             nil
       scroll-conservatively           101
       scroll-margin                   0
@@ -376,37 +376,37 @@ prefer this behavior to the default.
       scroll-step                     1
       scroll-up-aggressively          0.0
       scroll-down-aggressively        0.0)
-#+end_src
+#+END_SRC
 
-*** Misc
+**** Misc
 This part is a bit unorganized though reduces clutter by inhibiting
 buffers and adjusting how Emacs' clipboard works.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (setq mouse-yank-at-point                 t
       save-interprogram-paste-before-kill t
       select-enable-primary               nil)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-to-list 'display-buffer-alist
              '("*Help*" display-buffer-same-window))
 
 (add-to-list 'display-buffer-alist
              '("*Man*" display-buffer-same-window))
-#+end_src
-** Built-ins
+#+END_SRC
+*** Built-ins
 These are packages that Emacs currently ships with.
 
-*** eshell
+**** eshell
 The default configuration of eshell is, well, bad. The ordinary user who
 opens it once and considers it to be a bad tool is missing out of the
 full potential eshell provides. I've spent a _lot_ of time making eshell
 behave and look like typical unix shells, so maybe try it for yourself.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eshell
   :config
   (setq eshell-banner-message             ""
@@ -442,16 +442,16 @@ behave and look like typical unix shells, so maybe try it for yourself.
     "Open a new instance of eshell."
     (interactive)
     (eshell 'N)))
-#+end_src
+#+END_SRC
 
-*** eww
+**** eww
 I like eww, but it was missing a few things for me to use it as my
 primary browser for non-interactive sites. Here we will ensure that eww
 is our primary browser when visiting links, and that images are blocked
 by default. Should you have multiple eww buffers open and want to
 toggle displaying images in a specific buffer, you may now do so.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eww
   :init
   (setq browse-url-browser-function 'eww-browse-url)
@@ -474,11 +474,11 @@ toggle displaying images in a specific buffer, you may now do so.
       (switch-to-buffer (generate-new-buffer "*eww*"))
       (eww-mode)
       (eww url))))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eww-lnum
   :after (eww)
   :init
@@ -486,14 +486,14 @@ Missing description
             (lambda()
               (define-key eww-mode-map "f" 'eww-lnum-follow)
               (define-key eww-mode-map "F" 'eww-lnum-universal))))
-#+end_src
+#+END_SRC
 
-*** gnus
+**** gnus
 I've bounced between using "real" email clients and gnus quite a few
 times, though here we will attempt to make gnus behave like other
 clients.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gnus
   :disabled
   :bind
@@ -516,14 +516,14 @@ clients.
 
   (if (file-exists-p "~/.emacs.d/usr/gnus.el")
       (load-file     "~/.emacs.d/usr/gnus.el")))
-#+end_src
+#+END_SRC
 
-*** ibuffer
+**** ibuffer
 I'm not a fan of the default ibuffer behavior, if the total size of this
 section does not make that clear. Here we will sort buffers, show human
 readable sizes, and define a ton of filter groups.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ibuffer
   :bind
   (("C-x C-b"         . ibuffer)
@@ -605,13 +605,13 @@ readable sizes, and define a ton of filter groups.
                 (size-h 9 -1 :right) " "
                 (mode 16 16 :left :elide) " "
                 filename-and-process))))
-#+end_src
+#+END_SRC
 
-*** scratch
+**** scratch
 I like opening multiple scratch buffers, so I added a function to allow
 me to make a new numbered scratch buffer.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package scratch
   :init
   (defun scratch-new()
@@ -619,15 +619,15 @@ me to make a new numbered scratch buffer.
     (interactive)
     (switch-to-buffer (generate-new-buffer "*scratch*"))
     (lisp-mode)))
-#+end_src
+#+END_SRC
 
-*** server
+**** server
 I feel that Emacs is missing some extensions for server-based functions
 and added a warning when attempting to close Emacs. Also, if you want to
 update your packages or kill Emacs without saving in a quicker fashion
 you may appreciate the additional functions.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package server
   :bind ("C-x C-c" . server-stop)
   :init
@@ -655,36 +655,36 @@ you may appreciate the additional functions.
     (unless package-archive-contents
       (package-refresh-contents))
     (package-utils-upgrade-all)))
-#+end_src
+#+END_SRC
 
-** Essentials
+*** Essentials
 This section contains packages that integrate well with emacs while
 extending the default behaviors. These packages, much like the title
 implies, are essential for me.
 
-*** async
+**** async
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package async
   :config
   (async-bytecomp-package-mode '(all)))
-#+end_src
+#+END_SRC
 
-*** auto-compile
+**** auto-compile
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package auto-compile
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
-#+end_src
+#+END_SRC
 
-*** counsel
+**** counsel
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package counsel
   :bind
   (("<f1> f"  . counsel-describe-function)
@@ -701,11 +701,11 @@ Missing description
    ("C-x C-f" . counsel-find-file)
    ("C-x l"   . counsel-locate)
    ("M-x"     . counsel-M-x)))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package counsel-etags
   :init
   (add-hook 'c-mode-hook
@@ -720,30 +720,30 @@ Missing description
   :config
   (setq-local large-file-warning-threshold nil)
   (setq-local tags-revert-without-query    t))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package swiper
   :demand t)
-#+end_src
+#+END_SRC
 
-*** flyspell
+**** flyspell
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flyspell
   :init
   (add-hook 'markdown-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook     'flyspell-prog-mode)
   (add-hook 'text-mode-hook     'flyspell-mode))
-#+end_src
+#+END_SRC
 
-*** ivy
+**** ivy
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ivy
   :bind
   (("C-c C-r" . ivy-resume)
@@ -755,20 +755,20 @@ Missing description
   :config
   (setq ivy-use-virtual-buffers      t
         enable-recursive-minibuffers t))
-#+end_src
+#+END_SRC
 
-*** package-utils
+**** package-utils
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package package-utils
   :demand t)
-#+end_src
+#+END_SRC
 
-*** smartparens
+**** smartparens
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package smartparens
   :demand t
   :init
@@ -780,42 +780,42 @@ Missing description
   (setq sp-highlight-pair-overlay     nil
         sp-highlight-wrap-overlay     nil
         sp-highlight-wrap-tag-overlay nil))
-#+end_src
+#+END_SRC
 
-*** undo-tree
+**** undo-tree
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package undo-tree
   :demand t
   :config
   (global-undo-tree-mode))
-#+end_src
+#+END_SRC
 
-*** xclip
+**** xclip
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package xclip
   :init
   (xclip-mode 1))
-#+end_src
+#+END_SRC
 
 
-** Development
-*** Utilities
-**** clang-format
+*** Development
+**** Utilities
+***** clang-format
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package clang-format
   :disabled)
-#+end_src
+#+END_SRC
 
-**** company
+***** company
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company
   :init
   (add-hook 'lisp-mode-hook 'company-mode)
@@ -827,72 +827,72 @@ Missing description
         company-idle-delay     0.3
         company-echo-delay     0
         company-begin-commands '(self-insert-command)))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-emoji
   :disabled
   :after (company))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-shell
   :disabled
   :after (company))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-web
   :disabled
   :after (company))
-#+end_src
+#+END_SRC
 
-**** diff-hl
+***** diff-hl
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package diff-hl
   :init
   (add-hook 'prog-mode-hook 'diff-hl-mode)
   (add-hook 'text-mode-hook 'diff-hl-mode))
-#+end_src
+#+END_SRC
 
-**** flycheck
+***** flycheck
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck
   :demand t
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-inline
   :demand t
   :init
   (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
-#+end_src
+#+END_SRC
 
-**** gist
+***** gist
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gist)
-#+end_src
+#+END_SRC
 
-**** highlight-indent-guides
+***** highlight-indent-guides
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package highlight-indent-guides
   :demand t
   :init
@@ -900,13 +900,13 @@ Missing description
 
   :config
   (setq highlight-indent-guides-method 'character))
-#+end_src
+#+END_SRC
 
-**** irony
+***** irony
 At some point I'll explain what I've done here, because it was rather
 annoying to get right.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package irony
   :init
   (defun my-irony-mode ()
@@ -921,60 +921,60 @@ annoying to get right.
   :config
   (define-key irony-mode-map [remap completion-at-point] 'counsel-irony)
   (define-key irony-mode-map [remap complete-symbol]     'counsel-irony))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-irony
   :after (company irony)
   :config
   (add-to-list 'company-backends 'company-irony))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-irony-c-headers
   :after (company irony company-irony)
   :config
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-#+end_src
+#+END_SRC
 
-**** magit
+***** magit
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package magit
   :demand t
   :bind
   ("C-c C-c" . with-editor-finish))
-#+end_src
+#+END_SRC
 
-**** rainbow-delimiters
+***** rainbow-delimiters
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package rainbow-delimiters
   :demand t
   :init
   (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
   (add-hook 'text-mode-hook     'rainbow-delimiters-mode))
-#+end_src
+#+END_SRC
 
-**** realgud
+***** realgud
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package realgud
   :disabled)
-#+end_src
+#+END_SRC
 
-**** rtags
+***** rtags
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package rtags
   :disabled
   :init
@@ -989,98 +989,98 @@ Missing description
   (setq-local flycheck-highlighting-mode          nil)
   (setq-local flycheck-check-syntax-automatically nil)
   (rtags-diagnostics))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-rtags
   :disabled
   :after (company)
   :config
   (push 'company-rtags company-backends))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-rtags
   :disabled
   :after (rtags flycheck)
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ivy-rtags
   :disabled
   :config
   (setq rtags-display-result-backend 'ivy))
-#+end_src
+#+END_SRC
 
-*** Languages
+**** Languages
 This section is gross, and due for a rewrite to explain things a bit
 better.
 
-**** General
+***** General
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'text-mode-hook 'display-line-numbers-mode)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (global-visual-line-mode t)
-#+end_src
+#+END_SRC
 
-**** Android
+***** Android
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package android-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Angular
+***** Angular
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package angular-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Ansible
+***** Ansible
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ansible-vault)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-ansible
   :after (company ansible-vault))
-#+end_src
+#+END_SRC
 
-**** Apache
+***** Apache
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package apache-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** C
+***** C
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
@@ -1089,12 +1089,12 @@ Missing description
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
-#+end_src
+#+END_SRC
 
-**** C++
+***** C++
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c++-mode-hook
           (lambda()
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -1103,129 +1103,129 @@ Missing description
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
-#+end_src
+#+END_SRC
 
-**** Caddy
+***** Caddy
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package caddyfile-mode)
-#+end_src
+#+END_SRC
 
-**** Clojure
+***** Clojure
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package clojure-mode
   :disabled
   :init
   (add-hook 'clojure-mode-hook 'flycheck-clojure 'local))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-clojure
   :disabled)
-#+end_src
+#+END_SRC
 
-**** CMake
+***** CMake
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package cmake-mode)
-#+end_src
+#+END_SRC
 
-**** CoffeeScript
+***** CoffeeScript
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package coffee-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** CSharp
+***** CSharp
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package csharp-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Cuda
+***** Cuda
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package cuda-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** D
+***** D
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package d-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Dart
+***** Dart
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dart-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Docker
+***** Docker
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package docker-compose-mode)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dockerfile-mode)
-#+end_src
+#+END_SRC
 
-**** DotEnv
+***** DotEnv
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dotenv-mode)
-#+end_src
+#+END_SRC
 
-**** GDScript
+***** GDScript
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gdscript-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Git
+***** Git
 These packages provide modes that make git-related files more readable.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
-#+end_src
+#+END_SRC
 
-**** Go
+***** Go
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (defun go-mode-install()
   "Install go-mode dependencies and log to *Messages*."
   (interactive)
   (eshell-command "go get -u -v github.com/go-delve/delve/cmd/dlv github.com/jstemmer/gotags github.com/stamblerre/gocode github.com/rogpeppe/godef golang.org/x/lint/golint golang.org/x/tools/cmd/goimports golang.org/x/tools/cmd/gorename golang.org/x/tools/cmd/guru"))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package go-mode
   :init
   (add-hook 'go-mode-hook
@@ -1236,64 +1236,64 @@ Missing description
               (set (make-local-variable 'company-backends)
                    '(company-go))
               (company-mode t))))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package go-eldoc
   :after (go-mode)
   :init
   (add-hook 'go-mode-hook 'go-eldoc-setup))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package golint
   :after (go-mode))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-go
   :after (company go-mode))
-#+end_src
+#+END_SRC
 
-**** Java
+***** Java
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gradle-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** JavaScript
+***** JavaScript
 JavaScript is a bit of a nightmare because there are multiple competing
 and not quite similar ways to write it, so clearly we need multiple
 modes to choose from.  I prefer the built-in as much as possible
 considering rjsx-mode is something like 30mb, and I don't really do
 enough JS development to really know what the canonical mode is.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'js-mode-hook
           (lambda()
             (setq-local js-indent-level  2)
             (setq-local indent-tabs-mode f)
             (setq-local tab-width        2)))
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package es-mode
   :disabled)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package rjsx-mode
   :disabled
   :init
@@ -1304,226 +1304,227 @@ Missing description
             (lambda()
               (setq-local js-indent-level 2)
               (setq-local tab-width       2))))
-#+end_src
+#+END_SRC
 
-**** JSON
+***** JSON
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package json-mode)
-#+end_src
+#+END_SRC
 
-**** Less
+***** Less
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package less-css-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Lisp
+***** Lisp
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'lisp-mode-hook
           (lambda()
             (setq-local c-basic-offset 2)
             (setq-local tab-width      2)))
-#+end_src
+#+END_SRC
 
-**** Lua
+***** Lua
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package lua-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Markdown
+***** Markdown
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package markdown-mode)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package markdown-preview-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Meson
+***** Meson
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package meson-mode)
-#+end_src
+#+END_SRC
 
-**** NGINX
+***** NGINX
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package nginx-mode)
-#+end_src
+#+END_SRC
 
-**** Ninja
+***** Ninja
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ninja-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Node
+***** Node
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package npm-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Org Mode
+***** Org Mode
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook
           (lambda()
+            (load-theme 'org-beautify t)
             (add-hook 'org-metaup-hook    'windmove-up    'local)
             (add-hook 'org-metaleft-hook  'windmove-left  'local)
             (add-hook 'org-metadown-hook  'windmove-down  'local)
             (add-hook 'org-metaright-hook 'windmove-right 'local)
             (setq-local org-support-shift-select 'always)))
-#+end_src
+#+END_SRC
 
-**** PHP
+***** PHP
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package php-mode)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-php
   :after (company php-mode))
-#+end_src
+#+END_SRC
 
-**** Protobuf
+***** Protobuf
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package protobuf-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** QML
+***** QML
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package qml-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Rust
+***** Rust
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package rust-mode)
-#+end_src
+#+END_SRC
 
 Flycheck helper for Rust
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-rust
   :after (rust-mode)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-#+end_src
+#+END_SRC
 
-**** Sass
+***** Sass
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package sass-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Swift
+***** Swift
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package swift-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** systemd
+***** systemd
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package systemd)
-#+end_src
+#+END_SRC
 
-**** TypeScript
+***** TypeScript
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package typescript-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Vue
+***** Vue
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package vue-mode
   :disabled)
-#+end_src
+#+END_SRC
 
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package vue-html-mode
   :disabled)
-#+end_src
+#+END_SRC
 
-**** Web
+***** Web
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package web-beautify)
-#+end_src
+#+END_SRC
 
-**** YAML
+***** YAML
 Missing description
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package yaml-mode)
-#+end_src
+#+END_SRC
 
-** Extras
+*** Extras
 This section contains additional applications or packages that I
 suspect others wouldn't use, though I use these rather heavily.
 
-*** auto-dictionary
+**** auto-dictionary
 Missing description
 
 Source: https://github.com/nschum/auto-dictionary-mode
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package auto-dictionary
   :after (flyspell)
   :config
   (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
-#+end_src
+#+END_SRC
 
-*** circe
+**** circe
 This package adds _another_ IRC client, which is my preferred client
 even over irssi, weechat, or other clients I've used in the past. This
 should only be situationally enabled, and is disabled by default.
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package circe
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
@@ -1566,39 +1567,39 @@ should only be situationally enabled, and is disabled by default.
 
   (if (file-exists-p "~/.emacs.d/usr/circe.el")
       (load-file     "~/.emacs.d/usr/circe.el")))
-#+end_src
+#+END_SRC
 
-*** define-word
+**** define-word
 This package lets you quickly see the definition of a word or a phrase,
 and is disabled by default.
 
 Source: https://github.com/abo-abo/define-word
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package define-word
   :disabled)
-#+end_src
+#+END_SRC
 
-*** dimmer
+**** dimmer
 This package provides a minor mode which dims inactive buffers, namely
 the buffers the cursor is not currently active in. It can be helpful
 for those who use many buffers, though is disabled by default.
 
 Source: https://github.com/gonewest818/dimmer.el
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dimmer
   :init
   (add-hook 'after-init-hook 'dimmer-mode))
-#+end_src
+#+END_SRC
 
-*** elfeed
+**** elfeed
 This package provides an extensible web feed reader, supporting both
 RSS and Atom.
 
 Source: https://github.com/skeeto/elfeed
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package elfeed
   :bind ("C-x w" . elfeed)
   :config
@@ -1606,16 +1607,16 @@ Source: https://github.com/skeeto/elfeed
   (setq-local url-queue-timeout    30)
   (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
       (load-file     "~/.emacs.d/usr/elfeed.el")))
-#+end_src
+#+END_SRC
 
-*** exwm
+**** exwm
 This package provides a full-featured X tiling window manager, and is
 disabled by default. I consider this to be a novelty, or a fun tech
 demo, but not a viable alternative to i3wm or dwm.
 
 Source: https://github.com/ch11ng/exwm
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package exwm
   :disabled
   :init
@@ -1627,53 +1628,53 @@ Source: https://github.com/ch11ng/exwm
   (global-set-key (kbd "C-c <left>")  'windmove-left)
   (global-set-key (kbd "C-c <right>") 'windmove-right)
   (global-set-key (kbd "C-c <up>")    'windmove-up))
-#+end_src
+#+END_SRC
 
-*** helpful
+**** helpful
 This pacakge provides an alternative to the built-in Emacs help that
 provides much more contextual information.
 
 Source: https://github.com/Wilfred/helpful
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package helpful)
-#+end_src
+#+END_SRC
 
-*** nov
+**** nov
 This package provides a major mode for reading EPUB documents.
 
 Source: https://github.com/wasamasa/nov.el
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package nov
   :disabled
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
-#+end_src
+#+END_SRC
 
-*** pdf-tools
+**** pdf-tools
 This package allows viewing PDF's within Emacs, though in order to use
 this package you must install the required dependencies and compile the
 package as outlined in the following url:
 
 https://github.com/politza/pdf-tools#installation
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package pdf-tools
   :disabled
   :config
   (pdf-loader-install))
-#+end_src
+#+END_SRC
 
-*** ranger
+**** ranger
 This package adds a minor mode that runs within ~dired~ that emulates
 much of the features provided by the ~ranger~ terminal file browser.
 Hardcore ~dired~ users may want to disable this.
 
 Source: [[https://github.com/ralesi/ranger.el]]
 
-#+begin_src emacs-lisp :tangle config.el
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ranger
   :init
   (ranger-override-dired-mode t))
-#+end_src
+#+END_SRC
