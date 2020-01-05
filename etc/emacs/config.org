@@ -500,7 +500,7 @@ clients.
    ("<M-up>"   . windmove-up))
 
   :init
-  (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
+  (add-hook 'gnus-summary-prepared-hook 'gnus-summary-sort-by-most-recent-date)
 
   :config
   (setq gnus-show-threads                      t
