@@ -495,7 +495,6 @@ clients.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package gnus
-  :disabled
   :bind
   (("<M-down>" . windmove-down)
    ("<M-up>"   . windmove-up))
@@ -504,7 +503,9 @@ clients.
   (add-hook 'gnus-summary-hook   'gnus-summary-sort-by-most-recent-date)
 
   :config
-  (setq gnus-sum-thread-tree-false-root        ""
+  (setq gnus-show-threads                      t
+        gnus-thread-hide-subtree               t
+        gnus-sum-thread-tree-false-root        ""
         gnus-sum-thread-tree-indent            "  "
         gnus-sum-thread-tree-leaf-with-other   "├─> "
         gnus-sum-thread-tree-root              ""
