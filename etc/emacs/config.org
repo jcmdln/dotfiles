@@ -505,6 +505,7 @@ clients.
   :config
   (setq gnus-show-threads                      t
         gnus-thread-hide-subtree               t
+        gnus-thread-sort-functions             '(gnus-thread-sort-by-date)
         gnus-sum-thread-tree-false-root        ""
         gnus-sum-thread-tree-indent            "  "
         gnus-sum-thread-tree-leaf-with-other   "├─> "
@@ -512,8 +513,7 @@ clients.
         gnus-sum-thread-tree-single-leaf       "╰─> "
         gnus-sum-thread-tree-vertical          "│ "
         gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
-        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-        gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
+        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
 
   (if (file-exists-p "~/.emacs.d/usr/gnus.el")
       (load-file     "~/.emacs.d/usr/gnus.el")))
