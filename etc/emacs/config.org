@@ -504,16 +504,16 @@ clients.
 
   :config
   (setq gnus-show-threads                      t
-        gnus-thread-hide-subtree               t
-        gnus-thread-sort-functions             '(gnus-thread-sort-by-date)
         gnus-sum-thread-tree-false-root        ""
         gnus-sum-thread-tree-indent            "  "
         gnus-sum-thread-tree-leaf-with-other   "├─> "
         gnus-sum-thread-tree-root              ""
         gnus-sum-thread-tree-single-leaf       "╰─> "
         gnus-sum-thread-tree-vertical          "│ "
-        gnus-summary-line-format               "%U%R:%-15,15o  %-15,15f  %B%S\n"
-        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
+        gnus-summary-line-format               "%U%R%-15,15o  %-15,15A  %B%s\n"
+        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+        gnus-thread-hide-subtree               t
+        gnus-thread-sort-functions             '(gnus-thread-sort-by-date))
 
   (if (file-exists-p "~/.emacs.d/usr/gnus.el")
       (load-file     "~/.emacs.d/usr/gnus.el")))
@@ -1395,7 +1395,7 @@ Missing description
             (add-hook 'org-metaleft-hook  'windmove-left  'local)
             (add-hook 'org-metadown-hook  'windmove-down  'local)
             (add-hook 'org-metaright-hook 'windmove-right 'local)
-            (setq-local org-support-shift-select 'always)))
+            (setq org-support-shift-select 'always)))
 #+END_SRC
 
 ***** PHP
