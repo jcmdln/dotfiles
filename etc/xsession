@@ -3,15 +3,17 @@
 # Ensure ~/.profile is loaded
 export ENV="$HOME/.profile"
 
-# Pretend we're using Gnome for themes
+# Pretend we're using Gnome for theme support
 export DESKTOP_SESSION=gnome
 
 # Set screen brightness to 20%
-xbacklight -set 20%
+if [ -x "$(command -v xbacklight)"]; then
+    xbacklight -set 20%
+fi
 
-# Hide mouse cursor when inactive
+# Hide mouse cursor when inactive for 3 seconds
 if [ -x "$(command -v unclutter)" ]; then
-	unclutter -idle 2 -noevents -root &
+    unclutter -idle 3 -noevents -root &
 fi
 
 # Mute master audio output channels
@@ -24,10 +26,10 @@ mixerctl record.volume.mute=on
 
 # Start dbus
 if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-	eval `dbus-launch --sh-syntax --exit-with-x11`
+    eval `dbus-launch --sh-syntax --exit-with-x11`
 fi
 
 # Start i3
 if [ -x "$(command -v i3)" ]; then
-	i3
+    i3
 fi
