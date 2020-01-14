@@ -12,7 +12,7 @@ idea of using org-mode to manage my configuration.
 My goals for using org-mode to manage my configuration are as follows:
 - Use Org-Mode to provide contextual information, (almost) always
 - Preserve core GNU/Emacs functionality, though enhance it when desired
-- Leverage use-package for replicability
+- Leverage use-package for repeatability
 - Initialization time is a reasonable concern
 
 * Warnings
@@ -1388,14 +1388,24 @@ Missing description
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
+(use-package org-beautify-theme
+  :init
+  (load-theme 'org-beautify t))
+#+END_SRC
+
+Restore some keys that org-mode would normally remap:
+
+#+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook
           (lambda()
-            (load-theme 'org-beautify t)
             (add-hook 'org-metaup-hook    'windmove-up    'local)
             (add-hook 'org-metaleft-hook  'windmove-left  'local)
             (add-hook 'org-metadown-hook  'windmove-down  'local)
             (add-hook 'org-metaright-hook 'windmove-right 'local)
-            (setq org-support-shift-select 'always)))
+
+            (setq org-support-shift-select t)
+            (org-defkey org-mode-map [remap backward-paragraph] nil)
+            (org-defkey org-mode-map [remap forward-paragraph] nil)))
 #+END_SRC
 
 ***** PHP
