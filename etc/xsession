@@ -16,14 +16,6 @@ if [ -x "$(command -v unclutter)" ]; then
     unclutter -idle 3 -noevents -root &
 fi
 
-# Mute master audio output channels
-mixerctl outputs.master=0
-mixerctl outputs.master.mute=on
-
-# Mute master audio input channels
-mixerctl record.volume=0
-mixerctl record.volume.mute=on
-
 # Start dbus
 if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
     eval `dbus-launch --sh-syntax --exit-with-x11`
