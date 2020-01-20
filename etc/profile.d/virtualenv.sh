@@ -20,6 +20,10 @@ if [ -d ~/.local/virtualenv ]; then
         alias virtualenv_ceph_deploy=". ~/.local/virtualenv/ceph-deploy/bin/activate"
     fi
 
+    if [ -d ~/.local/virtualenv/kolla-ansible ]; then
+        alias virtualenv_kolla_ansible=". ~/.local/virtualenv/kolla-ansible/bin/activate"
+    fi
+
     if [ -d ~/.local/virtualenv/redfishtool ]; then
         alias virtualenv_redfishtool=". ~/.local/virtualenv/redfishtool/bin/activate"
     fi
