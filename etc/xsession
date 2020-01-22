@@ -7,9 +7,7 @@ export ENV="$HOME/.profile"
 export DESKTOP_SESSION=gnome
 
 # Set screen brightness to 20%
-if [ -x "$(command -v xbacklight)"]; then
-    xbacklight -set 20%
-fi
+xbacklight -set 20%
 
 # Hide mouse cursor when inactive for 3 seconds
 if [ -x "$(command -v unclutter)" ]; then
