@@ -6,6 +6,10 @@ if [ "$(uname -s)" = "OpenBSD" ]; then
     alias ls="ls -hCF"
     alias openrsync="openrsync --rsync-path=openrsync -lrt"
 
+    if [ -n "$(command -v tree)" ]; then
+        alias tree="tree -F"
+    fi
+
     if [ -x "$(command -v rsync)" ]; then
         alias rsync="rsync -achzP"
     fi
