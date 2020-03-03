@@ -5,4 +5,5 @@ auto-fill-mode
 backup-to-home-directory
 column-number-mode
 make-backup-files
+set-default-mode auto-indent-mode
 set-fill-column 72
