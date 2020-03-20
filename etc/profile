@@ -1,20 +1,17 @@
 #!/usr/bin/env sh
 
-PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
-PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
-PATH="$PATH:$HOME/bin:$HOME/.local/bin"
+# Load global profile
+if [ -f /etc/profile ]; then
+    . /etc/profile
+fi
 
-MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
-MANPATH="$MANPATH:$HOME/man:$HOME/.local/man:$HOME/.local/share/man"
-
-export PATH MANPATH
-
+# Load local profile.d scripts
 if [ -d "$HOME"/.profile.d ]; then
-    for i in "$HOME"/.profile.d/*.sh; do
-        if [ -r "$i" ]; then
-	    . "$i"
-	fi
+    for script in "$HOME"/.profile.d/*.sh; do
+        if [ -r "$script" ]; then
+            . "$script"
+        fi
     done
 
-    unset i
+    unset script
 fi

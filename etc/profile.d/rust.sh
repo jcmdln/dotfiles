@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 
-PATH="$PATH:$HOME/.cargo/bin"
+if [ -x "$(command -v cargo)"]; then
+    PATH="$PATH:$HOME/.cargo/bin"
+fi
+
 export PATH

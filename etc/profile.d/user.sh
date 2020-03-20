@@ -11,7 +11,6 @@ if [ "$(whoami)" != 'root' ]; then
         Pictures
         Projects
         Videos
-        Templates
     "
 
     for Folder in $Folders; do
