@@ -223,15 +223,6 @@ require it be loaded now:
 (require 'package)
 #+END_SRC
 
-There was a bug in the Emacs 26.x release that caused errors when
-attempting to retrieve the package list from elpa that requires this
-workaround, though it probably isn't needed anymore:
-
-#+BEGIN_SRC emacs-lisp :tangle config.el
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"
-      package-check-signature nil)
-#+END_SRC
-
 Here we're defining where to put packages, where we should get packages
 from, and the priority we should retrive packages if a package with the
 same name exists on multiple sources.
@@ -1087,9 +1078,9 @@ Missing description
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
             (setq-local c-default-style  "bsd")
             (setq-local c-set-style      "bsd")
-            (setq-local c-basic-offset   4)
+            (setq-local c-basic-offset   8)
             (setq-local indent-tabs-mode t)
-            (setq-local tab-width        4)))
+            (setq-local tab-width        8)))
 #+END_SRC
 
 ***** C++
