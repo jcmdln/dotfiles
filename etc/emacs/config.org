@@ -1238,6 +1238,13 @@ Missing description
 
 #+END_SRC
 
+**** Jinja2
+Missing description
+
+#+BEGIN_SRC emacs-lisp :tangle config.el
+(use-package jinja2-mode)
+#+END_SRC
+
 **** JSON
 Missing description
 
