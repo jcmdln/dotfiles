@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-PROMPT_COMMAND="history -a"
+export PROMPT_COMMAND="history -a"
 
 if [ -e "$ZSH_VERSION" ]; then
     PS1="[%n@%M %d]$ "
@@ -12,4 +12,4 @@ else
     PS1="\[\e];\u@\h: \w\a\]$PS1"
 fi
 
-export PROMPT_COMMAND PS1
+export PS1

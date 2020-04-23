@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-CHARSET="${CHARSET:-\"\"}"
-LANG="${LANG:-en_US.UTF-8}"
-LC_TYPE="${LC_TYPE:-\"\"}"
-
-export CHARSET LANG LC_TYPE
+#export CHARSET="${CHARSET:-\"\"}"
+export LANG="en_US.UTF-8"
+#export LC_TYPE="${LC_TYPE:-\"\"}"
