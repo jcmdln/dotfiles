@@ -610,8 +610,8 @@ Source: https://github.com/skeeto/elfeed
 (use-package elfeed
   :bind ("C-x w" . elfeed)
   :config
-  (setq-local elfeed-search-filter "@1-week-ago +unread ")
-  (setq-local url-queue-timeout    30)
+  (setq elfeed-search-filter "@1-week-ago +unread ")
+  (setq url-queue-timeout    10)
   (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
       (load-file     "~/.emacs.d/usr/elfeed.el")))
 #+END_SRC
@@ -775,6 +775,9 @@ clients.
 
   :init
   (add-hook 'gnus-summary-prepared-hook 'gnus-summary-sort-by-most-recent-date)
+  (add-hook 'gnus-group-mode-hook
+            (lambda ()
+              (gnus-group-sort-groups-by-alphabet)))
 
   :config
   (setq gnus-show-threads                      t
