@@ -581,6 +581,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package diff-hl
+  :if window-system
   :init
   (add-hook 'prog-mode-hook 'diff-hl-mode)
   (add-hook 'text-mode-hook 'diff-hl-mode))
@@ -669,7 +670,7 @@ toggle displaying images in a specific buffer, you may now do so.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eww
-  :commands (eww-reload)
+  :commands (eww eww-mode eww-reload)
   :init (setq browse-url-browser-function 'eww-browse-url)
   :config
   (setq shr-blocked-images "")
@@ -1292,6 +1293,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package org-beautify-theme
+  :if window-system
   :demand t
   :init (load-theme 'org-beautify t))
 #+END_SRC
@@ -1301,10 +1303,10 @@ Restore some keys that org-mode would normally remap:
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook
           (lambda()
-            (add-hook 'org-metaup-hook    'windmove-up    'local)
-            (add-hook 'org-metaleft-hook  'windmove-left  'local)
-            (add-hook 'org-metadown-hook  'windmove-down  'local)
-            (add-hook 'org-metaright-hook 'windmove-right 'local)
+            (add-hook 'org-metaup-hook    'windmove-up)
+            (add-hook 'org-metaleft-hook  'windmove-left)
+            (add-hook 'org-metadown-hook  'windmove-down)
+            (add-hook 'org-metaright-hook 'windmove-right)
 
             (setq org-support-shift-select t)
             (org-defkey org-mode-map [remap backward-paragraph] nil)
