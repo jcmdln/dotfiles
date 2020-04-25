@@ -59,16 +59,18 @@ these changes.
 **** gc-cons-percentage
 For the purposes of initialization, we'll increase `gc-cons-percentage`
 to defer garbage collection.  The settings below mean that garbage
-collection is deferred until reaching 80% of the heap size.  After init
-completes, we restore the default value.
+collection is deferred until reaching 67% of the total heap size.  After
+init completes, we lower this value to 34% of the total heap size.
 
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq gc-cons-percentage-default gc-cons-percentage
-      gc-cons-percentage         0.80)
+      gc-cons-percentage-init    0.667
+      gc-cons-percentage-tuned   0.334
+      gc-cons-percentage         gc-cons-percentage-init)
 
 (add-hook 'after-init-hook
           (lambda ()
-            (setq gc-cons-percentage gc-cons-percentage-default)))
+            (setq gc-cons-percentage gc-cons-percentage-tuned)))
 #+END_SRC
 
 **** gc-cons-threshold
@@ -80,12 +82,13 @@ On 32-bit systems this threshold is 400KB, while on 64-bit systems it
 is 800KB.  The idea is that by specifying a larger theshold, garbage
 collection will occur less often, meaning fewer GC pauses.
 
-We'll set this value to 4MB globally, which will significantly reduce
-the total number of GC pauses we experience.
+We'll set this value to 2MB globally, which will significantly reduce
+the total number of GC pauses we experience, also storing the default
+value in case it must be referenced.
 
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq gc-cons-threshold-default gc-cons-threshold
-      gc-cons-threshold         (* 4 1024 1024))
+      gc-cons-threshold         (* 1024 1024 2))
 #+END_SRC
 
 *** Handling Custom Configuration
