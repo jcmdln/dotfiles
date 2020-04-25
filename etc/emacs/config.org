@@ -116,6 +116,7 @@ PROMPT_COMMAND which might cause problems with ssh connections:
 (setenv "EDITOR"         "emacsclient")
 (setenv "GIT_EDITOR"     "emacsclient")
 (setenv "MANPATH"        (getenv "MANPATH"))
+(setenv "PAGER"          "less")
 (setenv "PATH"           (getenv "PATH"))
 (setenv "PROMPT_COMMAND" "")
 (setenv "SHELL"          (getenv "SHELL"))
@@ -160,9 +161,8 @@ new buffer is opened or focused.
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq pop-up-frames               nil
       pop-up-windows              nil
-      display-buffer-reuse-frames t)
-
-(setq Man-notify-method 'pushy)
+      display-buffer-reuse-frames t
+      Man-notify-method           'pushy)
 #+END_SRC
 
 **** Set a basic theme and font
@@ -185,7 +185,6 @@ visual bell:
       visible-bell          nil)
 
 (show-paren-mode t)
-
 #+END_SRC
 
 Show line numbers when editing files.
@@ -400,6 +399,7 @@ is a nice change.
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package no-littering
   :demand t
+  :commands (no-littering-expand-var-file-name)
   :config
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
@@ -413,8 +413,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package async
-  :config
-  (async-bytecomp-package-mode '(all)))
+  :config (async-bytecomp-package-mode '(all)))
 #+END_SRC
 
 **** auto-compile
@@ -435,8 +434,7 @@ Source: https://github.com/nschum/auto-dictionary-mode
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package auto-dictionary
   :after (flyspell)
-  :config
-  (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
+  :config (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
 #+END_SRC
 
 **** circe
@@ -446,6 +444,7 @@ should only be situationally enabled, and is disabled by default.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package circe
+  :commands (enable-lui-logging-globally lui-set-prompt)
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
@@ -596,8 +595,7 @@ Source: https://github.com/gonewest818/dimmer.el
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dimmer
-  :init
-  (add-hook 'after-init-hook 'dimmer-mode))
+  :init (add-hook 'after-init-hook 'dimmer-mode))
 #+END_SRC
 
 **** elfeed
@@ -610,8 +608,9 @@ Source: https://github.com/skeeto/elfeed
 (use-package elfeed
   :bind ("C-x w" . elfeed)
   :config
-  (setq elfeed-search-filter "@1-week-ago +unread ")
-  (setq url-queue-timeout    10)
+  (setq elfeed-search-filter "@1-week-ago +unread "
+        url-queue-timeout    10)
+
   (if (file-exists-p "~/.emacs.d/usr/elfeed.el")
       (load-file     "~/.emacs.d/usr/elfeed.el")))
 #+END_SRC
@@ -624,6 +623,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eshell
+  :commands (eshell eshell/basename eshell/pwd)
   :config
   (setq eshell-banner-message             ""
         eshell-cmpl-cycle-completions     nil
@@ -635,19 +635,19 @@ behave and look like typical unix shells, so maybe try it for yourself.
         eshell-scroll-to-bottom-on-input  nil
         eshell-scroll-to-bottom-on-output nil
         eshell-scroll-show-maximum-output nil
-        eshell-prompt-regexp              "^[^#$\n]*[#$] ")
 
-  (setq eshell-prompt-function
+        eshell-prompt-regexp              "^[^#$\n]*[#$] "
+        eshell-prompt-function
         (lambda nil
           (concat "[" (user-login-name) "@"
                   (car (split-string (system-name) "\\.")) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
                       "~" (eshell/basename (eshell/pwd))) "]"
-                  (if (= (user-uid) 0) "# " "$ "))))
+                  (if (= (user-uid) 0) "# " "$ ")))
 
-  (setq eshell-visual-commands
-        '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh"
-          "tail" "top" "vi" "vim" "watch"))
+        eshell-visual-commands
+        '("alsamixer" "atop" "htop" "less" "mosh" "nano" "ssh" "tail"
+          "top" "vi" "vim" "watch"))
 
   (defun eshell/clear()
     "Hide previous scrollback to provide a clear view."
@@ -669,9 +669,8 @@ toggle displaying images in a specific buffer, you may now do so.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eww
-  :init
-  (setq browse-url-browser-function 'eww-browse-url)
-
+  :commands (eww-reload)
+  :init (setq browse-url-browser-function 'eww-browse-url)
   :config
   (setq shr-blocked-images "")
 
@@ -704,35 +703,13 @@ Missing description
               (define-key eww-mode-map "F" 'eww-lnum-universal))))
 #+END_SRC
 
-**** exwm
-This package provides a full-featured X tiling window manager, and is
-disabled by default.  I consider this to be a novelty, or a fun tech
-demo, but not a viable alternative to i3wm or dwm.
-
-Source: https://github.com/ch11ng/exwm
-
-#+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package exwm
-  :disabled
-  :init
-  (require 'exwm-config)
-  (exwm-config-default)
-
-  :config
-  (global-set-key (kbd "C-c <down>")  'windmove-down)
-  (global-set-key (kbd "C-c <left>")  'windmove-left)
-  (global-set-key (kbd "C-c <right>") 'windmove-right)
-  (global-set-key (kbd "C-c <up>")    'windmove-up))
-#+END_SRC
-
 **** flycheck
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck
   :demand t
-  :init
-  (add-hook 'prog-mode-hook 'flycheck-mode))
+  :init (add-hook 'prog-mode-hook 'flycheck-mode))
 #+END_SRC
 
 Missing description
@@ -740,8 +717,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-inline
   :demand t
-  :init
-  (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
+  :commands (turn-on-flycheck-inline)
+  :init (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
 #+END_SRC
 
 **** flyspell
@@ -812,11 +789,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package highlight-indent-guides
   :demand t
-  :init
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-
-  :config
-  (setq highlight-indent-guides-method 'character))
+  :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  :config (setq highlight-indent-guides-method 'character))
 #+END_SRC
 
 **** ibuffer
@@ -826,11 +800,10 @@ readable sizes, and define a ton of filter groups.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ibuffer
-  :bind
-  (("C-x C-b"         . ibuffer)
-   ("<C-tab>"         . next-buffer)
-   ("<C-iso-lefttab>" . previous-buffer))
-
+  :bind (("C-x C-b"         . ibuffer)
+         ("<C-tab>"         . next-buffer)
+         ("<C-iso-lefttab>" . previous-buffer))
+  :commands (ibuffer-switch-to-saved-filter-groups)
   :init
   (add-hook 'ibuffer-hook      'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
@@ -846,9 +819,8 @@ readable sizes, and define a ton of filter groups.
      ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
      (t (format "%8d" (buffer-size)))))
 
-  (setq ibuffer-show-empty-filter-groups nil)
-
-  (setq ibuffer-saved-filter-groups
+  (setq ibuffer-show-empty-filter-groups nil
+        ibuffer-saved-filter-groups
         (quote (("default"
                  ("exwm"
                   (mode . exwm-mode))
@@ -898,9 +870,9 @@ readable sizes, and define a ton of filter groups.
                  ("docs"
                   (or (name . "^\\*Man ")
                       (name . "^\\*WoMan")
-                      (mode . pdf-view-mode)))))))
+                      (mode . pdf-view-mode))))))
 
-  (setq ibuffer-formats
+        ibuffer-formats
         '((mark modified read-only " "
                 (name 35 35 :left :nil) " "
                 (size-h 9 -1 :right) " "
@@ -916,10 +888,8 @@ Missing description
   :bind
   (("C-c C-r" . ivy-resume)
    ("<f6>"    . ivy-resume))
-
-  :init
-  (ivy-mode 1)
-
+  :commands (ivy-mode)
+  :init (ivy-mode 1)
   :config
   (setq ivy-use-virtual-buffers      t
         enable-recursive-minibuffers t))
@@ -931,8 +901,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package magit
   :demand t
-  :bind
-  ("C-c C-c" . with-editor-finish))
+  :bind ("C-c C-c" . with-editor-finish))
 #+END_SRC
 
 **** nov
@@ -943,8 +912,7 @@ Source: https://github.com/wasamasa/nov.el
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package nov
   :disabled
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 #+END_SRC
 
 **** package-utils
@@ -965,8 +933,7 @@ https://github.com/politza/pdf-tools#installation
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package pdf-tools
   :disabled
-  :config
-  (pdf-loader-install))
+  :config (pdf-loader-install))
 #+END_SRC
 
 **** rainbow-delimiters
@@ -990,8 +957,8 @@ Source: [[https://github.com/ralesi/ranger.el]]
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ranger
-  :init
-  (ranger-override-dired-mode t))
+  :commands (ranger-override-dired-mode)
+  :init (ranger-override-dired-mode t))
 #+END_SRC
 
 **** scratch
@@ -1016,7 +983,9 @@ you may appreciate the additional functions.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package server
+  :after (package-utils)
   :bind ("C-x C-c" . server-stop)
+  :commands (package-utils-upgrade-all server-start)
   :init
   (unless (and (fboundp 'server-running-p)
                (server-running-p))
@@ -1067,8 +1036,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package undo-tree
   :demand t
-  :config
-  (global-undo-tree-mode))
+  :commands (global-undo-tree-mode)
+  :config (global-undo-tree-mode))
 #+END_SRC
 
 **** xclip
@@ -1076,17 +1045,16 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package xclip
-  :init
-  (xclip-mode 1))
+  :commands (xclip-mode)
+  :init (xclip-mode 1))
 #+END_SRC
 
 **** yasnippet
 Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package yasnippet
-  :commands yas-minor-mode
-  :init
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
+  :commands (yas-minor-mode)
+  :init (add-hook 'prog-mode-hook #'yas-minor-mode))
 #+END_SRC
 
 *** Languages
@@ -1117,7 +1085,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-lsp
   :after lsp-mode
-  :commands company-lsp)
+  :commands (company-lsp))
 #+END_SRC
 
 Missing description
@@ -1125,7 +1093,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package lsp-ivy
   :after lsp-mode
-  :commands lsp-ivy-workspace-symbol)
+  :commands (lsp-ivy-workspace-symbol))
 #+END_SRC
 
 Missing description
@@ -1161,6 +1129,10 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c-mode-hook
           (lambda()
+            (defvar c-default-style)
+            (defvar c-set-style)
+            (defvar c-basic-offset)
+
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
             (setq-local c-default-style  "bsd")
             (setq-local c-set-style      "bsd")
@@ -1175,6 +1147,10 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c++-mode-hook
           (lambda()
+            (defvar c-default-style)
+            (defvar c-set-style)
+            (defvar c-basic-offset)
+
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
             (setq-local c-default-style  "ellemtel")
             (setq-local c-set-style      "ellemtel")
@@ -1261,6 +1237,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'lisp-mode-hook
           (lambda()
+            (defvar c-basic-offset)
+
             (setq-local c-basic-offset 2)
             (setq-local tab-width      2)))
 #+END_SRC
@@ -1315,8 +1293,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package org-beautify-theme
   :demand t
-  :init
-  (load-theme 'org-beautify t))
+  :init (load-theme 'org-beautify t))
 #+END_SRC
 
 Restore some keys that org-mode would normally remap:
@@ -1368,8 +1345,7 @@ Flycheck helper for Rust
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-rust
   :after (rust-mode)
-  :init
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+END_SRC
 
 **** SystemD
