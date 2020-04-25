@@ -421,6 +421,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package auto-compile
+  :commands (auto-compile-on-load-mode auto-compile-on-save-mode)
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
@@ -434,6 +435,7 @@ Source: https://github.com/nschum/auto-dictionary-mode
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package auto-dictionary
   :after (flyspell)
+  :commands (auto-dictionary-mode)
   :config (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
 #+END_SRC
 
@@ -1347,6 +1349,7 @@ Flycheck helper for Rust
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-rust
   :after (rust-mode)
+  :commands (flycheck-rust-setup)
   :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+END_SRC
 
