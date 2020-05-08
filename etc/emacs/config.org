@@ -1071,6 +1071,11 @@ following for more info on getting setup:
 https:github.com/emacs-lsp/lsp-mode#supported-languages
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
+(defvar c-default-style)
+(setq c-default-style '((c-mode   . "bsd")
+                        (c++-mode . "ellemtel")
+                        (other    . "bsd")))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((c-mode      . lsp-deferred)
@@ -1135,13 +1140,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c-mode-hook
           (lambda()
-            (defvar c-default-style)
-            (defvar c-set-style)
             (defvar c-basic-offset)
-
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
-            (setq-local c-default-style  "bsd")
-            (setq-local c-set-style      "bsd")
             (setq-local c-basic-offset   8)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        8)))
@@ -1153,13 +1153,8 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (add-hook 'c++-mode-hook
           (lambda()
-            (defvar c-default-style)
-            (defvar c-set-style)
             (defvar c-basic-offset)
-
             (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-            (setq-local c-default-style  "ellemtel")
-            (setq-local c-set-style      "ellemtel")
             (setq-local c-basic-offset   4)
             (setq-local indent-tabs-mode t)
             (setq-local tab-width        4)))
@@ -1244,7 +1239,6 @@ Missing description
 (add-hook 'lisp-mode-hook
           (lambda()
             (defvar c-basic-offset)
-
             (setq-local c-basic-offset 2)
             (setq-local tab-width      2)))
 #+END_SRC
