@@ -351,24 +351,26 @@ same name exists on multiple sources.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (setq package-user-dir "~/.emacs.d/pkg/"
+
       package-archives
       '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
         ("MELPA Stable" . "https://stable.melpa.org/packages/")
         ("MELPA"        . "https://melpa.org/packages/"))
+
       package-archive-priorities
       '(("GNU ELPA"     . 3)
         ("MELPA Stable" . 2)
         ("MELPA"        . 1)))
 #+END_SRC
 
-With the above changes made, we can now initialize the package module:
+With the above changes made, we may now initialize the package module:
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (package-initialize)
 #+END_SRC
 
 **** use-package
-The first pacakge we'll ensure exists is use-package, which the rest of
+The first package we'll ensure exists is use-package, which the rest of
 this file relies on for handling per-package configuration.  In newer
 versions of Emacs use-package is now a built-in, but we should check to
 be nice to older versions:
@@ -403,6 +405,7 @@ is a nice change.
 (use-package no-littering
   :demand t
   :commands (no-littering-expand-var-file-name)
+
   :config
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
@@ -439,7 +442,7 @@ Source: https://github.com/nschum/auto-dictionary-mode
 (use-package auto-dictionary
   :after (flyspell)
   :commands (auto-dictionary-mode)
-  :config (add-hook 'flyspell-mode-hook (auto-dictionary-mode 1)))
+  :hook (flyspell-mode . auto-dictionary-mode))
 #+END_SRC
 
 **** circe
@@ -450,6 +453,7 @@ should only be situationally enabled, and is disabled by default.
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package circe
   :commands (enable-lui-logging-globally lui-set-prompt)
+
   :init
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'circe-chat-mode-hook
@@ -506,10 +510,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company
-  :init
-  (add-hook 'lisp-mode-hook 'company-mode)
-  (add-hook 'prog-mode-hook 'company-mode)
-  (add-hook 'text-mode-hook 'company-mode)
+  :hook ((lisp-mode prog-mode text-mode) . company-mode)
 
   :config
   (setq company-tooltip-limit  20
@@ -522,7 +523,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-emoji
-  :disabled
+  :if window-system
   :after (company))
 #+END_SRC
 
@@ -587,9 +588,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package diff-hl
   :if window-system
-  :init
-  (add-hook 'prog-mode-hook 'diff-hl-mode)
-  (add-hook 'text-mode-hook 'diff-hl-mode))
+  :hook ((prog-mode text-mode) . diff-hl-mode))
 #+END_SRC
 
 **** dimmer
@@ -601,7 +600,8 @@ Source: https://github.com/gonewest818/dimmer.el
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package dimmer
-  :init (add-hook 'after-init-hook 'dimmer-mode))
+  :commands (dimmer-mode)
+  :init (dimmer-mode))
 #+END_SRC
 
 **** elfeed
@@ -630,6 +630,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eshell
   :commands (eshell eshell/basename eshell/pwd)
+
   :config
   (setq eshell-banner-message             ""
         eshell-cmpl-cycle-completions     nil
@@ -644,7 +645,7 @@ behave and look like typical unix shells, so maybe try it for yourself.
 
         eshell-prompt-regexp              "^[^#$\n]*[#$] "
         eshell-prompt-function
-        (lambda nil
+        (lambda ()
           (concat "[" (user-login-name) "@"
                   (car (split-string (system-name) "\\.")) " "
                   (if (string= (eshell/pwd) (getenv "HOME"))
@@ -677,6 +678,7 @@ toggle displaying images in a specific buffer, you may now do so.
 (use-package eww
   :commands (eww eww-mode eww-reload)
   :init (setq browse-url-browser-function 'eww-browse-url)
+
   :config
   (setq shr-blocked-images "")
 
@@ -701,12 +703,14 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package eww-lnum
-  :after (eww)
-  :init
-  (add-hook 'eww-mode-hook
-            (lambda()
-              (define-key eww-mode-map "f" 'eww-lnum-follow)
-              (define-key eww-mode-map "F" 'eww-lnum-universal))))
+  :after eww
+  :bind
+  (:map eww-mode-map
+   ("f" . eww-lnum-follow)
+   ("F" . eww-lnum-universal))
+
+  :commands (eww-lnum-follow eww-lnum-universal)
+  :hook (eww-mode))
 #+END_SRC
 
 **** flycheck
@@ -715,7 +719,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck
   :demand t
-  :init (add-hook 'prog-mode-hook 'flycheck-mode))
+  :hook (prog-mode . flycheck-mode))
 #+END_SRC
 
 Missing description
@@ -724,7 +728,7 @@ Missing description
 (use-package flycheck-inline
   :demand t
   :commands (turn-on-flycheck-inline)
-  :init (add-hook 'flycheck-mode-hook #'turn-on-flycheck-inline))
+  :hook (flycheck-mode . turn-on-flycheck-inline))
 #+END_SRC
 
 **** flyspell
@@ -732,17 +736,18 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flyspell
-  :init
-  (add-hook 'markdown-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook     'flyspell-prog-mode)
-  (add-hook 'text-mode-hook     'flyspell-mode))
+  :hook
+  ((markdown-mode . flyspell-mode)
+   (prog-mode     . flyspell-prog-mode)
+   (text-mode     . flyspell-mode)))
 #+END_SRC
 
 **** gist
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package gist)
+(use-package gist
+  :disabled)
 #+END_SRC
 
 **** gnus
@@ -756,11 +761,9 @@ clients.
   (("<M-down>" . windmove-down)
    ("<M-up>"   . windmove-up))
 
-  :init
-  (add-hook 'gnus-summary-prepared-hook 'gnus-summary-sort-by-most-recent-date)
-  (add-hook 'gnus-group-mode-hook
-            (lambda ()
-              (gnus-group-sort-groups-by-alphabet)))
+  :hook
+  ((gnus-summary-prepared . gnus-summary-sort-by-most-recent-date)
+   (gnus-group-mode       . gnus-group-sort-groups-by-alphabet))
 
   :config
   (setq gnus-show-threads                      t
@@ -780,7 +783,7 @@ clients.
 #+END_SRC
 
 **** helpful
-This pacakge provides an alternative to the built-in Emacs help that
+This package provides an alternative to the built-in Emacs help that
 provides much more contextual information.
 
 Source: https://github.com/Wilfred/helpful
@@ -794,9 +797,9 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package highlight-indent-guides
+  :config (setq highlight-indent-guides-method 'character)
   :demand t
-  :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  :config (setq highlight-indent-guides-method 'character))
+  :hook (prog-mode . highlight-indent-guides-mode))
 #+END_SRC
 
 **** ibuffer
@@ -806,15 +809,20 @@ readable sizes, and define a ton of filter groups.
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package ibuffer
-  :bind (("C-x C-b"         . ibuffer)
-         ("<C-tab>"         . next-buffer)
-         ("<C-iso-lefttab>" . previous-buffer))
+  :bind
+  (("C-x C-b"         . ibuffer)
+   ("<C-tab>"         . next-buffer)
+   ("<C-iso-lefttab>" . previous-buffer))
+
   :commands (ibuffer-switch-to-saved-filter-groups)
+
+  :hook
+  ((ibuffer           . ibuffer-auto-mode)
+   (ibuffer-mode      . ibuffer-do-sort-by-alphabetic))
+
   :init
-  (add-hook 'ibuffer-hook      'ibuffer-auto-mode)
-  (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-alphabetic)
   (add-hook 'ibuffer-auto-mode-hook
-            (lambda ()
+            (lambda()
               (ibuffer-switch-to-saved-filter-groups "default")))
 
   :config
@@ -894,8 +902,10 @@ Missing description
   :bind
   (("C-c C-r" . ivy-resume)
    ("<f6>"    . ivy-resume))
+
   :commands (ivy-mode)
   :init (ivy-mode 1)
+
   :config
   (setq ivy-use-virtual-buffers      t
         enable-recursive-minibuffers t))
@@ -948,10 +958,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package rainbow-delimiters
   :demand t
-  :init
-  (add-hook 'markdown-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'prog-mode-hook     'rainbow-delimiters-mode)
-  (add-hook 'text-mode-hook     'rainbow-delimiters-mode))
+  :hook ((markdown-mode prog-mode text-mode) . rainbow-delimiters-mode))
 #+END_SRC
 
 **** ranger
@@ -992,6 +999,7 @@ you may appreciate the additional functions.
   :after (package-utils)
   :bind ("C-x C-c" . server-stop)
   :commands (package-utils-upgrade-all server-start)
+
   :init
   (unless (and (fboundp 'server-running-p)
                (server-running-p))
@@ -1025,10 +1033,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package smartparens
   :demand t
-  :init
-  (add-hook 'markdown-mode-hook 'smartparens-mode)
-  (add-hook 'prog-mode-hook     'smartparens-mode)
-  (add-hook 'text-mode-hook     'smartparens-mode)
+  :hook ((markdown-mode prog-mode text-mode) . smartparens-mode)
 
   :config
   (setq sp-highlight-pair-overlay     nil
@@ -1043,7 +1048,7 @@ Missing description
 (use-package undo-tree
   :demand t
   :commands (global-undo-tree-mode)
-  :config (global-undo-tree-mode))
+  :init (global-undo-tree-mode))
 #+END_SRC
 
 **** xclip
@@ -1060,7 +1065,7 @@ Missing description
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package yasnippet
   :commands (yas-minor-mode)
-  :init (add-hook 'prog-mode-hook #'yas-minor-mode))
+  :hook (prog-mode . yas-minor-mode))
 #+END_SRC
 
 *** Languages
@@ -1071,18 +1076,22 @@ following for more info on getting setup:
 https:github.com/emacs-lsp/lsp-mode#supported-languages
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(defvar c-default-style)
-(setq c-default-style '((c-mode   . "bsd")
-                        (c++-mode . "ellemtel")
-                        (other    . "bsd")))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((c-mode      . lsp-deferred)
-         (c++-mode    . lsp-deferred)
-         (go-mode     . lsp-deferred)
-         (python-mode . lsp-deferred)
-         (rust-mode   . lsp-deferred)))
+
+  :hook
+  ((c-mode      . lsp-deferred)
+   (c++-mode    . lsp-deferred)
+   (go-mode     . lsp-deferred)
+   (python-mode . lsp-deferred)
+   (rust-mode   . lsp-deferred))
+
+  :config
+  (defvar c-default-style)
+  (setq c-default-style '((c-mode   . "bsd")
+                          (c++-mode . "ellemtel")
+                          (other    . "bsd"))))
 #+END_SRC
 
 Missing description
@@ -1123,7 +1132,7 @@ Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-ansible
-  :after (company ansible-vault))
+  :after (company))
 #+END_SRC
 
 **** Apache
@@ -1164,7 +1173,8 @@ Missing description
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package caddyfile-mode)
+(use-package caddyfile-mode
+  :disabled)
 #+END_SRC
 
 **** CMake
@@ -1276,7 +1286,8 @@ Missing description
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package nginx-mode)
+(use-package nginx-mode
+  :disabled)
 #+END_SRC
 
 **** Ninja
@@ -1294,6 +1305,7 @@ Missing description
 (use-package org-beautify-theme
   :if window-system
   :demand t
+  :requires (x-list-fonts)
   :init (load-theme 'org-beautify t))
 #+END_SRC
 
@@ -1316,13 +1328,15 @@ Restore some keys that org-mode would normally remap:
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package php-mode)
+(use-package php-mode
+  :disabled)
 #+END_SRC
 
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package company-php
+  :disabled
   :after (company php-mode))
 #+END_SRC
 
@@ -1338,23 +1352,26 @@ Missing description
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package rust-mode)
+(use-package rust-mode
+  :disabled)
 #+END_SRC
 
 Flycheck helper for Rust
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
 (use-package flycheck-rust
+  :disabled
   :after (rust-mode)
   :commands (flycheck-rust-setup)
-  :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :hook (flycheck-mode . flycheck-rust-setup))
 #+END_SRC
 
 **** SystemD
 Missing description
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
-(use-package systemd)
+(use-package systemd
+  :disabled)
 #+END_SRC
 
 **** YAML
