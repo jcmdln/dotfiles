@@ -1,4 +1,4 @@
-\# -*- mode : org -*-
+# -*- mode : org -*-
 #+TITLE: My literate Emacs configuration
 #+SUBTITLE: A blend of org-mode, use-package, and too many packages.
 #+STARTUP: indent
