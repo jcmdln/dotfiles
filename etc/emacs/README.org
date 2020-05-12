@@ -679,8 +679,12 @@ Source: https://github.com/abo-abo/define-word
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
   (use-package diff-hl
-    :if window-system
-    :hook ((prog-mode text-mode) . diff-hl-mode))
+    :demand t
+    :commands (diff-hl-mode diff-hl-margin-mode)
+
+    :hook
+    (((lisp-mode org-mode prog-mode text-mode) . diff-hl-mode)
+     ((lisp-mode org-mode prog-mode text-mode) . diff-hl-margin-mode)))
 #+END_SRC
 
 **** dimmer
