@@ -87,6 +87,7 @@ My goals for using org-mode to manage my configuration are as follows:
       - [[#d][D]]
       - [[#docker][Docker]]
       - [[#dotenv][DotEnv]]
+      - [[#gdscript][GDScript]]
       - [[#git][Git]]
       - [[#go][Go]]
       - [[#jinja2][Jinja2]]
@@ -1283,6 +1284,14 @@ https:github.com/emacs-lsp/lsp-mode#supported-languages
 
 #+BEGIN_SRC emacs-lisp :tangle config.el
   (use-package dotenv-mode)
+#+END_SRC
+
+**** GDScript
+
+#+BEGIN_SRC emacs-lisp :tangle config.el
+(use-package gdscript-mode
+  :config
+  (setq gdscript-godot-executable "flatpak run org.godotengine.Godot"))
 #+END_SRC
 
 **** Git
