@@ -13,7 +13,7 @@ My goals for using org-mode to manage my configuration are as follows:
 - Fully document everything (eventually)
 - Preserve (most) core GNU/Emacs functionality
 - Leverage use-package for predictability
-- Initialization time is a reasonable concern
+- Performance is a reasonable concern
 
 * Table of Contents :TOC_4:noexport:
 - [[#warnings][Warnings]]
@@ -327,10 +327,10 @@ the changes will cause our configuration to be regenerated.
     (byte-compile-file   "~/.emacs.d/init.el")
     (byte-compile-file   "~/.emacs.d/config.el"))
 
-(if (file-newer-than-file-p "~/.emacs.d/config.org"
-                            "~/.emacs.d/config.el")
-    (emacs-reconfig)
-  (load "~/.emacs.d/config.el"))
+  (if (file-newer-than-file-p "~/.emacs.d/README.org"
+                              "~/.emacs.d/config.el")
+      (emacs-reconfig)
+    (load "~/.emacs.d/config.el"))
 #+END_SRC
 
 ** config.el
