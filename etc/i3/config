@@ -55,7 +55,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id \
 mixerctl outputs.master=+5
 
 # terminal
-bindsym $mod+Return exec --no-startup-id st -e ksh -l
+bindsym $mod+Return exec --no-startup-id \
+st -f "Monospace:size=11" -e ksh -l
 
 # xbacklight
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
