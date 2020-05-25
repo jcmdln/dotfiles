@@ -3,19 +3,12 @@
 # Create missing user directories that are likely to be needed at some
 # point.
 
-if [ "$(whoami)" != 'root' ]; then
-    Folders="
-        Documents
-        Downloads
-        Music
-        Pictures
-        Projects
-        Videos
-    "
+if [ "$(whoami)" != "root" ]; then
+    Folders="Documents Downloads Music Pictures Projects Videos"
 
-    for Folder in $Folders; do
-        if [ ! -e "$HOME"/"$Folder" ]; then
-            mkdir "$HOME"/"$Folder"
+    for Folder in $(echo $Folders); do
+        if [ ! -d "$HOME/$Folder" ]; then
+            mkdir -v "$HOME/$Folder"
         fi
     done
 

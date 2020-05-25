@@ -2,8 +2,8 @@
 
 export PROMPT_COMMAND="history -a"
 
-if [ -e "$ZSH_VERSION" ]; then
-    PS1="[%n@%M %d]$ "
+if [ -n "$ZSH_VERSION" ]; then
+    PS1="[%n@%M %1~]$ "
 else
     PS1="[\u@\h \W]\$ "
 
