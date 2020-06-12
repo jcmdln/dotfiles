@@ -15,3 +15,7 @@ if [ -x "$(command -v pip3)" ]; then
 fi
 
 unset PIP_OPTS
+
+if [ -e "$HOME/.poetry/bin" ]; then
+    export PATH="$HOME/.poetry/bin:$PATH"
+fi
