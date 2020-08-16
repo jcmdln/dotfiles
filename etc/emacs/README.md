@@ -104,8 +104,6 @@ OpenBSD
 --------------------
 ```sh
 doas pkg_add autoconf automake gmake gnutls hunspell jansson &&
-doas wget -O en_US.aff https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff &&
-doas wget -O en_US.dic https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic &&
 export AUTOCONF_VERSION="x.xx" &&
 git clone --branch master --depth 1 https://github.com/emacs-mirror/emacs.git &&
 cd emacs &&
@@ -121,10 +119,8 @@ cd emacs &&
 	--with-gpm \
 	--with-gnutls \
 	--with-json \
-	--with-libsystemd \
 	--with-mailutils \
 	--with-modules \
-	--with-selinux \
 	--with-threads \
 	--with-toolkit-scroll-bars \
 	--with-xml2 \
