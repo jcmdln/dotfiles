@@ -10,14 +10,18 @@ anything useful for GUI situations.
 
 Fedora
 --------------------
+
+### Dependencies
 ```sh
 sudo dnf install -y \
 	automake cairo-devel giflib-devel gnutls-devel gpm-devel gtk3-devel \
 	harfbuzz-devel jansson-devel lcms2-devel libXpm-devel libjpeg-devel \
 	libotf-devel librsvg2-devel libtiff-devel m17n-lib-devel ncurses-devel \
-	webkit2gtk3-devel &&
-git clone --branch master --depth 1 https://github.com/emacs-mirror/emacs.git &&
-cd emacs &&
+	systemd-devel webkit2gtk3-devel
+```
+
+### Build
+```sh
 ./autogen.sh &&
 ./configure \
 	MAKE="gmake" \
@@ -59,8 +63,15 @@ sudo make install
 
 OpenBSD
 --------------------
+
+### Dependencies
 ```sh
-TBD
+doas pkg_add \
+	autoconf automake gmake gnutls hunspell jansson
+```
+
+### Build
+```sh
 ```
 
 
@@ -70,11 +81,15 @@ Minimal Emacs without graphical support or other such posh features
 
 Fedora
 --------------------
+
+### Dependencies
 ```sh
 sudo dnf install -y \
-	automake gnutls-devel gpm-devel jansson-devel ncurses-devel
-git clone https://github.com/emacs-mirror/emacs.git --depth 1 &&
-cd emacs &&
+	automake gnutls-devel gpm-devel jansson-devel ncurses-devel systemd-devel
+```
+
+### Build
+```sh
 ./autogen.sh &&
 ./configure \
 	MAKE="gmake" \
@@ -102,12 +117,17 @@ sudo make install
 
 OpenBSD
 --------------------
+
+### Dependencies
 ```sh
-doas pkg_add autoconf automake gmake gnutls hunspell jansson &&
-export AUTOCONF_VERSION="x.xx" &&
-git clone --branch master --depth 1 https://github.com/emacs-mirror/emacs.git &&
-cd emacs &&
-./autogen.sh &&
+doas pkg_add \
+	autoconf automake gmake gnutls hunspell jansson
+```
+
+### Build
+```sh
+export AUTOCONF_VERSION="$(\ls $(which autoconf)-*|awk -F\- '{print $2}')" &&
+./autogen.sh --no-check &&
 ./configure \
 	MAKE="gmake" \
 	CC="clang" \
