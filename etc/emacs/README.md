@@ -126,7 +126,7 @@ doas pkg_add \
 
 ### Build
 ```sh
-export AUTOCONF_VERSION="$(\ls $(which autoconf)-*|awk -F\- '{print $2}')" &&
+export AUTOCONF_VERSION="$(\ls $(which autoconf)-*|awk -F '-' '{print $2}')" &&
 ./autogen.sh --no-check &&
 ./configure \
 	MAKE="gmake" \
