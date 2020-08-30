@@ -1,25 +1,35 @@
 # .gitignore
 
-# Exclude everything
-*
+# Exclude everything by default
+*/*
 
-# Include specific files
-!.Xresources
-!.bash_profile
-!.bashrc
+# Include directories
+!.config/
+!.config/*/
 !.config/emacs/README.md
 !.config/gtk-3.0/settings.ini
 !.config/i3/config
 !.config/i3status/config
 !.config/mpv/*.conf
-!.config/vim/.vimrc
 !.config/vim/README.md
+!.config/vim/vimrc
+!.profile.d/*.sh
+
+# Include loose files
+!.Xresources
+!.bash_profile
+!.bashrc
 !.gitignore
 !.gtkrc-2.0
 !.mg
 !.profile
-!.profile.d/*.sh
 !.tmux.conf
 !.xinitrc
 !.xsession
 !.zshrc
+!LICENSE.md
+!README.md
+
+# Re-exclude unwanted patterns
+**/*#*
+**/*~*
