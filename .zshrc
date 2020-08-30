@@ -6,7 +6,7 @@ if [ ! -d "$ZSH" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 fi
 
-plugins=(git go man tmux)
+plugins=(git man tmux)
 ZSH_THEME="risto"
 COMPLETION_WAITING_DOTS="true"
 source "$ZSH"/oh-my-zsh.sh

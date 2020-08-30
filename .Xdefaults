@@ -1,0 +1,9 @@
+xterm*background: black
+xterm*eightBitInput: false
+xterm*foreground: grey
+xterm*locale: true
+xterm*loginshell:true
+xterm*savelines: 8192
+xterm*scrollbar: false
+xterm*termname: xterm-color
+xterm*utf8: 2

@@ -8,7 +8,7 @@ if [ "$(whoami)" != "root" ]; then
 
     for Folder in $(echo $Folders); do
         if [ ! -d "$HOME/$Folder" ]; then
-            mkdir -v "$HOME/$Folder"
+            mkdir "$HOME/$Folder"
         fi
     done
 

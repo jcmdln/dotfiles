@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
 
-# Ensure ~/.profile is loaded
-export ENV="$HOME/.profile"
-
 # Pretend we're using Gnome for theme support
 export DESKTOP_SESSION=gnome
+
+# Ensure Environment is loaded
+export ENV="$HOME/.profile"
+export XENVIRONMENT="$HOME/.Xdefaults"
 
 # Set screen brightness to 20%
 xbacklight -set 20%

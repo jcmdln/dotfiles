@@ -3,7 +3,13 @@
 export PROMPT_COMMAND="history -a"
 
 if [ -n "$ZSH_VERSION" ]; then
-    PS1="[%n@%M %1~]$ "
+    PS1="[%n@%m %1~]$ "
+
+    if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
+        precmd() {
+	    print -Pn "\[\e];%n@%m %~\a\]"
+	}
+    fi
 else
     PS1="[\u@\h \W]\$ "
 
