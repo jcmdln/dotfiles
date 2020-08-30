@@ -1,27 +1,25 @@
-*#
-*~
+# .gitignore
 
-# Emacs
-*.elc
-etc/emacs/.markdown-preview.html
-etc/emacs/auto-save-list
-etc/emacs/config.el
-etc/emacs/config.el
-etc/emacs/custom.el
-etc/emacs/elpa
-etc/emacs/eshell
-etc/emacs/init.el
-etc/emacs/pkg
-etc/emacs/usr
-etc/emacs/var
+# Exclude everything
+*
 
-# GTK 3
-usr/share/themes/gtk-3.0/servers
-usr/share/themes/gtk-3.0/bookmarks
-
-# Profile
-etc/profile.d/display.sh
-
-# Vim
-etc/vim/autoload
-etc/vim/plugged
+# Include specific files
+!.Xdefaults
+!.bash_profile
+!.bashrc
+!.config/emacs/README.md
+!.config/gtk-3.0/settings.ini
+!.config/i3/config
+!.config/i3status/config
+!.config/mpv/*.conf
+!.config/vim/.vimrc
+!.config/vim/README.md
+!.gitignore
+!.gtkrc-2.0
+!.mg
+!.profile
+!.profile.d/*.sh
+!.tmux.conf
+!.xinitrc
+!.xsession
+!.zshrc
