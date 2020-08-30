@@ -5,7 +5,7 @@ export DESKTOP_SESSION=gnome
 
 # Ensure Environment is loaded
 export ENV="$HOME/.profile"
-export XENVIRONMENT="$HOME/.Xdefaults"
+export XENVIRONMENT="$HOME/.Xresources"
 
 # Set screen brightness to 20%
 xbacklight -set 20%

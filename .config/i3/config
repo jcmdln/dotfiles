@@ -51,7 +51,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id sndioctl output.level=+0.1
 
 # terminal
 bindsym $mod+Return exec --no-startup-id \
-xterm -tn xterm-256color -bg black -fg grey -fa "Noto Mono:size=10" +sb
+XENVIRONMENT="$HOME/.Xresources" && xrdb $XENVIRONMENT && xterm
 
 # xbacklight
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5

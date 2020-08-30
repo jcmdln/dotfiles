@@ -4,7 +4,7 @@
 *
 
 # Include specific files
-!.Xdefaults
+!.Xresources
 !.bash_profile
 !.bashrc
 !.config/emacs/README.md
