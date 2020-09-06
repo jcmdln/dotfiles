@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
 
-if [ -x "$(command -v rsync)" ]; then
-    alias rsync="rsync -achzP"
-fi
+[ -x "$(command -v rsync)" ] && alias rsync="rsync -achzP"
+[ -x "$(command -v unzip)" ] && alias unzip="unzip -q"
 
 if [ "$(uname -s)" = "Linux" ]; then
     alias dd="dd status=progress"
     alias ls="ls -F"
     alias mkdir="mkdir -p"
-    alias rsync="rsync -achzP"
 
     if [ "$SHELL" != "/bin/ash" ]; then
         alias df="df -h"
@@ -20,15 +18,13 @@ if [ "$(uname -s)" = "Linux" ]; then
         alias rm="rm -i"
         alias tree="tree -C --dirsfirst"
     fi
-fi
-
-if [ "$(uname -s)" = "OpenBSD" ]; then
+elif [ "$(uname -s)" = "OpenBSD" ]; then
     alias df="df -h"
-    alias mkdir="mkdir -p"
+    alias du="du -h"
     alias ls="ls -hCF"
-    alias openrsync="openrsync --rsync-path=openrsync -lrt"
+    alias mkdir="mkdir -p"
+    alias mv="mv -i"
+    alias openrsync="openrsync --rsync-path=openrsync -lrtv"
 
-    if [ -n "$(command -v tree)" ]; then
-        alias tree="tree -F"
-    fi
+    [ -n "$(command -v tree)" ] && alias tree="tree -F"
 fi
