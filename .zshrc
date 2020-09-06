@@ -3,7 +3,7 @@
 export ZSH="$HOME/.config/ohmyzsh"
 export ZSH_THEME="risto"
 export plugins=(cargo emacs git man mosh python rust tmux)
-[ ! -d "$ZSH" ] && git clone https://github.com/ohmyzsh/ohmyzsh "$ZSH"
+[ ! -d "$ZSH" ] && git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh "$ZSH"
 source "$ZSH/oh-my-zsh.sh"
 
 # Load global config
