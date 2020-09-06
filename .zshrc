@@ -1,19 +1,9 @@
 #!/usr/bin/env zsh
 
-# ohmyzsh settings
-export ZSH="$HOME/.config/oh-my-zsh"
-export CHSH="no"
-export RUNZSH="no"
-export KEEP_ZSHRC="yes"
-
-# Install ohmyzsh if missing
-if [ ! -d "$ZSH" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-# Load oh-my-zsh
+export ZSH="$HOME/.config/ohmyzsh"
 export ZSH_THEME="risto"
 export plugins=(cargo emacs git man mosh python rust tmux)
+[ ! -d "$ZSH" ] && git clone https://github.com/ohmyzsh/ohmyzsh "$ZSH"
 source "$ZSH/oh-my-zsh.sh"
 
 # Load global config
