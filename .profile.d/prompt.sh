@@ -19,3 +19,4 @@ else
 fi
 
 export PS1
+export PS2="> "
