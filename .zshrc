@@ -1,15 +1,20 @@
 #!/usr/bin/env zsh
 
-# ZSH-specific configuration
-ZSH="/home/$(whoami)/.oh-my-zsh"
+# ohmyzsh settings
+export ZSH="$HOME/.config/oh-my-zsh"
+export CHSH="no"
+export RUNZSH="no"
+export KEEP_ZSHRC="yes"
+
+# Install ohmyzsh if missing
 if [ ! -d "$ZSH" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-plugins=(cargo emacs git man mosh python rust tmux)
-ZSH_THEME="risto"
-COMPLETION_WAITING_DOTS="true"
-source "$ZSH"/oh-my-zsh.sh
+# Load oh-my-zsh
+export ZSH_THEME="risto"
+export plugins=(cargo emacs git man mosh python rust tmux)
+source "$ZSH/oh-my-zsh.sh"
 
 # Load global config
 if [ -e /etc/profile ]; then
