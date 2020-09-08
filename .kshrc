@@ -34,8 +34,9 @@ fi
 
 if [ -x "$(command -v mosh)" ]; then
     set -A complete_mosh -- \
-        $(cat $HOME/.ssh/known_hosts | awk -F'[, ]' '{print $1}' |
-              sed 's/^\[//g; s/\]//g')
+        $(echo $(cat $HOME/.ssh/known_hosts | awk -F'[, ]' '{print $1}' | sed 's/^\[//g; s/\]//g') \
+               $(cat $HOME/.ssh/config | grep "Host \S*" | grep -v "*" | sed 's/Host //g') \
+              | tr ' ' '\n' | sort | uniq)
 fi
 
 if [ -x "$(command -v rcctl)" ]; then
@@ -50,8 +51,9 @@ fi
 
 if [ -x "$(command -v ssh)" ]; then
     set -A complete_ssh -- \
-        $(cat $HOME/.ssh/known_hosts | awk -F'[, ]' '{print $1}' |
-              sed 's/^\[//g; s/\]//g')
+        $(echo $(cat $HOME/.ssh/known_hosts | awk -F'[, ]' '{print $1}' | sed 's/^\[//g; s/\]//g') \
+               $(cat $HOME/.ssh/config | grep "Host \S*" | grep -v "*" | sed 's/Host //g') \
+              | tr ' ' '\n' | sort | uniq)
 fi
 
 if [ -x "$(command -v sysctl)" ]; then
