@@ -1,7 +1,7 @@
 # ~/.kshrc
 
 # Load global kshrc
-. /etc/ksh.kshrc
+# . /etc/ksh.kshrc
 
 # Load global profile
 if [ -f /etc/profile ]; then
