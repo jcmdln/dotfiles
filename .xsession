@@ -3,16 +3,32 @@
 # Pretend we're using Gnome for theme support
 export DESKTOP_SESSION=gnome
 
-# Ensure Environment is loaded
-export ENV="$HOME/.profile"
+# Load proper environment for the user's detected shell
+if [ "$(echo $0 | tr -d '^-')" = "ksh" ]; then
+    export ENV="$HOME/.kshrc"
+elif [ "$(echo $0 | tr -d '^-')" = "zsh" ]; then
+    export ENV="$HOME/.zshrc"
+elif [ "$(echo $0 | tr -d '^-')" = "bash" ]; then
+    export ENV="$HOME/.bashrc"
+fi
+
+# Declare our Xterm configuration file
 export XENVIRONMENT="$HOME/.Xresources"
 
-# Set screen brightness to 20%
-xbacklight -set 20%
+# Set input/output volume to 0%
+if [ -x "$(command -v sndioctl)" ]; then
+    sndioctl input.level=0
+    sndioctl output.level=0
+fi
 
 # Hide mouse cursor when inactive for 3 seconds
 if [ -x "$(command -v unclutter)" ]; then
     unclutter -idle 3 -noevents -root &
+fi
+
+# Set screen brightness to 15%
+if [ -x "$(command -v xbacklight)" ]; then
+   xbacklight -set 15%
 fi
 
 # Start dbus
