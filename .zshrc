@@ -2,7 +2,7 @@
 
 export ZSH="$HOME/.config/ohmyzsh"
 export ZSH_THEME="risto"
-export plugins=(cargo emacs git man mosh python rust tmux)
+export plugins=(cargo git man mosh python rust tmux)
 
 # Allow skipping ohmyzsh requirements if not installed and git not present
 if [ ! -d "$ZSH" ]; then
