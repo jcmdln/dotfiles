@@ -1,4 +1,4 @@
-# ~/.kshrc
+#!/usr/bin/env ksh
 
 # Load global kshrc
 # . /etc/ksh.kshrc
