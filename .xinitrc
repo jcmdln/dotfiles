@@ -4,11 +4,11 @@
 export DESKTOP_SESSION=gnome
 
 # Load proper environment for the user's detected shell
-if [ "$(echo $0 | tr -d '^-')" = "ksh" ]; then
+if [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "ksh" ]; then
     export ENV="$HOME/.kshrc"
-elif [ "$(echo $0 | tr -d '^-')" = "zsh" ]; then
+elif [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "zsh" ]; then
     export ENV="$HOME/.zshrc"
-elif [ "$(echo $0 | tr -d '^-')" = "bash" ]; then
+elif [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "bash" ]; then
     export ENV="$HOME/.bashrc"
 fi
 
