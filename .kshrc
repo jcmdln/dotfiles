@@ -1,8 +1,5 @@
 #!/usr/bin/env ksh
 
-# Load global kshrc
-# . /etc/ksh.kshrc
-
 # Load global profile
 if [ -f /etc/profile ]; then
     . /etc/profile
@@ -14,14 +11,26 @@ if [ -f "$HOME/.profile" ]; then
 fi
 
 #
+# Helpers
+#
+
+watch() {
+    while :; do
+        clear
+        echo "watch: $@\n"
+        $@ && sleep 5 || return
+    done
+}
+
+#
 # Completions
 #
 
 _doas() {
     local FILE="/tmp/_complete_doas"
     if [ ! -f $FILE ]; then
-	\ls {,/usr{,/local}}/sbin | sed 's/^\/.*$//g' | sort |
-	    uniq > $FILE
+        \ls {,/usr{,/local}}/sbin | sed 's/^\/.*$//g' | sort |
+            uniq > $FILE
     fi
     cat $FILE
 }
@@ -45,8 +54,7 @@ _doas() {
 _man() {
     local FILE="/tmp/_complete_man"
     if [ ! -f $FILE ]; then
-	man -k Nm~. | cut -d "(" -f1 | tr -d , | sort |
-	    uniq > $FILE
+        man -k Nm~. | cut -d "(" -f1 | tr -d , | sort | uniq > $FILE
     fi
     cat $FILE
 }
@@ -56,7 +64,7 @@ _man() {
 
 [ -n "$(command -v rcctl)" ] &&
     set -A complete_rcctl_1 -- \
-	disable enable get ls order set restart start stop &&
+        disable enable get ls order set restart start stop &&
     set -A complete_rcctl_2 -- $(rcctl ls all)
 
 [ -n "$(command -v signify)" ] &&
@@ -70,10 +78,10 @@ _man() {
 _ssh() {
     if [ -f "$HOME/.ssh/config" ]; then
         cat "$HOME/.ssh/config" | grep "Host \S*" | grep -v "*" |
-	    sed "s/Host //g" | tr ' ' '\n' | sort | uniq
+            sed "s/Host //g" | tr ' ' '\n' | sort | uniq
     elif [ -f "$HOME/.ssh/known_hosts" ]; then
         cat "$HOME/.ssh/known_hosts" | awk -F'[, ]' '{print $1}' |
-	    sed 's/^\[//g; s/\]//g' | sort | uniq
+            sed 's/^\[//g; s/\]//g' | sort | uniq
     fi
 }
 
@@ -95,8 +103,8 @@ _ssh() {
 _sysctl() {
     local FILE="/tmp/_complete_sysctl"
     if [ ! -f $FILE ]; then
-	sysctl | sed 's/\=.*$//g; s/ .*$//g' | sort |
-	    uniq > $FILE
+        sysctl | sed 's/\=.*$//g; s/ .*$//g' | sort |
+            uniq > $FILE
     fi
     cat $FILE
 }
@@ -106,4 +114,4 @@ _sysctl() {
 
 [ -n "$(command -v vmctl)" ] &&
     set -A complete_vmctl_1 -- \
-	console load reload start stop reset status send receive
+        console load reload start stop reset status send receive
