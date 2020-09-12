@@ -1,8 +1,8 @@
-# /etc/mg
+# ~/.mg
 
-auto-execute *.c c-mode
-auto-fill-mode
-auto-indent-mode
-backup-to-home-directory
-column-number-mode
+auto-fill-mode true
+auto-indent-mode true
+column-number-mode true
+make-backup-files false
+set-default-mode fill
 set-fill-column 72
