@@ -7,8 +7,8 @@ if [ -n "$ZSH_VERSION" ]; then
 
     if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
         precmd() {
-	    print -Pn "\[\e];%n@%m %~\a\]"
-	}
+            print -Pn "\[\e];%n@%m %~\a\]"
+        }
     fi
 else
     PS1="[\u@\h \W]\$ "
