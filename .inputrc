@@ -1,9 +1,8 @@
 # ~/.inputrc
 
 set completion-ignore-case on
+set editing-mode emacs
 set enable-keypad on
 set enable-meta-key on
 set input-meta on
-set ouput-meta on
-set editing-mode emacs
 set show-all-if-ambiguous on
