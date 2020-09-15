@@ -14,6 +14,14 @@ else
     source "$ZSH/oh-my-zsh.sh"
 fi
 
+# If we're in tmux, don't use bracketed paste
+if [ -n "$TMUX" ]; then
+    unset zle_bracketed_paste
+else
+    autoload -Uz bracketed-paste-magic
+    zle -N bracketed-paste bracketed-paste-magic
+fi
+
 # Load global profile
 if [ -f /etc/profile ]; then
     source /etc/profile
@@ -22,9 +30,4 @@ fi
 # Load local profile
 if [ -f "$HOME/.profile" ]; then
     source "$HOME/.profile"
-fi
-
-# If we're in tmux, don't use bracketed paste
-if [ -n "$TMUX" ]; then
-    unset zle_bracketed_paste
 fi
