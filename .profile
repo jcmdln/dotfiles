@@ -17,6 +17,6 @@ export PATH
 # Load local profile.d scripts
 if [ -d "$HOME/.profile.d" ]; then
     for script in $HOME/.profile.d/*.sh; do
-        [ -r "$script" ] && . "$script" && echo "loaded $script"
+        [ -r "$script" ] && . "$script"
     done; unset script
 fi
