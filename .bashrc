@@ -5,11 +5,7 @@ shopt -s histappend
 shopt -s no_empty_cmd_completion
 
 # Load global profile
-if [ -f /etc/profile ]; then
-    . /etc/profile
-fi
+[ -f /etc/profile ] && source /etc/profile
 
 # Load local profile
-if [ -f "$HOME/.profile" ]; then
-    . "$HOME/.profile"
-fi
+[ -f "$HOME/.profile" ] && source "$HOME/.profile"

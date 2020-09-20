@@ -23,11 +23,7 @@ else
 fi
 
 # Load global profile
-if [ -f /etc/profile ]; then
-    source /etc/profile
-fi
+[ -f /etc/profile ] && source /etc/profile
 
 # Load local profile
-if [ -f "$HOME/.profile" ]; then
-    source "$HOME/.profile"
-fi
+[ -f "$HOME/.profile" ] && source "$HOME/.profile"

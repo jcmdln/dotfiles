@@ -1,14 +1,10 @@
 #!/usr/bin/env ksh
 
 # Load global profile
-if [ -f /etc/profile ]; then
-    . /etc/profile
-fi
+[ -f /etc/profile ] && . /etc/profile
 
 # Load local profile
-if [ -f "$HOME/.profile" ]; then
-    . "$HOME/.profile"
-fi
+[ -f "$HOME/.profile" ] && . "$HOME/.profile"
 
 #
 # Helpers

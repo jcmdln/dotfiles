@@ -22,14 +22,10 @@ if [ -x "$(command -v sndioctl)" ]; then
 fi
 
 # Hide mouse cursor when inactive for 3 seconds
-if [ -n "$(command -v unclutter)" ]; then
-    unclutter -idle 3 -noevents -root &
-fi
+[ -n "$(command -v unclutter)" ] && unclutter -idle 3 -noevents -root &
 
 # Set screen brightness to 15%
-if [ -n "$(command -v xbacklight)" ]; then
-   xbacklight -set 15%
-fi
+[ -n "$(command -v xbacklight)" ] && xbacklight -set 15%
 
 # Start dbus
 if [ -n /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
@@ -37,6 +33,4 @@ if [ -n /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
 fi
 
 # Start i3
-if [ -n "$(command -v i3)" ]; then
-    i3
-fi
+[ -n "$(command -v i3)" ] && i3

@@ -3,7 +3,7 @@
 # Create missing user directories that are likely to be needed at some
 # point.
 
-if [ "$(whoami)" != "root" ]; then
+if [ "$EUID" -gt 0 ]; then
     Folders="Documents Downloads Music Pictures Projects Videos"
 
     for Folder in $(echo $Folders); do

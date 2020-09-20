@@ -21,6 +21,4 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
 fi
 
 # Start i3
-if [ -x "$(command -v i3)" ]; then
-    i3
-fi
+[ -x "$(command -v i3)" ] && i3
