@@ -1,6 +1,7 @@
 # .gitignore
 
 # Exclude everything by default
+*
 */*
 
 # Include directories
