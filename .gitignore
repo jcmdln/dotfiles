@@ -6,12 +6,15 @@
 
 # Include directories
 !.config/
-!.config/*/
-!.config/emacs/README.md
+!.config/gtk-3.0
 !.config/gtk-3.0/settings.ini
+!.config/i3
 !.config/i3/config
+!.config/i3status
 !.config/i3status/config
+!.config/mpv
 !.config/mpv/*.conf
+!.config/vim
 !.config/vim/README.md
 !.config/vim/vimrc
 !.profile.d/*.sh
