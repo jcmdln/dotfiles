@@ -19,6 +19,7 @@
 !.config/vim
 !.config/vim/README.md
 !.config/vim/vimrc
+!.profile.d/
 !.profile.d/*.sh
 
 # Include loose files

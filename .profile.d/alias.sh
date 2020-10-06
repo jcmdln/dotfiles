@@ -3,7 +3,7 @@
 [ -n "$(command -v rsync)" ] && alias rsync="\rsync -achzP"
 [ -n "$(command -v unzip)" ] && alias unzip="\unzip -q"
 
-if [ "$OS_RELEASE_KERNEL" = "Linux" ]; then
+if [ "$OS_KERNEL" = "Linux" ]; then
     alias dd="\dd status=progress"
     alias ls="\ls -F"
     alias mkdir="\mkdir -p"
@@ -18,7 +18,7 @@ if [ "$OS_RELEASE_KERNEL" = "Linux" ]; then
         alias rm="\rm -i"
         alias tree="\tree -C --dirsfirst"
     fi
-elif [ "$OS_RELEASE_KERNEL" = "OpenBSD" ]; then
+elif [ "$OS_KERNEL" = "OpenBSD" ]; then
     alias df="\df -h"
     alias du="\du -h"
     alias ls="\ls -hCF"

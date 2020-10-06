@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ "$OS_RELEASE_KERNEL" = "OpenBSD" ]; then
+if [ "$OS_KERNEL" = "OpenBSD" ]; then
     [ -d "/usr/X11R6/man" ] && export MANPATH="$MANPATH:/usr/X11R6/man"
 
     # If present, add Xenocera to PATH
