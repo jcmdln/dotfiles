@@ -5,4 +5,4 @@
 [ -f /etc/bash.bashrc ] && source /etc/bash.bashrc
 
 # Load local bashrc
-[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+[ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
