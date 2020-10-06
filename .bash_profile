@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
 # Load global bashrc
-. /etc/bash.bashrc
+[ -f /etc/bashrc ] && source /etc/bashrc
+[ -f /etc/bash.bashrc ] && source /etc/bash.bashrc
 
 # Load local bashrc
-if [ -f "$HOME/.bashrc" ]; then
-    . "$HOME/.bashrc"
-fi
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
