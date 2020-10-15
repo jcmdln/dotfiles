@@ -16,6 +16,8 @@
 !.config/i3status/config
 !.config/mpv
 !.config/mpv/*.conf
+!.config/sway
+!.config/sway/config
 !.config/vim
 !.config/vim/README.md
 !.config/vim/vimrc
