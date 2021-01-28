@@ -101,7 +101,7 @@ xrdb "$HOME/.Xresources" && xterm
 set $Config Reload sway config (r)
 bindsym $mod+Shift+r mode "$Config"
 mode "$Config" {
-  bindsym r reload
+  bindsym r      reload
   bindsym Escape mode "default"
 }
 
@@ -109,9 +109,9 @@ mode "$Config" {
 set $System Logout (e), Reboot (r), Shutdown (s)
 bindsym $mod+Home mode "$System"
 mode "$System" {
-  bindsym e exec --no-startup-id swaymsg exit, mode "default"
-  bindsym r exec --no-startup-id reboot,       mode "default"
-  bindsym s exec --no-startup-id poweroff -i,  mode "default"
+  bindsym e      exec --no-startup-id swaymsg exit, mode "default"
+  bindsym r      exec --no-startup-id reboot,       mode "default"
+  bindsym s      exec --no-startup-id poweroff -i,  mode "default"
   bindsym Escape mode "default"
 }
 
