@@ -26,11 +26,17 @@ font pango:Monospace 10
 # Set background color
 exec --no-startup-id xsetroot -solid '#333333'
 
-# load ~/.Xresources
+# Load ~/.Xresources
 exec --no-startup-id xrdb ~/.Xresources
 
 # Disable DPMS
 exec --no-startup-id xset s off -dpms
+
+# Hide cursor after 3 seconds
+seat * hide_cursor 3000
+
+# Disable cursor following focus
+mouse_warping none
 
 # i3status
 # TODO: switch to sway-bar
@@ -89,11 +95,10 @@ xrdb "$HOME/.Xresources" && xterm
 #
 
 # Reload or restart i3
-set $Config Reload i3 config (r), Live restart of i3 (Shift+r)
+set $Config Reload sway config (r)
 bindsym $mod+Shift+r mode "$Config"
 mode "$Config" {
   bindsym r reload
-  bindsym Shift+r restart
   bindsym Escape mode "default"
 }
 
@@ -101,9 +106,9 @@ mode "$Config" {
 set $System Logout (e), Reboot (r), Shutdown (s)
 bindsym $mod+Home mode "$System"
 mode "$System" {
-  bindsym e exec --no-startup-id i3-msg exit, mode "default"
-  bindsym r exec --no-startup-id reboot,      mode "default"
-  bindsym s exec --no-startup-id poweroff -i, mode "default"
+  bindsym e exec --no-startup-id swaymsg exit, mode "default"
+  bindsym r exec --no-startup-id reboot,       mode "default"
+  bindsym s exec --no-startup-id poweroff -i,  mode "default"
   bindsym Escape mode "default"
 }
 
