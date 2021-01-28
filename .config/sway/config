@@ -24,7 +24,7 @@
 font pango:Monospace 10
 
 # Set background color
-exec --no-startup-id xsetroot -solid '#333333'
+output "*" bg "#333333" solid_color
 
 # Load ~/.Xresources
 exec --no-startup-id xrdb ~/.Xresources
@@ -37,6 +37,9 @@ seat * hide_cursor 3000
 
 # Disable cursor following focus
 mouse_warping none
+
+# Enable numlock
+input * xkb_numlock enable
 
 # i3status
 # TODO: switch to sway-bar
@@ -72,19 +75,19 @@ bindsym Shift+Print --release exec --no-startup-id \
 grim -s "$HOME/Pictures/$(date +%Y-%m-%d_%H:%M:%S).png"
 
 # sound
-bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioNext         exec playerctl next
-bindsym XF86AudioPlay         exec playerctl play-pause
-bindsym XF86AudioPrev         exec playerctl previous
-bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym $mod+F7               exec playerctl previous
-bindsym $mod+F8               exec playerctl play-pause
-bindsym $mod+F9               exec playerctl next
-bindsym $mod+F10              exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym $mod+F11              exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym $mod+F12              exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMicMute     exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioMute        exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioNext        exec playerctl next
+bindsym XF86AudioPlay        exec playerctl play-pause
+bindsym XF86AudioPrev        exec playerctl previous
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym $mod+F7              exec playerctl previous
+bindsym $mod+F8              exec playerctl play-pause
+bindsym $mod+F9              exec playerctl next
+bindsym $mod+F10             exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym $mod+F11             exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym $mod+F12             exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 
 # terminal
 bindsym $mod+Return exec --no-startup-id \
@@ -132,15 +135,15 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # Change focus
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
 bindsym $mod+Right focus right
 
 # Move focused window
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
 # Switch to workspace
@@ -185,13 +188,13 @@ for_window [window_role="pop-up"] floating enable
 # Resize
 bindsym $mod+r mode "resize"
 mode "resize" {
-  bindsym j resize shrink width 10 px or 10 ppt
-  bindsym k resize grow height 10 px or 10 ppt
-  bindsym l resize shrink height 10 px or 10 ppt
-  bindsym semicolon resize grow width 10 px or 10 ppt
-  bindsym Left resize shrink width 10 px or 10 ppt
-  bindsym Down resize grow height 10 px or 10 ppt
-  bindsym Up resize shrink height 10 px or 10 ppt
-  bindsym Right resize grow width 10 px or 10 ppt
-  bindsym Escape mode "default"
+  bindsym j         resize shrink width  10 px or 10 ppt
+  bindsym k         resize grow   height 10 px or 10 ppt
+  bindsym l         resize shrink height 10 px or 10 ppt
+  bindsym semicolon resize grow   width  10 px or 10 ppt
+  bindsym Left      resize shrink width  10 px or 10 ppt
+  bindsym Down      resize grow   height 10 px or 10 ppt
+  bindsym Up        resize shrink height 10 px or 10 ppt
+  bindsym Right     resize grow   width  10 px or 10 ppt
+  bindsym Escape    mode "default"
 }
