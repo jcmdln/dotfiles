@@ -57,7 +57,7 @@ bar {
 set $mod Mod4
 
 # dmenu
-bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+d exec --no-startup-id bemenu-run
 
 # brightness
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
@@ -65,9 +65,9 @@ bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
 
 # lock
 bindsym $mod+l exec --no-startup-id \
-xset s 10 dpms 10 && \
+swayidle -w timeout 10 'swaymsg "output * dpms off"' && \
 swaylock -c 333333 -n && \
-xset s off -dpms
+swaymsg "output * dpms on"
 
 # screenshot
 bindsym Print exec --no-startup-id \
@@ -77,25 +77,20 @@ bindsym Shift+Print exec --no-startup-id \
 slurp | \
 grim -g - "$HOME/Pictures/$(date +%Y-%m-%d_%H:%M:%S).png"
 
-# sound
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMicMute     exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioMute        exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioNext        exec playerctl next
-bindsym XF86AudioPlay        exec playerctl play-pause
-bindsym XF86AudioPrev        exec playerctl previous
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym $mod+F7              exec playerctl previous
-bindsym $mod+F8              exec playerctl play-pause
-bindsym $mod+F9              exec playerctl next
-bindsym $mod+F10             exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym $mod+F11             exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym $mod+F12             exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+# Special keys
+bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioNext         exec playerctl next
+bindsym XF86AudioPlay         exec playerctl play-pause
+bindsym XF86AudioPrev         exec playerctl previous
+bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
+bindsym XF86Search            exec bemenu-run
 
 # terminal
-bindsym $mod+Return exec --no-startup-id \
-xrdb "$HOME/.Xresources" && \
-xterm
+bindsym $mod+Return exec --no-startup-id xrdb "$HOME/.Xresources" && xterm
 
 
 #
