@@ -41,11 +41,13 @@ mouse_warping none
 # Enable numlock
 input * xkb_numlock enable
 
-# i3status
-# TODO: switch to sway-bar
+# Use Win/Super as modifier
+set $mod Mod4
+
+# Configure waybar
 bar {
-  position       top
-  status_command i3status
+    position top
+    status_command i3status
 }
 
 
@@ -53,15 +55,8 @@ bar {
 # System
 #
 
-# Use Win/Super as modifier
-set $mod Mod4
-
 # dmenu
 bindsym $mod+d exec --no-startup-id bemenu-run
-
-# brightness
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
 
 # lock
 bindsym $mod+l exec --no-startup-id \
@@ -73,24 +68,13 @@ swaymsg "output * dpms on"
 bindsym Print exec --no-startup-id \
 grim "$HOME/Pictures/$(date +%Y-%m-%d_%H:%M:%S).png"
 
+# screenshot selection
 bindsym Shift+Print exec --no-startup-id \
 slurp | \
 grim -g - "$HOME/Pictures/$(date +%Y-%m-%d_%H:%M:%S).png"
 
-# Special keys
-bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioNext         exec playerctl next
-bindsym XF86AudioPlay         exec playerctl play-pause
-bindsym XF86AudioPrev         exec playerctl previous
-bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
-bindsym XF86Search            exec bemenu-run
-
 # terminal
-bindsym $mod+Return exec --no-startup-id xrdb "$HOME/.Xresources" && xterm
+bindsym $mod+Return exec gnome-terminal
 
 
 #
@@ -119,6 +103,18 @@ mode "$System" {
 #
 # Keybinds
 #
+
+# Media keys
+bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioNext         exec playerctl next
+bindsym XF86AudioPlay         exec playerctl play-pause
+bindsym XF86AudioPrev         exec playerctl previous
+bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set -5%
+bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
+bindsym XF86Search            exec bemenu-run
 
 # Window splitting
 bindsym $mod+h split h
