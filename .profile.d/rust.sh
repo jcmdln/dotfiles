@@ -16,8 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -f "$HOME/.cargo/env" ]; then
-    . ~/.cargo/env
-elif [ -d "$HOME/.cargo/bin" ]; then
+if [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$PATH:$HOME/.cargo/bin"
 fi

@@ -16,18 +16,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-OS_KERNEL="$(uname -s)"
+export OS_KERNEL="$(uname -s)"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 
-if [ "$(uname -s)" = "Linux" ]; then
-    OS_ID=$(grep "^ID=" /etc/os-release | awk -F\= '{print $2}')
-    OS_NAME=$(grep "^NAME=" /etc/os-release | awk -F\" '{print $2}')
-    OS_VERSION=$(grep "^VERSION=" /etc/os-release | awk -F\" '{print $2}')
-    OS_VERSION_ID=$(grep "^VERSION_ID=" /etc/os-release | awk -F\" '{print $2}')
-    OS_VERSION_CODENAME=$(grep "^VERSION_CODENAME=" /etc/os-release | awk -F\= '{print $2}')
-elif [ "$(uname -s)" = "OpenBSD" ]; then
-    OS_ID=$(sysctl -n kern.ostype | awk '{ print tolower($0) }')
-    OS_NAME=$(sysctl -n kern.ostype)
-    OS_VERSION=$(sysctl -n kern.osrelease)
-    OS_VERSION_CODENAME=$(sysctl -n kern.osrelease)
-    OS_VERSION_ID=$(sysctl -n kern.osrelease)
+if [ "$OS_KERNEL" = "Linux" ]; then
+    export OS_ID=$(awk -F\= '/^ID/ {print $2}' /etc/os-release)
+    export OS_NAME=$(awk -F\= '/^NAME/ {print $2}' /etc/os-release)
+    export OS_VERSION=$(awk -F\" '/^VERSION=/ {print $2}' /etc/os-release)
+    export OS_VERSION_CODENAME=$(awk -F\" '/^VERSION_CODENAME/ {print $2}' /etc/os-release)
+    export OS_VERSION_ID=$(awk -F\= '/^VERSION_ID/ {print $2}' /etc/os-release)
+elif [ "$OS_KERNEL" = "OpenBSD" ]; then
+    export OS_ID=$(sysctl -n kern.ostype | awk '{print tolower($0)}')
+    export OS_NAME=$(sysctl -n kern.ostype)
+    export OS_VERSION=$(sysctl -n kern.osrelease)
+    export OS_VERSION_CODENAME=$(sysctl -n kern.osrelease)
+    export OS_VERSION_ID=$(sysctl -n kern.osrelease)
 fi
