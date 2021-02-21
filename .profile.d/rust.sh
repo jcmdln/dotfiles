@@ -16,6 +16,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -d "$HOME/.cargo/bin" ]; then
-    export PATH="$PATH:$HOME/.cargo/bin"
+export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
+export RUSTUP_HOME="$XDG_CONFIG_HOME/rustup"
+
+if [ -d "$CARGO_HOME/bin" ]; then
+    export PATH="$PATH:$CARGO_HOME/bin"
 fi
