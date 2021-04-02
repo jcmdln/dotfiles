@@ -21,4 +21,4 @@ export PYTHONDONTWRITEBYTECODE=true
 #export PYTHONUNBUFFERED=true
 
 # Poetry
-[ -e "$HOME/.poetry/bin" ] && export PATH="$HOME/.poetry/bin:$PATH"
+[ -e "$HOME/.poetry/bin" ] && export PATH="$PATH:$HOME/.poetry/bin"

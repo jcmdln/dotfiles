@@ -29,4 +29,4 @@ export LC_NUMERIC="en_US.UTF-8"
 export LC_PAPER="en_US.UTF-8"
 export LC_TELEPHONE="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
-export LC_ALL=
+export LC_ALL=""

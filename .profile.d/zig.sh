@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -e "$HOME/.deno" ]; then
-    export DENO_INSTALL="$HOME/.deno"
-    export PATH="$PATH:$DENO_INSTALL/bin"
+if [ -d "$HOME/.local/zig/bin" ]; then
+    export PATH="$PATH:$HOME/.local/zig/bin"
+fi
+
+if [ -d "$HOME/.local/zls/bin" ]; then
+    export PATH="$PATH:$HOME/.local/zls/bin"
 fi
