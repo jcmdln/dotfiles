@@ -35,11 +35,11 @@
 !.config/mpv/*.conf
 !.config/sway
 !.config/sway/config
-!.config/vim
-!.config/vim/README.md
-!.config/vim/vimrc
 !.profile.d/
 !.profile.d/*.sh
+!.vim
+!.vim/README.md
+!.vim/vimrc
 
 # Include loose files
 !.Xresources

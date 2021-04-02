@@ -16,9 +16,6 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 " SOFTWARE.
 
-
-""" Vim-Plug ====================================
-
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	autocmd VimEnter * PlugInstall --sync
@@ -27,42 +24,65 @@ endif
 call plug#begin('~/.vim/plugged')      " Minimalist Vim Plugin Manager
 
 
-""" Settings ====================================
+"
+" Settings
+"
 
-Plug 'tpope/vim-sensible'              " Sensible Defaults
+"" Sensible Defaults
+Plug 'tpope/vim-sensible'
 
-set t_BE=                              " Disable bracketed paste
-set nocompatible                       " be iMproved, required
-set nobackup                           " .
-set noswapfile                         " .
-set termencoding=utf-8                 " UTF8 as default encoding
-set encoding=utf-8                     " ...
-set scrolloff=1000                     " .
+"" Disable bracketed paste
+set t_BE=
+
+""
+set nocompatible
+set nobackup
+set noswapfile
+
+"" UTF8 as default encoding
+set termencoding=utf-8
+set encoding=utf-8
+
+""
+set scrolloff=1000
 
 if has('gui_running')
-	colorscheme slate                  " .
-	set guifont=Monospace\ 10          " .
-	set background=dark                " .
-	set guioptions-=m                  " Remove menu bar
-	set guioptions-=T                  " Remove toolbar
-	set guioptions-=r                  " Remove right-hand scroll bar
-	set guioptions-=L                  " Remove left-hand scroll bar
+	colorscheme slate
+	set guifont='Monospace 10'
+	set background=dark
+
+	"" Remove menu bar
+	set guioptions-=m
+
+	"" Remove toolbar
+	set guioptions-=T
+
+	"" Remove right-hand scroll bar
+	set guioptions-=r
+
+	"" Remove left-hand scroll bar
+	set guioptions-=L
 endif
 
 
-""" Input =======================================
+"
+" Input
+"
 
-set mouse=a                            " Enable mouse support
-set clipboard=unnamedplus              " Share X11 clipboard
-let mapleader = ','                    " .
+"" Enable mouse support
+set mouse=a
 
-" Change windows with C-w hjkl
+"" Share X11 clipboard
+set clipboard=unnamedplus
+let mapleader = ','
+
+"" Change windows with C-w hjkl
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Fold Mappings
+"" Fold Mappings
 "set foldmethod=syntax
 "set foldnestmax=10
 "set nofoldenable
@@ -72,15 +92,17 @@ nnoremap <leader>z za
 onoremap <leader>z <C-C>za
 vnoremap <leader>z zf
 
-" Use <leader>/ to clear search highlight
+"" Use <leader>/ to clear search highlight
 nmap <silent> <leader>/ :nohlsearch<CR>
 
-" Paste Mode
+"" Paste Mode
 set pastetoggle=<F2>
 set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
 
-""" Display =====================================
+"
+" Display
+"
 
 Plug 'vim-airline/vim-airline'         " .
 Plug 'vim-airline/vim-airline-themes'  " .
@@ -90,12 +112,18 @@ Plug 'edkolev/tmuxline.vim'            " .
 let g:tmuxline_powerline_separators = 0
 
 
-""" Utilities ===================================
+"
+" Utilities
+"
 
-Plug 'spolu/dwm.vim'                   " Tiled Window Management
-Plug 'tpope/vim-eunuch'                " Helpers for UNIX
+"" Tiled Window Management
+Plug 'spolu/dwm.vim'
 
-Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
+"" Helpers for UNIX
+Plug 'tpope/vim-eunuch'
+
+"" Enhanced Grepping within Vim
+Plug 'mileszs/ack.vim'
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep --smart-case'
 	cnoreabbrev ag Ack
@@ -104,7 +132,9 @@ if executable('ag')
 	cnoreabbrev AG Ack
 endif
 
-Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
+"" Fuzzy file/buffer/mru/tag/etc finder
+Plug 'ctrlpvim/ctrlp.vim'
+
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
@@ -114,18 +144,27 @@ let g:ctrlp_custom_ignore = {
 			\ }
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
-Plug 'universal-ctags/ctags'           " ctags implementation
-Plug 'majutsushi/tagbar'               " Displays tags in a window
+"" ctags implementation
+Plug 'universal-ctags/ctags'
+
+"" Displays tags in a window
+Plug 'majutsushi/tagbar'
 nmap <F8> :TagbarToggle<CR>
 
-Plug 'francoiscabrol/ranger.vim'       " .
+""
+Plug 'francoiscabrol/ranger.vim'
 
 
-""" Languages ===================================
+"
+" Languages
+"
 
-Plug 'sheerun/vim-polyglot'            " Language Support
+"" Language Support
+Plug 'sheerun/vim-polyglot'
 
-Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
+"" Syntax checking hacks for vim
+Plug 'scrooloose/syntastic'
+
 nmap <leader>c :SyntasticCheck<CR>
 set statusline+=%#warningmsg#
 set statusline+=%*
@@ -138,7 +177,9 @@ let g:syntastic_style_error_symbol="E>"
 let g:syntastic_warning_symbol="W>"
 let g:syntastic_style_warning_symbol="W>"
 
-Plug 'fatih/vim-go'                    " Go support
+"" Go support
+Plug 'fatih/vim-go'
+
 let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
 let g:go_auto_type_info = 1
 let g:go_fmt_command = "gofmt"
@@ -151,9 +192,12 @@ let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 au BufWritePost *.go silent! !ctags -R &
 
-Plug 'mxw/vim-jsx'                     " JSX support
+"" Zig support
+Plug 'ziglang/zig.vim'
 
-Plug 'w0rp/ale'                        " .
+""
+Plug 'w0rp/ale'
+
 let g:ale_linters = {'go': ['gometalinter', 'gofmt', 'govet']}
 let g:ale_fixers = {'javascript': ['eslint']}
 let g:ale_lint_on_enter = 1
