@@ -18,6 +18,6 @@
 
 # On some systems such as OpenBSD we need to declare GPG_TTY in order to
 # support authenticating keys in TUI applications.
-if [ -n $GPG_TTY ]; then
-    export GPG_TTY=$(tty)
+if [ -n "$GPG_TTY" ]; then
+    export GPG_TTY="$(tty)"
 fi
