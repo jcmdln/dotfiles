@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,6 @@ else
     autoload -Uz bracketed-paste-magic
     zle -N bracketed-paste bracketed-paste-magic
 fi
-
-# Load global profile
-[ -f /etc/profile ] && source /etc/profile
 
 # Load local profile
 [ -f "$HOME/.profile" ] && source "$HOME/.profile"

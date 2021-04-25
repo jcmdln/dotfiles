@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,9 +19,6 @@
 shopt -s checkwinsize
 shopt -s histappend
 shopt -s no_empty_cmd_completion
-
-# Load global profile
-[ -f /etc/profile ] && source /etc/profile
 
 # Load local profile
 [ -f "$HOME/.profile" ] && source "$HOME/.profile"
