@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 export PROMPT_COMMAND="history -a"
 
 if [ -n "$ZSH_VERSION" ]; then
-    PS1="[%n@%m %1~]$ "
+    export PS1="[%n@%m %1~]$ "
 
     if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
         precmd() {
@@ -27,12 +27,9 @@ if [ -n "$ZSH_VERSION" ]; then
         }
     fi
 else
-    PS1="[\u@\h \W]\$ "
+    export PS1="[\u@\h \W]\$ "
 
     if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
-        PS1="\[\e];\u@\h: \w\a\]$PS1"
+        export PS1="\[\e];\u@\h: \w\a\]$PS1"
     fi
 fi
-
-export PS1
-export PS2="> "

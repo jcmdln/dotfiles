@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -17,9 +17,7 @@
 # SOFTWARE.
 
 if [ -n "$DISPLAY" ] || [ "$(tty | grep -c 'p')" -gt 0 ]; then
-    TERM="xterm-256color"
+    export TERM="xterm-256color"
 else
-    TERM="vt220"
+    export TERM="vt220"
 fi
-
-export TERM

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -17,8 +17,7 @@
 # SOFTWARE.
 
 if [ "$OS_KERNEL" = "OpenBSD" ]; then
+    [ -d "/usr/X11R6" ] && export PATH="$PATH:/usr/X11R6/bin"
     [ -d "/usr/X11R6/man" ] && export MANPATH="$MANPATH:/usr/X11R6/man"
-    [ -d "/usr/X11R6" ] && PATH="$PATH:/usr/X11R6/bin"
-    [ -d "/usr/games" ] && PATH="$PATH:/usr/games"
-    export PATH
+    [ -d "/usr/games" ] && export PATH="$PATH:/usr/games"
 fi
