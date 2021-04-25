@@ -16,10 +16,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -d "$HOME/.local/zig/bin" ]; then
-    export PATH="$PATH:$HOME/.local/zig/bin"
+if [ -d "$XDG_CONFIG_HOME/zig/bin" ]; then
+    export PATH="$PATH:$XDG_CONFIG_HOME/zig/bin"
 fi
 
-if [ -d "$HOME/.local/zls/bin" ]; then
-    export PATH="$PATH:$HOME/.local/zls/bin"
+if [ -d "$XDG_CONFIG_HOME/zls/bin" ]; then
+    export PATH="$PATH:$XDG_CONFIG_HOME/zls/bin"
 fi

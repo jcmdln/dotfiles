@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2021 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -17,7 +17,7 @@
 # SOFTWARE.
 
 if [ -x "$(command -v go)" ]; then
-    export GOPATH="$HOME/.local/go"
+    export GOPATH="$XDG_CONFIG_HOME/go"
     export GOBIN="$GOPATH/bin"
     export GODOC="$GOPATH/doc"
     export GO111MODULE="on"
