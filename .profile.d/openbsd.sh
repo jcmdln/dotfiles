@@ -17,7 +17,8 @@
 # SOFTWARE.
 
 if [ "$OS_KERNEL" = "OpenBSD" ]; then
-    [ -d "/usr/X11R6" ] && export PATH="$PATH:/usr/X11R6/bin"
-    [ -d "/usr/X11R6/man" ] && export MANPATH="$MANPATH:/usr/X11R6/man"
-    [ -d "/usr/games" ] && export PATH="$PATH:/usr/games"
+    [ -d "/usr/X11R6" ] && PATH="$PATH:/usr/X11R6/bin"
+    [ -d "/usr/X11R6/man" ] && MANPATH="$MANPATH:/usr/X11R6/man"
+    [ -d "/usr/games" ] && PATH="$PATH:/usr/games"
+    export MANPATH PATH
 fi

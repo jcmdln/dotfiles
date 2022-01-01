@@ -17,7 +17,7 @@
 # SOFTWARE.
 
 if [ -x "$(command -v go)" ]; then
-    export GOPATH="$XDG_CONFIG_HOME/go"
+    export GOPATH="$XDG_DATA_HOME/go"
     export GOBIN="$GOPATH/bin"
     export GODOC="$GOPATH/doc"
     export GO111MODULE="on"

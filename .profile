@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2022 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Load global profile
 [ -f /etc/profile ] && . /etc/profile
 
 MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
@@ -28,11 +27,11 @@ PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
 PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 export PATH
 
-# Load local profile.d scripts
+export PAGER="less"
+export PROMPT_COMMAND="history -a"
+
 if [ -d "$HOME/.profile.d" ]; then
     for script in $HOME/.profile.d/*.sh; do
         [ -r "$script" ] && . "$script"
     done
-
-    unset script
 fi

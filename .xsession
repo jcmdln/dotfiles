@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2022 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -17,19 +17,20 @@
 # SOFTWARE.
 
 # Pretend we're using Gnome for theme support
-export DESKTOP_SESSION=gnome
-
-# Load proper environment for the user's detected shell
-if [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "ksh" ]; then
-    export ENV="$HOME/.kshrc"
-elif [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "zsh" ]; then
-    export ENV="$HOME/.zshrc"
-elif [ "$(grep $USER /etc/passwd | grep -o '[^\/]*$')" = "bash" ]; then
-    export ENV="$HOME/.bashrc"
-fi
+export DESKTOP_SESSION="gnome"
 
 # Declare our Xterm configuration file
 export XENVIRONMENT="$HOME/.Xresources"
+
+# Load proper environment for the user's detected shell
+user_shell="$(grep $USER /etc/passwd | grep -o '[^\/]*$')"
+if [ "$user_shell" = "ksh" ]; then
+    export ENV="$HOME/.kshrc"
+elif [ "$user_shell" = "zsh" ]; then
+    export ENV="$HOME/.zshrc"
+elif [ "$user_shell" = "bash" ]; then
+    export ENV="$HOME/.bashrc"
+fi
 
 # Set input/output volume to 0%
 if [ -x "$(command -v sndioctl)" ]; then

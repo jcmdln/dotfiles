@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2022 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -16,21 +16,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-export OS_KERNEL="$(uname -s)"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 
+export OS_KERNEL="$(uname -s)"
 if [ "$OS_KERNEL" = "Linux" ]; then
-    export OS_ID=$(awk -F\= '/^ID/ {print $2}' /etc/os-release)
-    export OS_NAME=$(awk -F\= '/^NAME/ {print $2}' /etc/os-release)
-    export OS_VERSION=$(awk -F\" '/^VERSION=/ {print $2}' /etc/os-release)
-    export OS_VERSION_CODENAME=$(awk -F\" '/^VERSION_CODENAME/ {print $2}' /etc/os-release)
-    export OS_VERSION_ID=$(awk -F\= '/^VERSION_ID/ {print $2}' /etc/os-release)
+    OS_ID=$(awk -F\= '/^ID/ {print $2}' /etc/os-release)
+    OS_NAME=$(awk -F\= '/^NAME/ {print $2}' /etc/os-release)
+    OS_VERSION=$(awk -F\" '/^VERSION=/ {print $2}' /etc/os-release)
+    OS_VERSION_CODENAME=$(awk -F\" '/^VERSION_CODENAME/ {print $2}' /etc/os-release)
+    OS_VERSION_ID=$(awk -F\= '/^VERSION_ID/ {print $2}' /etc/os-release)
 elif [ "$OS_KERNEL" = "OpenBSD" ]; then
-    export OS_ID=$(sysctl -n kern.ostype | awk '{print tolower($0)}')
-    export OS_NAME=$(sysctl -n kern.ostype)
-    export OS_VERSION=$(sysctl -n kern.osrelease)
-    export OS_VERSION_CODENAME=$(sysctl -n kern.osrelease)
-    export OS_VERSION_ID=$(sysctl -n kern.osrelease)
+    OS_ID=$(sysctl -n kern.ostype | awk '{print tolower($0)}')
+    OS_NAME=$(sysctl -n kern.ostype)
+    OS_VERSION=$(sysctl -n kern.osrelease)
+    OS_VERSION_CODENAME=$(sysctl -n kern.osrelease)
+    OS_VERSION_ID=$(sysctl -n kern.osrelease)
+else
+    OS_ID="unknown"
+    OS_NAME="unknown"
+    OS_VERSION="unknown"
+    OS_VERSION_CODENAME="unknown"
+    OS_VERSION_ID="unknown"
 fi
+
+export OS_ID OS_NAME OS_VERSION OS_VERSION_CODENAME OS_VERSION_ID

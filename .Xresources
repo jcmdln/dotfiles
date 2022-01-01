@@ -1,6 +1,6 @@
 ! ~/.Xresources
 !
-! Copyright (c) 2020 Johnathan C Maudlin <jcmdln@gmail.com>
+! Copyright (c) 2022 Johnathan C Maudlin <jcmdln@gmail.com>
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the "Software"), to deal
@@ -36,12 +36,12 @@ xterm.vt100.alternateScroll: true
 xterm.vt100.background: black
 xterm.vt100.deleteIsDEL: false
 xterm.vt100.faceName: Noto Mono,Noto Emoji
-xterm.vt100.faceSize1: 6
-xterm.vt100.faceSize2: 10
-xterm.vt100.faceSize3: 14
-xterm.vt100.faceSize4: 18
-xterm.vt100.faceSize5: 22
-xterm.vt100.faceSize6: 26
+xterm.vt100.faceSize1: 8
+xterm.vt100.faceSize2: 12
+xterm.vt100.faceSize3: 18
+xterm.vt100.faceSize4: 24
+xterm.vt100.faceSize5: 30
+xterm.vt100.faceSize6: 36
 xterm.vt100.faceSize: 10
 xterm.vt100.fastScroll: true
 xterm.vt100.foreground: grey

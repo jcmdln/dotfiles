@@ -16,8 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-export PROMPT_COMMAND="history -a"
-
 if [ -n "$ZSH_VERSION" ]; then
     export PS1="[%n@%m %1~]$ "
 
@@ -33,3 +31,5 @@ else
         export PS1="\[\e];\u@\h: \w\a\]$PS1"
     fi
 fi
+
+export PS2="> "
