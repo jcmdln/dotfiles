@@ -16,7 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-include "/home/john/.gtkrc-2.0.mine"
 gtk-button-images=1
 gtk-cursor-theme-name="adwaita_cursors"
 gtk-cursor-theme-size=0
