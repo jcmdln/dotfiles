@@ -18,14 +18,14 @@
 
 [ -f /etc/profile ] && . /etc/profile
 
-MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
-MANPATH="$MANPATH:$HOME/man:$HOME/.local/man:$HOME/.local/share/man"
-export MANPATH
+# MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
+# MANPATH="$MANPATH:$HOME/man:$HOME/.local/man:$HOME/.local/share/man"
+# export MANPATH
 
-PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
-PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
-PATH="$PATH:$HOME/bin:$HOME/.local/bin"
-export PATH
+# PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
+# PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
+# PATH="$PATH:$HOME/bin:$HOME/.local/bin"
+# export PATH
 
 export PAGER="less"
 export PROMPT_COMMAND="history -a"
