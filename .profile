@@ -28,6 +28,7 @@
 # export PATH
 
 export PAGER="less"
+export PATH="$PATH:$HOME/.local/bin"
 export PROMPT_COMMAND="history -a"
 
 if [ -d "$HOME/.profile.d" ]; then
