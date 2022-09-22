@@ -16,9 +16,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-export PIP_DISABLE_PIP_VERSION_CHECK=true
-export PYTHONDONTWRITEBYTECODE=true
-#export PYTHONUNBUFFERED=true
+export PIP_DISABLE_PIP_VERSION_CHECK="true"
+export PYTHON_KEYRING_BACKEND="keyring.backends.null.Keyring"
 
 # Poetry
 [ -e "$HOME/.poetry/bin" ] && export PATH="$PATH:$HOME/.poetry/bin"
