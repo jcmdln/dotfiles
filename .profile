@@ -18,17 +18,13 @@
 
 [ -f /etc/profile ] && . /etc/profile
 
-# MANPATH="/usr/man:/usr/share/man:/usr/local/man:/usr/local/share/man"
-# MANPATH="$MANPATH:$HOME/man:$HOME/.local/man:$HOME/.local/share/man"
-# export MANPATH
+export MANPATH="/usr/share/man:/usr/local/share/man"
+export MANPATH="$MANPATH:$HOME/.local/man"
 
-# PATH="/sbin:/usr/sbin:/opt/sbin:/usr/local/sbin/"
-# PATH="$PATH:/bin:/usr/bin:/opt/bin:/usr/local/bin"
-# PATH="$PATH:$HOME/bin:$HOME/.local/bin"
-# export PATH
+export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+export PATH="$PATH:$HOME/$USER/.local/bin"
 
 export PAGER="less"
-export PATH="$PATH:$HOME/.local/bin"
 export PROMPT_COMMAND="history -a"
 
 if [ -d "$HOME/.profile.d" ]; then
@@ -36,3 +32,4 @@ if [ -d "$HOME/.profile.d" ]; then
         [ -r "$script" ] && . "$script"
     done
 fi
+
