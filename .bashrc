@@ -20,5 +20,11 @@ shopt -s checkwinsize
 shopt -s histappend
 shopt -s no_empty_cmd_completion
 
-# Load local profile
+if [ -d "$HOME/.bashrc.d" ]; then
+    for script in $HOME/.bashrc.d/*.sh; do
+        [ -r "$script" ] && . "$script"
+    done
+fi
+
 [ -f "$HOME/.profile" ] && source "$HOME/.profile"
+
