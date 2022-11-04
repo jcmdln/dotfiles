@@ -16,10 +16,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+export GOPATH="$XDG_DATA_HOME/go"
+
 if [ -x "$(command -v go)" ]; then
-    export GOPATH="$XDG_DATA_HOME/go"
     export GOBIN="$GOPATH/bin"
     export GODOC="$GOPATH/doc"
-    export GO111MODULE="on"
     export PATH="$PATH:$GOBIN"
 fi
