@@ -22,7 +22,7 @@ export MANPATH="/usr/share/man:/usr/local/share/man"
 export MANPATH="$MANPATH:$HOME/.local/man"
 
 export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-export PATH="$PATH:$HOME/$USER/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 export PAGER="less"
 export PROMPT_COMMAND="history -a"
@@ -32,4 +32,3 @@ if [ -d "$HOME/.profile.d" ]; then
         [ -r "$script" ] && . "$script"
     done
 fi
-
