@@ -30,5 +30,5 @@ export PROMPT_COMMAND="history -a"
 if [ -d "$HOME/.profile.d" ]; then
     for script in $HOME/.profile.d/*.sh; do
         [ -r "$script" ] && . "$script"
-    done
+    done; unset script
 fi
