@@ -21,7 +21,7 @@
 export MANPATH="/usr/share/man:/usr/local/share/man"
 export MANPATH="$MANPATH:$HOME/.local/man"
 
-export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+export PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
 export PATH="$PATH:$HOME/.local/bin"
 
 export PAGER="less"
