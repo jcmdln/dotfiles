@@ -18,7 +18,8 @@
 
 if [ "$OS_KERNEL" = "Linux" ] && [ -n "$(command -v podman)" ]; then
     if [ -e "/run/user/$UID/podman/podman.sock" ]; then
-        export DOCKER_HOST="unix:///run/user/$UID/podman/podman.sock"
+        export DOCKER_SOCK="/run/user/$UID/podman/podman.sock"
+        export DOCKER_HOST="unix://$DOCKER_SOCK"
     fi
 fi
 
