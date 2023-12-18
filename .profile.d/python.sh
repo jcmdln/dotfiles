@@ -16,8 +16,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+export MYPY_CACHE_DIR="$XDG_CACHE_HOME/mypy"
+export RUFF_CACHE_DIR="$XDG_CACHE_HOME/ruff"
 export PIP_DISABLE_PIP_VERSION_CHECK="true"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
 export PYTHON_KEYRING_BACKEND="keyring.backends.null.Keyring"
-
-# Poetry
-[ -e "$HOME/.poetry/bin" ] && export PATH="$PATH:$HOME/.poetry/bin"

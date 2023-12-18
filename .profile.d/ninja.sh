@@ -17,5 +17,5 @@
 # SOFTWARE.
 
 if [ -n "$(command -v samu)" ]; then
-    export NINJA=$(command -v samu)
+    export NINJA="samu"
 fi

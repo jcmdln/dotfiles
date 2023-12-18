@@ -16,9 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ "$OS_KERNEL" = "Linux" ] && [ -n "$(command -v podman)" ]; then
-    if [ -e "$XDG_RUNTIME_DIR/podman/podman.sock" ]; then
-        export DOCKER_SOCK="$XDG_RUNTIME_DIR/podman/podman.sock"
-        export DOCKER_HOST="unix://$DOCKER_SOCK"
-    fi
+if [ -n "$(command -v cmake)" ] && [ -n "$(command -v ninja)" ]; then
+    export CMAKE_GENERATOR="Ninja"
 fi

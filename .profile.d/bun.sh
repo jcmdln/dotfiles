@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copyright (c) 2022 Johnathan C Maudlin <jcmdln@gmail.com>
+# Copyright (c) 2023 Johnathan C Maudlin <jcmdln@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -16,9 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ "$OS_KERNEL" = "Linux" ] && [ -n "$(command -v podman)" ]; then
-    if [ -e "$XDG_RUNTIME_DIR/podman/podman.sock" ]; then
-        export DOCKER_SOCK="$XDG_RUNTIME_DIR/podman/podman.sock"
-        export DOCKER_HOST="unix://$DOCKER_SOCK"
-    fi
+if [ -d "$HOME/.bun/bin" ]; then
+    export PATH="$PATH:$HOME/.bun/bin"
 fi
