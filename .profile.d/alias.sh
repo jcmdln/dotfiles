@@ -41,6 +41,7 @@ elif [ "$OS_KERNEL" = "OpenBSD" ]; then
     alias mkdir="\mkdir -p"
     alias mv="\mv -i"
     alias openrsync="\openrsync --rsync-path=openrsync -lrtv"
-
     [ -n "$(command -v tree)" ] && alias tree="\tree -F"
 fi
+
+[ -n "$(command -v dig)" ] && alias dig="\dig +noall +answer"
