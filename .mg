@@ -16,9 +16,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-auto-fill-mode true
-auto-indent-mode true
-column-number-mode true
-make-backup-files false
-set-default-mode fill
-set-fill-column 72
+auto-fill-mode            true
+auto-indent-mode          true
+backup-to-home-directory  true
+column-number-mode        true
+make-backup-files         false
+set-default-mode          fill
+set-fill-column           72
