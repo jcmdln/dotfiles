@@ -16,20 +16,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -n "$ZSH_VERSION" ]; then
-    export PS1="[%n@%m %1~]$ "
+export PS1="[\u@\h \W]\$ "
 
-    if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
-        precmd() {
-            print -Pn "\[\e];%n@%m %~\a\]"
-        }
-    fi
-else
-    export PS1="[\u@\h \W]\$ "
-
-    if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
-        export PS1="\[\e];\u@\h: \w\a\]$PS1"
-    fi
+if [ -n "$DISPLAY" ] || [ -n "$SSH_TTY" ]; then
+    export PS1="\[\e];\u@\h: \w\a\]$PS1"
 fi
 
 export PS2="> "
