@@ -16,9 +16,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-[ -n "$(command -v rsync)" ] && alias rsync="\rsync -achzP"
-[ -n "$(command -v unzip)" ] && alias unzip="\unzip -q"
-
 if [ "$OS_KERNEL" = "Linux" ]; then
     alias dd="\dd status=progress"
     alias ls="\ls -F"
@@ -45,3 +42,6 @@ elif [ "$OS_KERNEL" = "OpenBSD" ]; then
 fi
 
 [ -n "$(command -v dig)" ] && alias dig="\dig +noall +answer"
+[ -n "$(command -v rclone)" ] && alias rsync="\rclone -cLP"
+[ -n "$(command -v rsync)" ] && alias rsync="\rsync -Aach --info=progress2"
+[ -n "$(command -v unzip)" ] && alias unzip="\unzip -q"
